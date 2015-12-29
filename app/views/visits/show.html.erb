@@ -13,5 +13,12 @@
   <%= @visit.date %>
 </p>
 
+<h2>Contacts</h2>
+<%= render @visit.contacts %>
+
+<h2>Add a contact:</h2>
+<%= render 'contacts/form' %>
+
+
 <%= link_to 'Edit', edit_visit_path(@visit) %> |
 <%= link_to 'Back', visits_path %>

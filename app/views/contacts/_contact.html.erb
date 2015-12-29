@@ -1,0 +1,15 @@
+<p>
+  <strong>Value:</strong>
+  <%= contact.value %>
+</p>
+
+<p>
+  <strong>Info:</strong>
+  <%= contact.info %>
+</p>
+
+<p>
+  <%= link_to 'Destroy', [contact.visit, contact],
+              method: :delete,
+              data: { confirm: 'Are you sure?' } %>
+</p>

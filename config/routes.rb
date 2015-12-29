@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
   get 'home/index'
 
-  resources :visits
+  resources :visits do
+    resources :contacts
+  end
 
   #get 'visit/index'
 

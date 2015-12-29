@@ -1,11 +1,12 @@
 FROM ruby:2.2.0
-MAINTAINER support@heliostech.fr
+MAINTAINER igor@chornous.com
 
 RUN apt-get update -qq && apt-get install -y \
   build-essential \
   mysql-client \
   nginx \
-  vim
+  vim \
+  nodejs
 
 COPY config/web.conf /etc/nginx/sites-enabled/default
 
@@ -27,6 +28,7 @@ RUN bundle install
 EXPOSE 80
 
 RUN bundle exec rake assets:precompile --trace
+RUN bundle exec rake db:migrate --trace
 RUN chgrp -R www-data $HOME/public
 RUN find $HOME/public -type f -exec chmod g+r {} \;
 RUN find $HOME/public -type d -exec chmod g+rx {} \;

@@ -23,10 +23,10 @@ authorizations: &AUTHORIZATIONS
 
 development:
   host: localhost
-  port: 389
+  port: 4389
   attribute: cn
-  base: ou=people,dc=test,dc=com
-  admin_user: cn=admin,dc=test,dc=com
+  base: ou=people,dc=chornous,dc=com
+  admin_user: cn=admin,dc=chornous,dc=com
   admin_password: admin_password
   ssl: false
   # <<: *AUTHORIZATIONS

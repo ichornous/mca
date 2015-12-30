@@ -16,4 +16,10 @@
 !/log/.keep
 /tmp
 
+/.idea/
+/.idea/*
+.DS_Store
+/log/*
+
+
 vendor/assets/components

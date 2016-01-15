@@ -4,7 +4,9 @@ class EventsController < ApplicationController
   # GET /events
   # GET /events.json
   def index
-    @events = Event.all
+    if (params['start'] && params['end'])
+      @events = Event.between(params['start'].to_datetime, params['end'].to_datetime)
+    end
   end
 
   # GET /events/1

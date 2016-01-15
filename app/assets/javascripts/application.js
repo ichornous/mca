@@ -19,3 +19,4 @@
 //= require moment/ru
 //= require bootstrap
 //= require bootstrap-datetimepicker
+//= require fullcalendar

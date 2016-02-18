@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160216143343) do
+ActiveRecord::Schema.define(version: 20160218155652) do
 
   create_table "employees", force: :cascade do |t|
     t.string   "first_name"
@@ -29,6 +29,16 @@ ActiveRecord::Schema.define(version: 20160216143343) do
   add_index "employees_events", ["employee_id"], name: "index_employees_events_on_employee_id"
   add_index "employees_events", ["event_id"], name: "index_employees_events_on_event_id"
 
+  create_table "event_services", force: :cascade do |t|
+    t.integer  "event_id"
+    t.integer  "service_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "event_services", ["event_id"], name: "index_event_services_on_event_id"
+  add_index "event_services", ["service_id"], name: "index_event_services_on_service_id"
+
   create_table "events", force: :cascade do |t|
     t.string   "title"
     t.text     "description"
@@ -36,6 +46,14 @@ ActiveRecord::Schema.define(version: 20160216143343) do
     t.datetime "end"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+  end
+
+  create_table "services", force: :cascade do |t|
+    t.string   "name"
+    t.decimal  "cost"
+    t.decimal  "time"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|

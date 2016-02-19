@@ -3,6 +3,8 @@ class Event < ActiveRecord::Base
   has_many :event_services
   has_many :services, :through => :event_services
 
+  validates :start, presence: true
+  validates :end, presence: true
   # Select all events occurring in a range
   #
   # +from+:: Beginning of the selection

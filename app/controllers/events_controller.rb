@@ -1,5 +1,6 @@
 class EventsController < ApplicationController
-  before_action :set_event, only: [:show, :edit, :update, :destroy]
+  before_action :set_event!, only: [:show, :edit, :update, :destroy]
+  before_action :convert_unixtime!, only: [:create, :update]
 
   # GET /events
   # GET /events.json
@@ -26,11 +27,7 @@ class EventsController < ApplicationController
   # POST /events
   # POST /events.json
   def create
-    logger.debug("From #{params['start']}, to #{params['end']}")
-    return
-
     @event = Event.new(event_params)
-
     respond_to do |format|
       if @event.save
         format.html { redirect_to @event, notice: 'Event was successfully created.' }
@@ -68,8 +65,19 @@ class EventsController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_event
+    def set_event!
       @event = Event.find(params[:id])
+    end
+
+    # Ensure that range parameters are converted to DateTime
+    def convert_unixtime!
+      [:start, :end].each do |i|
+        unless params[:event][i].nil? or params[:event][i].empty?
+          params[:event][i] = Time.at(params[:event][i].to_i).to_datetime
+        else
+          params[:event][i] = nil
+        end
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

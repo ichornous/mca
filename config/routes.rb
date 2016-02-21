@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   resources :events
+  resources :workshops
   devise_for :users
   get 'home/index'
 

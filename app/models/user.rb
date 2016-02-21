@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+  belongs_to :workshop
   enum role: [:admin, :director, :manager, :sales]
   # Access policy:
   #  - admin can review and edit everything

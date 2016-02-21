@@ -2,6 +2,7 @@ class Event < ActiveRecord::Base
   has_and_belongs_to_many :employees
   has_many :event_services
   has_many :services, :through => :event_services
+  belongs_to :workshop
 
   validates :start, presence: true
   validates :end, presence: true
@@ -14,7 +15,6 @@ class Event < ActiveRecord::Base
   def self.between(from, to)
     where('start > :lo and start < :up',
           lo: from.to_formatted_s(:db),
-          up: to.to_formatted_s(:db)
-    )
+          up: to.to_formatted_s(:db))
   end
 end

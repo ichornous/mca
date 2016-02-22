@@ -1,22 +1,22 @@
 <%= form_for(@workshop) do |f| %>
-  <% if @workshop.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@workshop.errors.count, "error") %> prohibited this workshop from being saved:</h2>
+    <% if @workshop.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@workshop.errors.count, "error") %> prohibited this workshop from being saved:</h2>
 
-      <ul>
-      <% @workshop.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
+          <ul>
+            <% @workshop.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+    <% end %>
+
+    <div class="field">
+      <%= f.label :description %><br>
+      <%= f.text_field :description %>
     </div>
-  <% end %>
 
-  <div class="field">
-    <%= f.label :description %><br>
-    <%= f.text_area :description %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+    <div class="actions">
+      <%= f.submit %>
+    </div>
 <% end %>

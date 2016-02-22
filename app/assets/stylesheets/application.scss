@@ -11,6 +11,8 @@
  * file per style scope.
  *
  *= require fullcalendar
+ *= require jquery-ui/sortable
+ *= require_tree .
  */
 @import "bootstrap-sprockets";
 @import "bootstrap";

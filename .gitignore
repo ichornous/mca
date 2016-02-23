@@ -24,4 +24,6 @@
 
 *~
 
+.heroku.sh
+
 vendor/assets/components

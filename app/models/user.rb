@@ -7,6 +7,8 @@ class User < ActiveRecord::Base
   #  - manager can review and edit all of the events related to his workshop
   #  - sales can only review events in his workshop
   after_initialize :set_default_role, :if => :new_record?
+  validates :first_name, presence: true
+  validates :last_name, presence: true
 
   def set_default_role
     self.role ||= :sales

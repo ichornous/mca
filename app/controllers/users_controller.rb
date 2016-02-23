@@ -41,6 +41,7 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1
   # PATCH/PUT /users/1.json
   def update
+    user_params.delete(:email)
     respond_to do |format|
       if @user.update(user_params)
         format.html { redirect_to @user, notice: 'User was successfully updated.' }
@@ -70,17 +71,14 @@ class UsersController < ApplicationController
 
     # Ensure that the current user has access only to it's own profile
     def authorize_user!
-      logger.error "Authorizing"
       if not user_signed_in?
-        logger.error "Unauthorized: Not signed in"
         respond_to do |format|
-          format.html { redirect_to '/sign_in' }
+          format.html { redirect_to '/u/sign_in' }
           format.json { render json: {}, status: :unauthorized }
         end
       elsif current_user.admin?
           return
       elsif @user.nil? or (current_user.id != @user.id)
-        logger.error "Unauthorized: ids don't match"
         respond_to do |format|
           format.html { redirect_to root_url }
           format.json { render json: {}, status: :unauthorized }
@@ -90,6 +88,10 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params[:user]
+      if current_user.try(:admin?) then
+        params[:user].permit(:first_name, :last_name, :role, :email)
+      else
+        params[:user].permit(:first_name, :last_name)
+      end
     end
 end

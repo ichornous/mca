@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @visit.client_name %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @visit.description %>
+</p>
+
+<p>
+  <strong>Start:</strong>
+  <%= @visit.date %>
+</p>
+
+<%= link_to 'Edit', edit_visit_path(@visit) %> |
+<%= link_to 'Back', visits_path %>

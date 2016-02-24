@@ -23,7 +23,7 @@
 
 <p>
   <strong>Role:</strong>
-  <%= @user.role %>
+  <%= @user.role.humanize %>
 </p>
 
 <%= link_to 'Edit', edit_user_path(@user) %> |

@@ -11,57 +11,65 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160221132354) do
+ActiveRecord::Schema.define(version: 20151230154932) do
 
-  create_table "employees", force: :cascade do |t|
-    t.string   "first_name"
-    t.string   "second_name"
-    t.string   "title"
+  create_table "cars", force: :cascade do |t|
+    t.integer "workshop_id"
+    t.string  "description"
+    t.string  "license_id"
+    t.string  "photo"
+  end
+
+  add_index "cars", ["workshop_id"], name: "index_cars_on_workshop_id"
+
+  create_table "clients", force: :cascade do |t|
+    t.integer  "workshop_id"
+    t.string   "name"
+    t.string   "phone"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
   end
 
-  create_table "employees_events", id: false, force: :cascade do |t|
-    t.integer "event_id"
-    t.integer "employee_id"
-  end
+  add_index "clients", ["workshop_id"], name: "index_clients_on_workshop_id"
 
-  add_index "employees_events", ["employee_id"], name: "index_employees_events_on_employee_id"
-  add_index "employees_events", ["event_id"], name: "index_employees_events_on_event_id"
-
-  create_table "event_services", force: :cascade do |t|
-    t.integer  "event_id"
+  create_table "order_services", force: :cascade do |t|
+    t.integer  "order_id"
     t.integer  "service_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  add_index "event_services", ["event_id"], name: "index_event_services_on_event_id"
-  add_index "event_services", ["service_id"], name: "index_event_services_on_service_id"
-
-  create_table "events", force: :cascade do |t|
-    t.string   "title"
-    t.text     "description"
-    t.string   "client_name"
-    t.string   "phone_number"
-    t.datetime "start"
-    t.datetime "end"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
-    t.integer  "workshop_id"
-  end
-
-  add_index "events", ["workshop_id"], name: "index_events_on_workshop_id"
-
-  create_table "services", force: :cascade do |t|
-    t.string   "name"
+    t.decimal  "amount"
     t.decimal  "cost"
     t.decimal  "time"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
+  add_index "order_services", ["order_id"], name: "index_order_services_on_order_id"
+  add_index "order_services", ["service_id"], name: "index_order_services_on_service_id"
+
+  create_table "orders", force: :cascade do |t|
+    t.integer  "workshop_id"
+    t.integer  "client_id"
+    t.integer  "car_id"
+    t.string   "state"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "orders", ["car_id"], name: "index_orders_on_car_id"
+  add_index "orders", ["client_id"], name: "index_orders_on_client_id"
+  add_index "orders", ["workshop_id"], name: "index_orders_on_workshop_id"
+
+  create_table "services", force: :cascade do |t|
+    t.string   "name"
+    t.string   "description"
+    t.decimal  "base_cost"
+    t.decimal  "base_time"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
   create_table "users", force: :cascade do |t|
+    t.integer  "workshop_id"
+    t.integer  "impersonation_id"
     t.string   "first_name"
     t.string   "last_name"
     t.string   "username",               default: "", null: false
@@ -82,15 +90,34 @@ ActiveRecord::Schema.define(version: 20160221132354) do
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
     t.integer  "role"
-    t.integer  "workshop_id"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true
+  add_index "users", ["impersonation_id"], name: "index_users_on_impersonation_id"
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   add_index "users", ["workshop_id"], name: "index_users_on_workshop_id"
 
+  create_table "visits", force: :cascade do |t|
+    t.integer  "workshop_id"
+    t.integer  "order_id"
+    t.boolean  "returning"
+    t.text     "description"
+    t.string   "client_name"
+    t.string   "car_name"
+    t.string   "phone_number"
+    t.datetime "start_date"
+    t.datetime "end_date"
+    t.string   "color"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  add_index "visits", ["order_id"], name: "index_visits_on_order_id"
+  add_index "visits", ["workshop_id"], name: "index_visits_on_workshop_id"
+
   create_table "workshops", force: :cascade do |t|
     t.string   "description"
+    t.string   "color"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
   end

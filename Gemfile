@@ -5,24 +5,23 @@ source 'https://rubygems.org'
 gem 'rails', '4.2.1'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
-gem 'therubyracer'
-gem 'less-rails'
+
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails', '~> 4.1.0'
 gem 'coffee-script-source', '1.8.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes
-# gem 'therubyracer', platforms: :ruby
+#gem 'therubyracer', platforms: :ruby
+#gem "less-rails"
 
 # Devise. Authentication framework
 gem 'devise', '>= 3.4.1'
-gem 'devise_ldap_authenticatable', :git => 'git://github.com/cschiewek/devise_ldap_authenticatable.git'
+
+# Font Awesome
+gem "font-awesome-rails"
 # Bootstrap
-gem 'bootstrap-sass', '~> 3.2.0'
-# Bootstrap datepicker
-gem 'momentjs-rails', '>= 2.9.0'
-gem 'bootstrap3-datetimepicker-rails', '~> 4.17.37'
+#gem 'bootstrap-sass', '~> 3.2.0'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
@@ -36,9 +35,6 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
-
-# Fullcalendar.io
-gem 'fullcalendar-rails'
 
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw]
 # Use Unicorn as the app server

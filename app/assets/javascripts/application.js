@@ -17,7 +17,11 @@
 //= require_tree .
 
 //= require moment
-//= require moment/ru
+//= require moment/locale/ru
 //= require bootstrap
-//= require bootstrap-datetimepicker
-//= require fullcalendar
+//= require bootstrap-datepicker
+//= require fullcalendar/dist/fullcalendar
+//= require datatables/media/js/jquery.dataTables.js
+//= require datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.js
+//= require datatables-responsive/js/dataTables.responsive.js
+

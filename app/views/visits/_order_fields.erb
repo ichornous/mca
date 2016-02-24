@@ -1,0 +1,66 @@
+<div class="order-frame">
+  <table class="table order-tbl">
+    <thead class="order-tbl-header">
+    <tr>
+      <%= f.fields_for :order_services, OrderService.new do |builder| %>
+          <th class="order-cell">
+          </th>
+          <th class="order-cell">
+            <%= builder.label :service_id %>
+          </th>
+          <th class="order-cell">
+            <%= builder.label :amount %>
+          </th>
+          <th class="order-cell">
+            <%= builder.label :cost %>
+          </th>
+          <th class="order-cell">
+            <%= builder.label :time %>
+          </th>
+          <th class="order-cell">
+            <%= label_tag 'Price (VAT)' %>
+          </th>
+          <th class="order-cell">
+            <%= label_tag 'Price' %>
+          </th>
+      <% end %>
+    </tr>
+    </thead>
+
+    <tbody id="order-items" class="order-rows">
+      <%= f.fields_for :order_services do |builder| %>
+          <%= render 'order_service_fields', :f => builder %>
+      <% end %>
+    </tbody>
+
+    <tfoot>
+      <tr class="order-row">
+        <td colspan="7" class="order-cell">
+          <%= f.link_to_add_form 'Add service', :order_services, class: 'mca-add-content', :'data-anchor-id' => '#order-items' do |builder| %>
+              <%= render 'order_service_fields', :f => builder %>
+          <% end %>
+        </td>
+      </tr>
+
+      <tr class="order-row">
+        <td colspan="4" class="order-cell"></td>
+        <th class="order-cell">Time</th>
+        <td class="order-cell"></td>
+        <th class="order-cell">Price</th>
+      </tr>
+
+      <tr class="order-row">
+        <td colspan="4" class="order-cell"></td>
+        <th class="order-cell">
+          <%= text_field_tag :total_time, nil, id: :total_time, readonly: true %>
+        </th>
+        <td class="order-cell"></td>
+        <td class="order-cell">
+          <%= text_field_tag :total_price, nil, id: :total_price, readonly: true %>
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+
+  <%= f.hidden_field :workshop_id %>
+</div>

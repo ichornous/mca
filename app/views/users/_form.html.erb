@@ -1,44 +1,71 @@
-<%= form_for(@user) do |f| %>
-    <% if @user.errors.any? %>
-        <div id="error_explanation">
-          <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
-
+<div class="panel-group">
+  <% if @user.errors.any? %>
+      <div class="panel panel-danger">
+        <div class="panel-heading"><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</div>
+        <div class="panel-body">
           <ul>
             <% @user.errors.full_messages.each do |message| %>
                 <li><%= message %></li>
-          <% end %>
+            <% end %>
           </ul>
         </div>
-    <% end %>
-    <div class="field">
-      <%= f.label :username %><br>
-      <%= f.text_field :username, :readonly => true %>
+      </div>
+  <% end %>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      User info
     </div>
 
-    <div class="field">
-      <%= f.label :first_name %><br>
-      <%= f.text_field :first_name %>
-    </div>
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-lg-6">
+          <%= form_for(@user) do |f| %>
+              <div class="form-group <%= 'has-error' if @user.errors.include?(:username) -%>">
+                <%= f.label :username %><br>
+                <%= f.text_field :username, readonly: locals[:is_username_readonly], class: 'form-control' %>
+              </div>
 
-    <div class="field">
-      <%= f.label :last_name %><br>
-      <%= f.text_field :last_name %>
-    </div>
+              <div class="form-group <%= 'has-error' if @user.errors.include?(:first_name) -%>">
+                <%= f.label :first_name %><br>
+                <%= f.text_field :first_name, class: 'form-control'%>
+              </div>
 
-    <div class="field">
-      <%= f.label :email %><br>
-      <%= f.text_field :email %>
-    </div>
+              <div class="form-group <%= 'has-error' if @user.errors.include?(:last_name) -%>">
+                <%= f.label :last_name %><br>
+                <%= f.text_field :last_name, class: 'form-control' %>
+              </div>
 
-    <div class="field">
-      <%= f.label :role %><br>
-      <% if current_user.try(:admin?) %>
-          <%= f.select :role, User.roles.to_a.map { |w| [w[0].humanize, w[0]] } %>
-      <% else %>
-          <%= f.text_field :role, :readonly => true %>
-      <% end %>
+              <div class="form-group <%= 'has-error' if @user.errors.include?(:email) -%>">
+                <%= f.label :email %><br>
+                <%= f.text_field :email, type: 'email', class: 'form-control' %>
+              </div>
+
+              <div class="form-group <%= 'has-error' if @user.errors.include?(:role) -%>">
+                <%= f.label :role %><br>
+                <% if @roles.length > 1 %>
+                    <%= f.select :role, @roles, class: 'form-control' %>
+                <% else %>
+                    <%= text_field_tag :role_name, @user.role.humanize, readonly: true, class: 'form-control' %>
+                    <%= f.hidden_field :role, readonly: true, class: 'form-control' %>
+                <% end %>
+              </div>
+
+              <% if current_user.admin? and not current_user.is_impersonated? %>
+                  <div class="form-group <%= 'has-error' if @user.errors.include?(:workshop) -%>">
+                    <%= f.label :workshop %><br>
+                    <%= f.select :workshop_id,
+                                 options_for_select(@workshop_list.map {|c| [c.description, c.id]}, f.object.workshop_id),
+                                 { include_blank: true },
+                                 { :class => 'mca-select-workshop' } %>
+                  </div>
+              <% end %>
+
+              <div class="actions">
+                <%= f.submit class:'btn btn-default'%>
+              </div>
+          <% end %>
+        </div>
+      </div>
     </div>
-    <div class="actions">
-      <%= f.submit %>
-    </div>
-<% end %>
+  </div>
+</div>

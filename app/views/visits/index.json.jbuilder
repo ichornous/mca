@@ -1,0 +1,11 @@
+json.array!(@visits) do |visit|
+  json.extract! visit, :id, :car_name, :description, :color
+  json.start visit.start_date
+  json.end visit.end_date
+  unless visit.order.nil? or visit.order.order_services.nil?
+    json.services visit.order.order_services.map{|x| x.service.name}
+  else
+    json.services []
+  end
+  json.url edit_visit_url(visit, format: :html)
+end

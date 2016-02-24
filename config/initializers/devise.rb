@@ -2,10 +2,10 @@
 # Many of these configuration options can be set straight in your model.
 Devise.setup do |config|
   # ==> LDAP Configuration 
-  config.ldap_logger = true
-  config.ldap_create_user = true
+  # config.ldap_logger = true
+  # config.ldap_create_user = true
   # config.ldap_update_password = true
-  config.ldap_config = "#{Rails.root}/config/ldap.yml"
+  # config.ldap_config = "#{Rails.root}/config/ldap.yml"
   # config.ldap_check_group_membership = false
   # config.ldap_check_group_membership_without_admin = false
   # config.ldap_check_attributes = false

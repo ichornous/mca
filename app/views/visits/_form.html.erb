@@ -1,0 +1,51 @@
+<div class="panel-group">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      Booking info
+    </div>
+
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-lg-6">
+          <%= form_for(@visit) do |f| %>
+              <div class="form-group">
+                <%= f.label :client_name %><br>
+                <%= f.text_field :client_name, class: 'form-control' %>
+              </div>
+
+              <div class="form-group">
+                <%= f.label :car_name %><br>
+                <%= f.text_field :car_name, class: 'form-control' %>
+              </div>
+
+              <div class="form-group">
+                <%= f.label :phone_number %><br>
+                <%= f.text_field :phone_number, type: 'tel', class: 'form-control' %>
+              </div>
+
+              <%= f.fields_for :order do |builder| %>
+                  <%= render 'order_fields', :f => builder %>
+              <% end %>
+
+              <div class="form-group">
+                <%= f.label :description %><br>
+                <%= f.text_area :description, class: 'form-control' %>
+              </div>
+
+              <div class="form-group">
+                <div class="input-daterange" id="mca-timeslot-range">
+                  <%= f.date_field :start_date, class: 'form-control input-small' %>
+                  <span class="add-on">to</span>
+                  <%= f.date_field :end_date, class: 'form-control input-small' %>
+                </div>
+              </div>
+
+              <div class="actions">
+                <%= f.submit class:'btn btn-default' %>
+              </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,21 @@
+<h2>You're almost done! Now create a password to securely access your account.</h2>
+
+<%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :put }) do |f| %>
+    <%= devise_error_messages! %>
+
+    <div class="field">
+      <%= f.label :password %><br />
+      <%= f.password_field :password, autofocus: true %>
+    </div>
+
+    <div class="field">
+      <%= f.label :password_confirmation %><br />
+      <%= f.password_field :password_confirmation %>
+    </div>
+
+    <%= f.hidden_field :confirmation_token, :value => @original_token %>
+
+    <div class="actions">
+      <%= f.submit "Confirm Account" %>
+    </div>
+<% end %>

@@ -1,8 +1,15 @@
 Rails.application.routes.draw do
-  resources :events
+  resources :services
+  resources :visits
   resources :workshops
   resources :users
-  devise_for :users, :path => 'u'
+  resources :orders
+
+  devise_for :users, :path => 'u', :controllers => {:confirmations => 'confirmations'}
+  devise_scope :user do
+    put "/u/confirmation" => "confirmations#confirm"
+  end
+
   get 'home/index'
 
   #get 'visit/index'
@@ -11,7 +18,7 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  root 'events#index'
+  root 'visits#index'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

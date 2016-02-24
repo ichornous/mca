@@ -1,0 +1,35 @@
+<tr class="order-row">
+  <td class="order-cell">
+    <%= f.link_to_remove_form 'X', class: 'mca-remove-content' %>
+  </td>
+
+  <td class="order-cell">
+    <%= f.select :service_id,
+                 options_for_select(Service.all.map {|c| ["(#{c.name}) #{c.description}", c.id,
+                                                          {:'data-base-cost' => c.base_cost,
+                                                           :'data-base-time' => c.base_time}]},
+                                    f.object.service_id),
+                 { include_blank: true },
+                 { :class => 'mca-select-service' } %>
+  </td>
+
+  <td class="order-cell">
+    <%= f.text_field :amount, :'data-id' => :amount, type: 'number', step: 'any' %>
+  </td>
+
+  <td class="order-cell">
+    <%= f.text_field :cost, :'data-id' => :cost, type: 'number', step: 'any' %>
+  </td>
+
+  <td class="order-cell">
+    <%= f.text_field :time, :'data-id' => :time, type: 'number', step: 'any' %>
+  </td>
+
+  <td class="order-cell">
+    <%= text_field_tag :price_vat, nil, :'data-id' => :price_vat, type: 'number', step: 'any', readonly: true %>
+  </td>
+
+  <td class="order-cell">
+    <%= text_field_tag :price, nil, :'data-id' => :price, type: 'number', step: 'any', readonly: true %>
+  </td>
+</tr>

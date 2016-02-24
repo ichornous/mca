@@ -26,7 +26,5 @@ module Mca
     config.assets.enabled = true
     config.assets.paths << Rails.root.join('app', 'assets', 'fonts')
     config.assets.paths << Rails.root.join('vendor', 'assets', 'components')
-    config.less.paths << Rails.root.join('vendor', 'assets', 'components', 'startbootstrap-sb-admin-2', 'less')
-    config.less.compress = true
   end
 end

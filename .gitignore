@@ -6,6 +6,9 @@
 
 # Ignore bundler config.
 /.bundle
+.vagrant/*
+.Vagrantfile.swp
+.viminfo
 
 # Ignore the default SQLite database.
 /db/*.sqlite3
@@ -26,4 +29,5 @@
 
 .heroku.sh
 
+# Ignore bower components
 vendor/assets/components

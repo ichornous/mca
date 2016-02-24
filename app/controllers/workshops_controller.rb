@@ -1,5 +1,7 @@
 class WorkshopsController < ApplicationController
   before_action :set_workshop, only: [:show, :edit, :update, :destroy]
+  before_action :set_policies
+  before_action :authorize_user!
 
   # GET /workshops
   # GET /workshops.json
@@ -65,6 +67,37 @@ class WorkshopsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_workshop
       @workshop = Workshop.find(params[:id])
+    end
+
+    # Setup access policies
+    def set_policies
+      directory_policy = DirectoryAccessPolicy.new current_user
+      @workshop_policy = WorkshopAccessPolicy.new(directory_policy, current_user)
+    end
+
+    # Ensure that the user has enough permissions to execute the request
+    def authorize_user!
+      access = true
+      if params[:action] == 'index'
+        access &= @workshop_policy.index?(nil)
+      elsif params[:action] == 'show'
+        access &= @workshop_policy.show?(@workshop)
+      elsif params[:action] == 'create' or params[:action] == 'new'
+        access &= @workshop_policy.create?(nil)
+      elsif params[:action] == 'update' or params[:action] == 'edit'
+        access &= @workshop_policy.update?(@workshop)
+      elsif params[:action] == 'destroy'
+        access &= @workshop_policy.delete?(@workshop)
+      else
+        access = false
+      end
+
+      unless access
+        respond_to do |format|
+          format.html { redirect_to workshop_path(current_user.workshop) }
+          format.json { render json: {}, status: :unauthorized }
+        end
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

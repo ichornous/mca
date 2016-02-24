@@ -12,7 +12,7 @@
     <% end %>
     <div class="field">
       <%= f.label :username %><br>
-      <%= f.text_field :username, :readonly => true %>
+      <%= f.text_field :username, :readonly => locals[:is_username_readonly] %>
     </div>
 
     <div class="field">

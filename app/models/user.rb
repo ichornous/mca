@@ -7,14 +7,22 @@ class User < ActiveRecord::Base
   #  - manager can review and edit all of the events related to his workshop
   #  - sales can only review events in his workshop
   after_initialize :set_default_role, :if => :new_record?
+
   validates :username, presence: true
+
+  def password_required?
+    super if confirmed?
+  end
+
+  def password_match?
+    self.errors[:password] << "can't be blank" if password.blank?
+    self.errors[:password_confirmation] << "can't be blank" if password_confirmation.blank?
+    self.errors[:password_confirmation] << "does not match password" if password != password_confirmation
+    password == password_confirmation && !password.blank?
+  end
 
   def set_default_role
     self.role ||= :sales
-  end
-
-  def self.generate_password
-    [*('A'..'Z')].sample(8).join
   end
 
   # Include default devise modules. Others available are:

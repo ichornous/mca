@@ -2,7 +2,12 @@ Rails.application.routes.draw do
   resources :events
   resources :workshops
   resources :users
-  devise_for :users, :path => 'u'
+
+  devise_for :users, :path => 'u', :controllers => {:confirmations => 'confirmations'}
+  devise_scope :user do
+    put "/u/confirmation" => "confirmations#confirm"
+  end
+
   get 'home/index'
 
   #get 'visit/index'

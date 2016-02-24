@@ -1,11 +1,22 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
-  before_filter :authorize_user!
+  before_filter :authorize_user!, only: [:show, :edit, :update, :destroy]
 
+  # Show users for a given workshop
+  # +workshop_id+:: If a workshop identifier is not given, all users are returned
   # GET /users
   # GET /users.json
   def index
-    @users = User.all
+    if (current_user.admin? or current_user.director?) and params[:workshop_id].nil?
+      @users = User.all()
+    else
+      if params[:workshop_id].nil?
+        workshop = current_user.workshop
+      else
+        workshop = Workshop.find(params[:workshop_id])
+      end
+      @users = workshop.users
+    end
   end
 
   # GET /users/1

@@ -37,16 +37,10 @@ class UsersController < ApplicationController
   # GET /users/new
   def new
     @user = User.new
-    if current_user.admin?
-      @workshop_list = Workshop.all()
-    end
   end
 
   # GET /users/1/edit
   def edit
-    if current_user.admin?
-      @workshop_list = Workshop.all()
-    end
   end
 
   # POST /users
@@ -99,6 +93,7 @@ class UsersController < ApplicationController
     end
 
     def set_workshop
+      @workshop_list = Workshop.all()
       if params[:workshop_id].nil? and current_user.admin?
         @workshop = nil
       elsif params[:workshop_id].nil?

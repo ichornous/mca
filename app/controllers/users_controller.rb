@@ -1,22 +1,32 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
-  before_filter :authorize_user!, only: [:show, :edit, :update, :destroy]
+  before_action :set_workshop
+  before_action :set_policy
+  before_action :set_assignable_roles, only: [:new, :edit, :create, :update]
+  before_action :authorize_user!, only: [:index, :show, :edit, :update, :destroy]
 
   # Show users for a given workshop
   # +workshop_id+:: If a workshop identifier is not given, all users are returned
   # GET /users
   # GET /users.json
   def index
-    if (current_user.admin? or current_user.director?) and params[:workshop_id].nil?
+    if current_user.admin?
+      index_admin
+    else
+      index_public
+    end
+  end
+
+  def index_admin
+    if @workshop.nil?
       @users = User.all()
     else
-      if params[:workshop_id].nil?
-        workshop = current_user.workshop
-      else
-        workshop = Workshop.find(params[:workshop_id])
-      end
-      @users = workshop.users
+      @users = @workshop.users
     end
+  end
+
+  def index_public
+    @users = @workshop.users
   end
 
   # GET /users/1
@@ -27,16 +37,24 @@ class UsersController < ApplicationController
   # GET /users/new
   def new
     @user = User.new
+    if current_user.admin?
+      @workshop_list = Workshop.all()
+    end
   end
 
   # GET /users/1/edit
   def edit
+    if current_user.admin?
+      @workshop_list = Workshop.all()
+    end
   end
 
   # POST /users
   # POST /users.json
   def create
     @user = User.new(user_params)
+    @user.workshop = @workshop
+
     respond_to do |format|
       if @user.save
         format.html { redirect_to @user, notice: 'User was successfully created.' }
@@ -52,6 +70,8 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1.json
   def update
     user_params.delete(:username)
+    @user.workshop = @workshop
+
     respond_to do |format|
       if @user.update(user_params)
         format.html { redirect_to @user, notice: 'User was successfully updated.' }
@@ -74,23 +94,49 @@ class UsersController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_user
       @user = User.find(params[:id])
     end
 
-    # Ensure that the current user has access only to it's own profile
+    def set_workshop
+      if params[:workshop_id].nil? and current_user.admin?
+        @workshop = nil
+      elsif params[:workshop_id].nil?
+        @workshop = current_user.workshop
+      else
+        @workshop = Workshop.find(params[:workshop_id])
+      end
+    end
+
+    # Setup access policy
+    def set_policy
+      @policy = UserAccessPolicy.new current_user
+    end
+
+    def set_assignable_roles
+      @roles = User.roles.to_a.select{|w| @policy.assign_role?(w[0])}.map{ |w| [w[0].humanize, w[0]] }
+    end
+
+    # Ensure that the current user has access enough permissions to access a resource
     def authorize_user!
-      if not user_signed_in?
+      access = true
+      if params[:action] == 'index'
+        access &= @policy.list?(@workshop)
+      elsif params[:action] == 'show'
+        access &= @policy.show?(@user)
+      elsif params[:action] == 'new' or params[:action] == 'create'
+        access &= @policy.assign_workshop?(@workshop)
+      elsif params[:action] == 'update' or params[:action] == 'edit'
+        access &= @policy.update?(@user) and @policy.assign_workshop?(@workshop)
+      elsif params[:action] == 'destroy'
+        access &= @policy.delete?(@user)
+      else
+        access = false
+      end
+
+      unless access
         respond_to do |format|
-          format.html { redirect_to '/u/sign_in' }
-          format.json { render json: {}, status: :unauthorized }
-        end
-      elsif current_user.admin?
-          return
-      elsif @user.nil? or (current_user.id != @user.id)
-        respond_to do |format|
-          format.html { redirect_to root_url }
+          format.html { redirect_to user_path(current_user) }
           format.json { render json: {}, status: :unauthorized }
         end
       end
@@ -98,10 +144,6 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      if current_user.try(:admin?) then
-        params[:user].permit(:username, :first_name, :last_name, :role, :email)
-      else
-        params[:user].permit(:first_name, :last_name, :email)
-      end
+      params[:user].permit(:username, :first_name, :last_name, :role, :email, :workshop_id)
     end
 end

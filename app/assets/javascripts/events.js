@@ -6,6 +6,17 @@ $(document).on('ready page:load', function() {
       editable: true,
       selectHelper: true,
       defaultView: 'basicWeek',
+      customButtons: {
+          selectWorkshop: {
+              text: 'New Event',
+              click: function() {
+                  window.location='events/new';
+              }
+          }
+      },
+      header: {
+          right: 'selectWorkshop today prev,next'
+      },
       select: function (start, end, jsEvent, view, resource) {
           console.log(start.format('YYYY-MM-DD'))
       },

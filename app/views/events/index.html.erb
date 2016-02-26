@@ -1,5 +1,15 @@
 <p id="notice"><%= notice %></p>
 
+<div id="booking-sources" class="jq-dropdown jq-dropdown-tip">
+  <ul class="jq-dropdown-menu">
+    <li><a href="#1">Item 3</a></li>
+    <li class="jq-dropdown-divider"></li>
+    <li><a href="#2">Item 4</a></li>
+    <li><a href="#3">Item 5</a></li>
+    <li><a href="#4">Item 6</a></li>
+  </ul>
+</div>
+
 <div class="panel panel-default">
   <div class="panel-heading">
     Listing Events
@@ -7,9 +17,9 @@
 
   <div class="panel-body">
     <div class="row">
-      <div class="col-sm-6">
-        <div class="form-inline">
-          <%= link_to 'New Event', new_event_path, class: 'btn btn-default btn-sm' %>
+      <div class="form-inline">
+        <div class="col-sm-6">
+          <a href="#" data-jq-dropdown="#booking-sources" class="btn btn-default">Workshops</a>
         </div>
       </div>
     </div>

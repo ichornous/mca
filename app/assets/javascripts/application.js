@@ -24,3 +24,4 @@
 //= require datatables/media/js/jquery.dataTables.js
 //= require datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.js
 //= require datatables-responsive/js/dataTables.responsive.js
+//= require jquery-dropdown/jquery.dropdown.min.js

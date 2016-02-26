@@ -24,10 +24,3 @@
 //= require datatables/media/js/jquery.dataTables.js
 //= require datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.js
 //= require datatables-responsive/js/dataTables.responsive.js
-
-
-$(document).on('ready page:load', function() {
-    $('#user-list').DataTable({
-        responsive: true
-    });
-});

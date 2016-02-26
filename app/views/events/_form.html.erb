@@ -1,33 +1,53 @@
-<%= form_for(@event) do |f| %>
+<div class="panel-group">
   <% if @event.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@event.errors.count, "error") %> prohibited this event from being saved:</h2>
-
-      <ul>
-      <% @event.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
+      <div class="panel panel-danger">
+        <div class="panel-heading"><%= pluralize(@event.errors.count, "error") %> prohibited this event from being saved:</div>
+        <div class="panel-body">
+          <ul>
+            <% @event.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :title %><br>
-    <%= f.text_field :title %>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      Booking info
+    </div>
+
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-lg-6">
+          <%= form_for(@event) do |f| %>
+              <%= f.hidden_field :workshop_id, value: @event.workshop.try(:id) %>
+              <div class="form-group <%= 'has-error' if @event.errors.include?(:title) -%>">
+                <%= f.label :title %><br>
+                <%= f.text_field :title, class: 'form-control' %>
+              </div>
+
+              <div class="form-group <%= 'has-error' if @event.errors.include?(:description) -%>">
+                <%= f.label :description %><br>
+                <%= f.text_area :description, class: 'form-control' %>
+              </div>
+
+              <div class="form-group <%= 'has-error' if @event.errors.include?(:start) -%>">
+                <%= f.label :start %><br>
+                <%= f.datetime_select :start, class: 'form-control' %>
+              </div>
+
+              <div class="form-group <%= 'has-error' if @event.errors.include?(:end) -%>">
+                <%= f.label :end %><br>
+                <%= f.datetime_select :end, class: 'form-control' %>
+              </div>
+
+              <div class="actions">
+                <%= f.submit class:'btn btn-default' %>
+              </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="field">
-    <%= f.label :description %><br>
-    <%= f.text_area :description %>
-  </div>
-  <div class="field">
-    <%= f.label :start %><br>
-    <%= f.datetime_select :start %>
-  </div>
-  <div class="field">
-    <%= f.label :end %><br>
-    <%= f.datetime_select :end %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>
+</div>

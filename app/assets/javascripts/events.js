@@ -5,6 +5,7 @@ $(document).on('ready page:load', function() {
       selectable: true,
       editable: true,
       selectHelper: true,
+      defaultView: 'basicWeek',
       select: function (start, end, jsEvent, view, resource) {
           console.log(start.format('YYYY-MM-DD'))
       },

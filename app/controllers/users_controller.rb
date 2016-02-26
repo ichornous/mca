@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
   before_action :set_workshop
-  before_action :set_policy
+  before_action :set_policies
   before_action :set_assignable_roles, only: [:new, :edit, :create, :update]
   before_action :authorize_user!, only: [:index, :show, :edit, :update, :destroy]
 
@@ -103,28 +103,35 @@ class UsersController < ApplicationController
       end
     end
 
-    # Setup access policy
-    def set_policy
-      @policy = UserAccessPolicy.new current_user
+    # Setup access policies
+    def set_policies
+      directory_policy = DirectoryAccessPolicy.new current_user
+      @workshop_policy = WorkshopAccessPolicy.new(directory_policy, current_user)
+      @user_policy = UserAccessPolicy.new(@workshop_policy, current_user)
     end
 
     def set_assignable_roles
-      @roles = User.roles.to_a.select{|w| @policy.assign_role?(w[0])}.map{ |w| [w[0].humanize, w[0]] }
+      @roles = User.roles.to_a.select{|w| @user_policy.assign_role?(w[0])}.map{ |w| [w[0].humanize, w[0]] }
     end
 
     # Ensure that the current user has access enough permissions to access a resource
     def authorize_user!
       access = true
       if params[:action] == 'index'
-        access &= @policy.list?(@workshop)
+        access &= @user_policy.index?(@workshop)
       elsif params[:action] == 'show'
-        access &= @policy.show?(@user)
+        access &= @user_policy.show?(@user)
       elsif params[:action] == 'new' or params[:action] == 'create'
-        access &= @policy.assign_workshop?(@workshop)
+        access &= @user_policy.create?(@workshop)
       elsif params[:action] == 'update' or params[:action] == 'edit'
-        access &= @policy.update?(@user) and @policy.assign_workshop?(@workshop)
+        access &= @user_policy.update?(@user)
+        # if we move `user` from one `workshop` into another
+        if @user.workshop != @workshop
+          access &= @workshop_policy.update?(@workshop)
+          access &= @workshop_policy.update?(@user.workshop)
+        end
       elsif params[:action] == 'destroy'
-        access &= @policy.delete?(@user)
+        access &= @user_policy.delete?(@user)
       else
         access = false
       end

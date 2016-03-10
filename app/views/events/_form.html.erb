@@ -38,8 +38,8 @@
               </div>
 
               <div class="form-group <%= 'has-error' if @event.errors.include?(:end) -%>">
-                <%= f.label :end %><br>
-                <%= f.datetime_select :end, class: 'form-control' %>
+                <%= f.label :duration %><br>
+                <%= f.text_field :duration, class: 'form-control', value: @event.duration.to_duration %>
               </div>
 
               <div class="actions">

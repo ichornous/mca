@@ -1,5 +1,4 @@
 $(document).on('ready page:load', function() {
-  console.log('ready')
   $("#calendar").fullCalendar({
       events: '/events.json',
       selectable: true,
@@ -25,11 +24,11 @@ $(document).on('ready page:load', function() {
       }
   })
 
-  var dateChanged = function (event) {
-      console.log($(event.target).nextAll("input[type=hidden]"))
-      $(event.target).nextAll("input[type=hidden]").val(event.date.unix())
-  }
+    var dateChanged = function (event) {
+        console.log($(event.target).nextAll("input[type=hidden]"))
+        $(event.target).nextAll("input[type=hidden]").val(event.date.unix())
+    }
 
-  $('.datetimepicker').datetimepicker()
-    .on('dp.change', dateChanged);
+    $('.datetimepicker').datetimepicker()
+        .on('dp.change', dateChanged);
 })

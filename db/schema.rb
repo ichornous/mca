@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160221132354) do
+ActiveRecord::Schema.define(version: 20160226203212) do
 
   create_table "employees", force: :cascade do |t|
     t.string   "first_name"
@@ -45,10 +45,11 @@ ActiveRecord::Schema.define(version: 20160221132354) do
     t.string   "client_name"
     t.string   "phone_number"
     t.datetime "start"
-    t.datetime "end"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
     t.integer  "workshop_id"
+    t.time     "duration"
+    t.string   "color"
   end
 
   add_index "events", ["workshop_id"], name: "index_events_on_workshop_id"

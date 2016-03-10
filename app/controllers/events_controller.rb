@@ -21,6 +21,7 @@ class EventsController < ApplicationController
   # GET /events/new
   def new
     @event = Event.new
+    @event.duration = 4500
   end
 
   # GET /events/1/edit

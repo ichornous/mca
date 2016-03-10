@@ -17,6 +17,8 @@ gem 'coffee-script-source', '1.8.0'
 # Devise. Authentication framework
 gem 'devise', '>= 3.4.1'
 gem 'devise_ldap_authenticatable', :git => 'git://github.com/cschiewek/devise_ldap_authenticatable.git'
+# Font Awesome
+gem "font-awesome-rails"
 # Bootstrap
 gem 'bootstrap-sass', '~> 3.2.0'
 # Bootstrap datepicker

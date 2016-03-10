@@ -23,18 +23,19 @@
         <% if user_signed_in? %>
         <li class="dropdown">
           <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-            <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
+            <%= fa_icon 'user' %>
+            <%= fa_icon 'caret-down' %>
           </a>
           <ul class="dropdown-menu dropdown-user">
             <li>
               <%= link_to(edit_user_path(current_user)) do %>
-                  <i class="fa fa-user fa-fw"></i>User Profile
+                  <%= fa_icon 'user', text: 'User Profile' %>
               <% end %>
             </li>
             <li class="divider"></li>
             <li>
               <%= link_to(destroy_user_session_path, :method => :delete) do %>
-                  <i class="fa fa-sign-out fa-fw"></i>Logout
+                  <%= fa_icon 'sign-out', text: 'Logout' %>
               <% end %>
             </li>
           </ul>

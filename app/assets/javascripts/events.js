@@ -1,32 +1,31 @@
 $(document).on('ready page:load', function() {
-  $("#calendar").fullCalendar({
-      events: '/events.json',
-      selectable: true,
-      editable: true,
-      selectHelper: true,
-      defaultView: 'basicWeek',
-      customButtons: {
-          selectWorkshop: {
-              text: 'New Event',
-              click: function() {
-                  window.location='events/new';
-              }
-          }
-      },
-      header: {
-          right: 'selectWorkshop today prev,next'
-      },
-      select: function (start, end, jsEvent, view, resource) {
-          console.log(start.format('YYYY-MM-DD'))
-      },
-      eventDragStop: function (event, jsEvent, ui, view) {
-          console.log(event)
-      }
-  })
+    $("#calendar").fullCalendar({
+        events: '/events.json',
+        selectable: true,
+        editable: true,
+        selectHelper: true,
+        defaultView: 'basicWeek',
+        customButtons: {
+            selectWorkshop: {
+                text: 'New Event',
+                click: function() {
+                    window.location='events/new';
+                }
+            }
+        },
+        header: {
+            right: 'selectWorkshop today prev,next'
+        },
+        select: function (start, end, jsEvent, view, resource) {
+            console.log(start.format('YYYY-MM-DD'))
+        },
+        eventDragStop: function (event, jsEvent, ui, view) {
+            console.log(event)
+        }
+    })
 
     var dateChanged = function (event) {
-        console.log($(event.target).nextAll("input[type=hidden]"))
-        $(event.target).nextAll("input[type=hidden]").val(event.date.unix())
+        $(event.target).nextAll("input[type=hidden]").val(event.date.format())
     }
 
     $('.datetimepicker').datetimepicker()

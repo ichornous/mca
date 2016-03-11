@@ -21,7 +21,6 @@ class EventsController < ApplicationController
   # GET /events/new
   def new
     @event = Event.new
-    @event.duration = 4500
   end
 
   # GET /events/1/edit
@@ -125,7 +124,7 @@ class EventsController < ApplicationController
     def convert_unixtime!
       [:start, :end].each do |i|
         unless params[:event][i].nil? or params[:event][i].empty?
-          params[:event][i] = Time.at(params[:event][i].to_i).to_datetime
+          params[:event][i] = params[:event][i].to_datetime
         else
           params[:event][i] = nil
         end

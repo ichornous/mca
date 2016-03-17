@@ -12,6 +12,7 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema.define(version: 20160317144253) do
+
   create_table "employees", force: :cascade do |t|
     t.string   "first_name"
     t.string   "second_name"
@@ -33,6 +34,8 @@ ActiveRecord::Schema.define(version: 20160317144253) do
     t.integer  "service_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal  "manhour"
+    t.decimal  "price"
   end
 
   add_index "event_services", ["event_id"], name: "index_event_services_on_event_id"
@@ -44,21 +47,22 @@ ActiveRecord::Schema.define(version: 20160317144253) do
     t.string   "client_name"
     t.string   "phone_number"
     t.datetime "start"
+    t.datetime "end"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
     t.integer  "workshop_id"
     t.time     "duration"
     t.string   "color"
-    t.datetime "end"
   end
 
   add_index "events", ["workshop_id"], name: "index_events_on_workshop_id"
 
   create_table "services", force: :cascade do |t|
     t.string   "name"
+    t.decimal  "cost"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.datetime "manhour"
+    t.decimal  "manhour"
   end
 
   create_table "users", force: :cascade do |t|

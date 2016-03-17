@@ -4,9 +4,9 @@ workshops = Workshop.create([ { description: 'Kiev' },
                               { description: 'Lviv'} ])
 
 services = Service.create([
-                              { name: 'FU', cost: 1.0, time: 2.5 },
-                              { name: 'SA', cost: 3.0, time: 1.0 },
-                              { name: 'MT', cost: 1.2, time: 3.0 }
+                              { name: 'FU', manhour: 1.0, cost: 2.5 },
+                              { name: 'SA', manhour: 3.0, cost: 1.0 },
+                              { name: 'MT', manhour: 1.2, cost: 3.0 }
                           ])
 
 events = Event.create([

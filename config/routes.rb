@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   resources :services
-  resources :events
+  resources :visits
   resources :workshops
   resources :users
 

@@ -2,23 +2,23 @@
 
 <p>
   <strong>Title:</strong>
-  <%= @event.title %>
+  <%= visit.title %>
 </p>
 
 <p>
   <strong>Description:</strong>
-  <%= @event.description %>
+  <%= visit.description %>
 </p>
 
 <p>
   <strong>Start:</strong>
-  <%= @event.start %>
+  <%= visit.start %>
 </p>
 
 <p>
   <strong>End:</strong>
-  <%= @event.end %>
+  <%= visit.end %>
 </p>
 
-<%= link_to 'Edit', edit_event_path(@event) %> |
+<%= link_to 'Edit', edit_event_path(visit) %> |
 <%= link_to 'Back', events_path %>

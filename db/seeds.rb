@@ -9,12 +9,25 @@ services = Service.create([
                               { name: 'MT', manhour: 1.2, cost: 3.0 }
                           ])
 
-events = Event.create([
+orders = Order.create([
+                          { client: nil, state: 'NEW' },
+                          { client: clients[0], state: 'WORK' }
+                      ])
+
+order_services = OrderService.create([
+                                         {visit: orders[0], service: services[0] },
+                                         {visit: orders[0], service: services[1] },
+                                         {visit: orders[1], service: services[0] },
+                                         {visit: orders[1], service: services[1] },
+                                         {visit: orders[1], service: services[2] },
+                                     ])
+visits = Visit.create([
                           {
                               title: "Mercedes GLA 45 AMG", description: "Just a poor guy", client_name: "Vladimir", phone_number: "+380501230321",
                               start: DateTime.new(2016, 2, 20, 17, 30, 0, '+2'),
                               end: DateTime.new(2016, 2, 20, 20, 0, 0, '+2'),
-                              workshop: workshops[0]
+                              workshop: workshops[0],
+                              order: order[0]
                           },
                           {
                               title: "Citroen C4", description: "Cool engineer", client_name: "Igor", phone_number: "+380687770028",
@@ -26,15 +39,9 @@ events = Event.create([
                               title: "VW Golf 7", description: "Great cat", client_name: "Michael", phone_number: "+380951050105",
                               start: DateTime.new(2016, 2, 18, 17, 30, 0, '+2'),
                               end: DateTime.new(2016, 2, 18, 20, 0, 0, '+2'),
-                              workshop: workshops[1]
+                              workshop: workshops[1],
+                              order: order[1]
                           },
                       ])
 
 
-event_services = EventService.create([
-                                         { event: events[0], service: services[0] },
-                                         { event: events[0], service: services[1] },
-                                         { event: events[1], service: services[0] },
-                                         { event: events[1], service: services[1] },
-                                         { event: events[1], service: services[2] },
-                                     ])

@@ -11,7 +11,7 @@ services = Service.create([
 
 orders = Order.create([
                           { client: nil, state: 'NEW' },
-                          { client: clients[0], state: 'WORK' }
+                          { client: nil, state: 'WORK' }
                       ])
 
 order_services = OrderService.create([

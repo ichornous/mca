@@ -1,9 +1,10 @@
-class EventAccessPolicy
+class VisitAccessPolicy
   attr_reader :principal
   attr_reader :workshop_policy
 
   def initialize(workshop_policy, principal)
     @workshop_policy = workshop_policy
+    @order_policy = OrderAccessPolicy.new(workshop_policy, principal)
     @principal = principal
   end
 
@@ -18,15 +19,15 @@ class EventAccessPolicy
 
   # Check whether the security principal has permissions to view `event`
   def show?(event)
-    @workshop_policy.show?(event.workshop) or @principal.workshop == event.workshop
+    @order_policy.show?(event.order)
   end
 
   def update?(event)
-    @workshop_policy.update?(event.workshop) or @principal.workshop == event.workshop
+    @order_policy.update?(event.order)
   end
 
   def delete?(event)
-    @workshop_policy.update?(event.workshop)
+    @order_policy.update?(event.order)
   end
 
   private

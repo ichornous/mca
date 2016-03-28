@@ -55,7 +55,7 @@ class VisitsController < ApplicationController
     @visit.workshop = @workshop
     respond_to do |format|
       if @visit.update(event_params)
-        format.html { redirect_to @visit, notice: 'Event was successfully updated.' }
+        format.html { redirect_to visits_url, notice: 'Event was successfully updated.' }
         format.json { render :show, status: :ok, location: @visit }
       else
         format.html { render :edit }
@@ -93,7 +93,7 @@ class VisitsController < ApplicationController
     def set_policies
       directory_policy = DirectoryAccessPolicy.new current_user
       @workshop_policy = WorkshopAccessPolicy.new(directory_policy, current_user)
-      @event_policy = EventAccessPolicy.new(@workshop_policy, current_user)
+      @event_policy = VisitAccessPolicy.new(@workshop_policy, current_user)
     end
 
     # Ensure that the user has enough permissions to execute the request
@@ -120,7 +120,7 @@ class VisitsController < ApplicationController
 
       unless access
         respond_to do |format|
-          format.html { redirect_to events_path }
+          format.html { redirect_to visits_path }
           format.json { render json: {}, status: :unauthorized }
         end
       end
@@ -139,6 +139,6 @@ class VisitsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def event_params
-      params.require(:visit).permit(:title, :description, :start, :end)
+      params.require(:visit).permit(:title, :description, :date)
     end
 end

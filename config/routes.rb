@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   resources :visits
   resources :workshops
   resources :users
+  resources :orders
 
   devise_for :users, :path => 'u', :controllers => {:confirmations => 'confirmations'}
   devise_scope :user do

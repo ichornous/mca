@@ -22,24 +22,29 @@
         <div class="col-lg-6">
           <%= form_for(visit) do |f| %>
               <%= f.hidden_field :workshop_id, value: visit.workshop.try(:id) %>
-              <div class="form-group <%= 'has-error' if visit.errors.include?(:title) -%>">
-                <%= f.label :title %><br>
-                <%= f.text_field :title, class: 'form-control' %>
+
+              <div class="form-group <%= 'has-error' if visit.errors.include?(:client_name) -%>">
+                <%= f.label :client_name %><br>
+                <%= f.text_field :client_name, class: 'form-control' %>
               </div>
+
+              <div class="form-group <%= 'has-error' if visit.errors.include?(:phone_number) -%>">
+                <%= f.label :phone_number %><br>
+                <%= f.text_field :phone_number, class: 'form-control' %>
+              </div>
+
+              <%= f.fields_fox :order do |builder| %>
+                <%= render :partial => 'order/form', :f => builder %>
+              <% end %>
 
               <div class="form-group <%= 'has-error' if visit.errors.include?(:description) -%>">
                 <%= f.label :description %><br>
                 <%= f.text_area :description, class: 'form-control' %>
               </div>
 
-              <div class="form-group <%= 'has-error' if visit.errors.include?(:start) -%>">
+              <div class="form-group <%= 'has-error' if visit.errors.include?(:date) -%>">
                 <%= f.label :start %><br>
-                <%= f.datetime_select :start, class: 'form-control' %>
-              </div>
-
-              <div class="form-group <%= 'has-error' if visit.errors.include?(:end) -%>">
-                <%= f.label :end %><br>
-                <%= f.datetime_select :end, class: 'form-control' %>
+                <%= f.datetime_select :date, class: 'form-control' %>
               </div>
 
               <div class="actions">

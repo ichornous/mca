@@ -44,7 +44,7 @@ class SetupDomainModel < ActiveRecord::Migration
 
     create_table :visits do |t|
       t.belongs_to :order, index: true
-      t.string :title
+      t.boolean :returning
       t.text :description
       t.string :client_name
       t.string :phone_number

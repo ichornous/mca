@@ -1,4 +1,4 @@
-json.array!(visits) do |event|
-  json.extract! event, :id, :title, :description, :start, :end
-  json.url event_url(event, format: :html)
+json.array!(@visits) do |visit|
+  json.extract! visit, :id, :title, :description, :date, :color
+  json.url visit_url(visit, format: :html)
 end

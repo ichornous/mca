@@ -1,6 +1,6 @@
 $(document).on('ready page:load', function() {
     $("#calendar").fullCalendar({
-        events: '/events.json',
+        events: '/visits.json',
         selectable: true,
         editable: true,
         selectHelper: true,
@@ -9,7 +9,7 @@ $(document).on('ready page:load', function() {
             selectWorkshop: {
                 text: 'New Event',
                 click: function() {
-                    window.location='events/new';
+                    window.location='visits/new';
                 }
             }
         },

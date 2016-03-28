@@ -1,4 +1,4 @@
 class OrderService < ActiveRecord::Base
-  belongs_to :visit
+  belongs_to :order
   belongs_to :service
 end

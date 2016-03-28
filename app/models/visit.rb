@@ -1,11 +1,8 @@
 class Visit < ActiveRecord::Base
-  has_and_belongs_to_many :employees
-  has_many :order_services
-  has_many :services, :through => :event_services
+  belongs_to :order
   belongs_to :workshop
 
-  validates :start, presence: true
-  validates :end, presence: true
+  validates :date, presence: true
 
   # Select all events occurring in a range
   #
@@ -15,9 +12,11 @@ class Visit < ActiveRecord::Base
   #
   # Both ends are excluded from the range
   def self.range(workshop, from, to)
-    workshop.visits.
-        where('start > :lo and start < :up',
+    visits = Visit.
+        where('date > :lo and date < :up',
           lo: from.to_formatted_s(:db),
           up: to.to_formatted_s(:db))
+    visits = visits.where('order.workshop_id = :id', id: workshop.id) unless workshop.nil?
+    visits
   end
 end

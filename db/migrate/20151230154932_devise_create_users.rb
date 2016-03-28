@@ -1,6 +1,8 @@
 class DeviseCreateUsers < ActiveRecord::Migration
   def change
     create_table(:users) do |t|
+      t.belongs_to :workshop, index: true
+
       ## Profile
       t.string :first_name
       t.string :last_name
@@ -36,6 +38,9 @@ class DeviseCreateUsers < ActiveRecord::Migration
       # t.datetime :locked_at
 
       t.timestamps null: false
+
+      ## Authorization
+      t.integer :role
     end
 
     add_index :users, :email,                unique: true

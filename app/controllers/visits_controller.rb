@@ -10,6 +10,12 @@ class VisitsController < ApplicationController
   def index
     if (params['start'] && params['end'])
       @visits = Visit.range(@workshop, params['start'].to_datetime, params['end'].to_datetime)
+      if @workshop.nil? then
+        @visits.each do |x|
+          x.color = x.order.workshop.color
+        end
+      end
+      @visits
     end
   end
 

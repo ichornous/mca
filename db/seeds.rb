@@ -4,9 +4,9 @@ workshops = Workshop.create([ { description: 'Kiev', color: 'rgb(220, 33, 39)' }
                               { description: 'Lviv', color: 'rgb(255, 184, 120)' } ])
 
 services = Service.create([
-                              { name: 'FU', manhour: 1.0, cost: 2.5 },
-                              { name: 'SA', manhour: 3.0, cost: 1.0 },
-                              { name: 'MT', manhour: 1.2, cost: 3.0 }
+                              { name: 'FU', base_time: 1.0, base_cost: 2.5 },
+                              { name: 'SA', base_time: 3.0, base_cost: 1.0 },
+                              { name: 'MT', base_time: 1.2, base_cost: 3.0 }
                           ])
 
 clients = Client.create([
@@ -50,37 +50,37 @@ order_services = OrderService.create([
                                      ])
 visits = Visit.create([
                           {
-                              title: 'Citroen C4', description: 'Just a poor guy', client_name: 'Igor', phone_number: "+380123456789",
+                              description: 'Just a poor guy', client_name: 'Igor', phone_number: "+380123456789",
                               date: DateTime.new(2016, 3, 27, 18, 30, 0, '+2'),
                               order: orders[0]
                           },
                           {
-                              title: 'Audi A4', description: 'Right from a saloon', client_name: 'Igor', phone_number: "+380123456789",
+                              description: 'Right from a saloon', client_name: 'Igor', phone_number: "+380123456789",
                               date: DateTime.new(2016, 3, 27, 17, 30, 0, '+2'),
                               order: orders[1]
                           },
                           {
-                              title: "Mercedes SLS", description: 'Not his car', client_name: 'Tom', phone_number: "+380000456789",
+                              description: 'Not his car', client_name: 'Tom', phone_number: "+380000456789",
                               date: DateTime.new(2016, 3, 27, 19, 30, 0, '+2'),
                               order: orders[2]
                           },
                           {
-                              title: 'Audi A3', description: 'Have already been here', client_name: 'Tom', phone_number: "+380000456789",
+                              description: 'Have already been here', client_name: 'Tom', phone_number: "+380000456789",
                               date: DateTime.new(2016, 3, 26, 18, 30, 0, '+2'),
                               order: orders[3]
                           },
                           {
-                              title: 'Audi A3', description: 'Is he a cat??', client_name: 'Tom', phone_number: "+380000456789",
+                              description: 'Is he a cat??', client_name: 'Tom', phone_number: "+380000456789",
                               date: DateTime.new(2016, 3, 25, 17, 30, 0, '+2'),
                               order: orders[4]
                           },
                           {
-                              title: "Golf", description: 'Not his car', client_name: 'Justas', phone_number: "+382123456789",
+                              description: 'Not his car', client_name: 'Justas', phone_number: "+382123456789",
                               date: DateTime.new(2016, 3, 26, 19, 30, 0, '+2'),
                               order: orders[5]
                           },
                           {
-                              title: "Kuga", description: 'Not his car', client_name: 'Maxim', phone_number: "+383123456789",
+                              description: 'Not his car', client_name: 'Maxim', phone_number: "+383123456789",
                               date: DateTime.new(2016, 3, 25, 19, 30, 0, '+2'),
                               order: orders[6]
                           },

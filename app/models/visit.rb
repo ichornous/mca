@@ -3,6 +3,7 @@ class Visit < ActiveRecord::Base
   belongs_to :workshop
 
   validates :date, presence: true
+  accepts_nested_attributes_for :order
 
   # Select all events occurring in a range
   #

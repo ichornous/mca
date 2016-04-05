@@ -1,7 +1,9 @@
-<div class="form-group">
-  <%= f.label :time %><br>
-  <%= f.text_field :time, class: 'form-control' %>
-</div>
+<%= f.fields_for :service do |builder| %>
+    <div class="form-group">
+      <%= builder.label :service %><br>
+      <%= builder.select(:service_id, Service.all.collect {|a| [a.name, a.id]}, class: 'form-control', include_blank: true) -%>
+    </div>
+<% end %>
 
 <div class="form-group">
   <%= f.label :cost %><br>

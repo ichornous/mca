@@ -27,6 +27,10 @@ class VisitsController < ApplicationController
   # GET /events/new
   def new
     @visit = Visit.new
+    @visit.build_order
+    3.times do
+      @visit.order.order_services.build
+    end
   end
 
   # GET /events/1/edit

@@ -29,6 +29,8 @@ ActiveRecord::Schema.define(version: 20151230154932) do
   create_table "order_services", force: :cascade do |t|
     t.integer  "order_id"
     t.integer  "service_id"
+    t.decimal  "cost"
+    t.decimal  "time"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -51,8 +53,8 @@ ActiveRecord::Schema.define(version: 20151230154932) do
 
   create_table "services", force: :cascade do |t|
     t.string   "name"
-    t.decimal  "cost"
-    t.decimal  "manhour"
+    t.decimal  "base_cost"
+    t.decimal  "base_time"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -87,7 +89,7 @@ ActiveRecord::Schema.define(version: 20151230154932) do
 
   create_table "visits", force: :cascade do |t|
     t.integer  "order_id"
-    t.string   "title"
+    t.boolean  "returning"
     t.text     "description"
     t.string   "client_name"
     t.string   "phone_number"

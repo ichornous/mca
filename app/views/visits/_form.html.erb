@@ -1,17 +1,4 @@
 <div class="panel-group">
-  <% if visit.errors.any? %>
-      <div class="panel panel-danger">
-        <div class="panel-heading"><%= pluralize(visit.errors.count, "error") %> prohibited this event from being saved:</div>
-        <div class="panel-body">
-          <ul>
-            <% visit.errors.full_messages.each do |message| %>
-                <li><%= message %></li>
-            <% end %>
-          </ul>
-        </div>
-      </div>
-  <% end %>
-
   <div class="panel panel-default">
     <div class="panel-heading">
       Booking info
@@ -20,29 +7,28 @@
     <div class="panel-body">
       <div class="row">
         <div class="col-lg-6">
-          <%= form_for(visit) do |f| %>
-              <%= f.hidden_field :workshop_id, value: visit.workshop.try(:id) %>
-
-              <div class="form-group <%= 'has-error' if visit.errors.include?(:client_name) -%>">
+          <%= form_for(@visit) do |f| %>
+              <%= f.hidden_field :workshop_id, value: @visit.workshop.try(:id) %>
+              <div class="form-group">
                 <%= f.label :client_name %><br>
                 <%= f.text_field :client_name, class: 'form-control' %>
               </div>
 
-              <div class="form-group <%= 'has-error' if visit.errors.include?(:phone_number) -%>">
+              <div class="form-group">
                 <%= f.label :phone_number %><br>
                 <%= f.text_field :phone_number, class: 'form-control' %>
               </div>
 
               <%= f.fields_for :order do |builder| %>
-                <%= render 'order_fields', :f => builder %>
+                  <%= render 'order_fields', :f => builder %>
               <% end %>
 
-              <div class="form-group <%= 'has-error' if visit.errors.include?(:description) -%>">
+              <div class="form-group">
                 <%= f.label :description %><br>
                 <%= f.text_area :description, class: 'form-control' %>
               </div>
 
-              <div class="form-group <%= 'has-error' if visit.errors.include?(:date) -%>">
+              <div class="form-group">
                 <%= f.label :start %><br>
                 <%= f.datetime_select :date, class: 'form-control' %>
               </div>

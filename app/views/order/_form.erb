@@ -1,6 +1,0 @@
-<% @order.order_services.each do |os| %>
-    <div class="form-group <%= 'has-error' if visit.errors.include?(:phone_number) -%>">
-      <%= f.label :phone_number %><br>
-      <%= f.text_field :phone_number, class: 'form-control' %>
-    </div>
-<% end %>

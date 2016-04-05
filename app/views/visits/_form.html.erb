@@ -33,8 +33,8 @@
                 <%= f.text_field :phone_number, class: 'form-control' %>
               </div>
 
-              <%= f.fields_fox :order do |builder| %>
-                <%= render :partial => 'order/form', :f => builder %>
+              <%= f.fields_for :order do |builder| %>
+                <%= render 'order_fields', :f => builder %>
               <% end %>
 
               <div class="form-group <%= 'has-error' if visit.errors.include?(:description) -%>">

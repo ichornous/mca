@@ -2,8 +2,8 @@ class SetupDomainModel < ActiveRecord::Migration
   def change
     create_table :services do |t|
       t.string :name
-      t.decimal :cost
-      t.decimal :manhour
+      t.decimal :base_cost
+      t.decimal :base_time
 
       t.timestamps null: false
     end
@@ -32,7 +32,8 @@ class SetupDomainModel < ActiveRecord::Migration
     create_table :order_services do |t|
       t.belongs_to :order, index: true
       t.belongs_to :service, index: true
-
+      t.decimal :cost
+      t.decimal :time
       t.timestamps null: false
     end
 

@@ -29,7 +29,8 @@ class VisitsController < ApplicationController
     @visit = Visit.new
     @visit.build_order
     3.times do
-      @visit.order.order_services.build
+      order_service = @visit.order.order_services.build
+      order_service.service = Service.all().where(:name => 'MT').first
     end
   end
 

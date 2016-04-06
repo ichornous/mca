@@ -1,1 +1,1 @@
-json.extract! @service, :id, :created_at, :updated_at
+json.extract! @service, :id, :base_time, :base_cost

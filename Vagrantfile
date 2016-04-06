@@ -13,7 +13,7 @@ Vagrant.configure(2) do |config|
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
   config.vm.box = "ubuntu/trusty64"
-  config.vm.synced_folder ".", "/home/ichornous/mca"
+  config.vm.synced_folder ".", "/home/vagrant/mca"
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
   # `vagrant box outdated`. This is not recommended.
@@ -22,8 +22,8 @@ Vagrant.configure(2) do |config|
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine. In the example below,
   # accessing "localhost:8080" will access port 80 on the guest machine.
-  config.vm.network "forwarded_port", guest: 80, host: 8080
-  config.vm.network "forwarded_port", guest: 443, host: 8443
+  # config.vm.network "forwarded_port", guest: 80, host: 8080
+  # config.vm.network "forwarded_port", guest: 443, host: 8443
   config.vm.network "forwarded_port", guest: 3000, host: 8300
 
   # Create a private network, which allows host-only access to the machine
@@ -69,28 +69,33 @@ Vagrant.configure(2) do |config|
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
   config.vm.provision "shell" do |s|
-    ssh_pub_key = File.readlines("#{Dir.home}/.ssh/metaware.key.pub").first.strip
+    ssh_pub_key = File.readlines("#{Dir.home}/.ssh/id_rsa.pub").first.strip
     s.inline = <<-SHELL
-      sudo useradd -m ichornous -G sudo --shell /bin/bash
-      echo %ichornous ALL=NOPASSWD:ALL | sudo tee /etc/sudoers.d/ichornous > /dev/null
+      echo %vagrant ALL=NOPASSWD:ALL | sudo tee /etc/sudoers.d/vagrant > /dev/null
 
-      sudo mkdir -p /home/ichornous/.ssh || true
-      sudo touch /home/ichornous/.ssh/authorized_keys
-      echo #{ssh_pub_key} | sudo tee /home/ichornous/.ssh/authorized_keys
-      sudo chown -R ichornous:ichornous /home/ichornous/.ssh
-      sudo chmod 700 /home/ichornous/.ssh
-      sudo chmod 600 /home/ichornous/.ssh/authorized_keys
-
+      sudo mkdir -p /home/vagrant/.ssh || true
+      sudo touch /home/vagrant/.ssh/authorized_keys
+      echo #{ssh_pub_key} | sudo tee /home/vagrant/.ssh/authorized_keys
+      sudo chown -R vagrant:vagrant /home/vagrant
+      sudo chmod 700 /home/vagrant/.ssh
+      sudo chmod 600 /home/vagrant/.ssh/authorized_keys
+      # Install ruby
+      sudo su - vagrant -c 'curl -sSL https://rvm.io/mpapis.asc | gpg --import -'
+      sudo su - vagrant -c 'curl -sSL https://get.rvm.io | bash -s stable --ruby'
+      sudo su - vagrant -c 'rvm rvmrc warning ignore allGemfiles'
+      sudo su - vagrant -c '. $HOME/.rvm/scripts/rvm && rvm use --default --install 2.0.0 rails'
+      sudo apt-get install -y nodejs
+      sudo su - vagrant npm install -g bower
+      #
       mkdir -p /root/.ssh || true
       touch /root/.ssh/authorized_keys
-      echo #{ssh_pub_key} >> /home/vagrant/.ssh/authorized_keys
       echo #{ssh_pub_key} >> /root/.ssh/authorized_keys
       sudo apt-get update -y
       sudo apt-get upgrade -y
       sudo apt-get install git nodejs
       wget -qO- https://get.docker.com/gpg | sudo apt-key add -
       wget -qO- https://get.docker.com/ | sh
-      sudo usermod -aG docker ichornous
+      sudo usermod -aG docker vagrant
     SHELL
   end
 end

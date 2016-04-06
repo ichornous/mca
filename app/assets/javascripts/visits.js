@@ -30,4 +30,16 @@ $(document).on('ready page:load', function() {
 
     $('.datetimepicker').datetimepicker()
         .on('dp.change', dateChanged);
+
+    var add_fields = function(link, key_id, content) {
+        console.log('add fields: ' + link + ' ' + key_id + ' ' + content)
+        var new_id = new Date().getTime();
+        var regexp = new RegExp(key_id, "g")
+        $(link).parent().before(content.replace(regexp, new_id));
+    }
+
+    $('.mca-add-content').on('click', function(event) {
+        add_fields(event.target, $(event.target).data('id-key'), $(event.target).data('content'))
+        return false;
+    })
 })

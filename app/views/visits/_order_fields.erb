@@ -1,3 +1,9 @@
 <%= f.fields_for :order_services do |builder| %>
+    <%= f.hidden_field :workshop_id %>
     <%= render 'order_service_fields', :f => builder %>
 <% end %>
+<p>
+  <%= f.link_to_add_form 'Add service', :order_services, class: 'mca-add-content' do |builder| %>
+    <%= render 'order_service_fields', :f => builder %>
+  <% end %>
+</p>

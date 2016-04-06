@@ -1,7 +1,6 @@
 class VisitsController < ApplicationController
   before_action :set_event, only: [:show, :edit, :update, :destroy]
   before_action :set_workshop
-  before_action :convert_unixtime!, only: [:create, :update]
   before_action :set_policies
   before_action :authorize_user!
 
@@ -42,10 +41,10 @@ class VisitsController < ApplicationController
   # POST /events.json
   def create
     @visit = Visit.new(event_params)
-    @visit.workshop = @workshop
+    puts event_params.inspect
     respond_to do |format|
       if @visit.save
-        format.html { redirect_to @visit, notice: 'Event was successfully created.' }
+        format.html { redirect_to edit_visit_url(@visit), notice: 'Event was successfully created.' }
         format.json { render :show, status: :created, location: @visit }
       else
         format.html { render :new }
@@ -57,7 +56,6 @@ class VisitsController < ApplicationController
   # PATCH/PUT /events/1
   # PATCH/PUT /events/1.json
   def update
-    @visit.workshop = @workshop
     respond_to do |format|
       if @visit.update(event_params)
         format.html { redirect_to visits_url, notice: 'Event was successfully updated.' }
@@ -131,19 +129,16 @@ class VisitsController < ApplicationController
       end
     end
 
-    # Ensure that range parameters are converted to DateTime
-    def convert_unixtime!
-      [:start, :end].each do |i|
-        unless params[:visit][i].nil? or params[:visit][i].empty?
-          params[:visit][i] = params[:visit][i].to_datetime
-        else
-          params[:visit][i] = nil
-        end
-      end
-    end
-
     # Never trust parameters from the scary internet, only allow the white list through.
     def event_params
-      params.require(:visit).permit(:title, :description, :date)
+      params.require(:visit).permit(:client_name,
+                                    :phone_number,
+                                    :description,
+                                    :date,
+                                    order_attributes: [:workshop_id,
+                                                       order_services_attributes: [:_destroy,
+                                                                                   :service_id,
+                                                                                   :cost,
+                                                                                   :time]])
     end
 end

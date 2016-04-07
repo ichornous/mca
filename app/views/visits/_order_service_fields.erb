@@ -5,8 +5,11 @@
 
   <div class="order-cell">
     <%= f.select :service_id,
-                 options_for_select(Service.all.map {|c| [c.name, c.id, {:'data-base-cost' => c.base_cost, :'data-base-time' => c.base_time}]}, f.object.service_id),
-                 include_blank: true %>
+                 options_for_select(Service.all.map {|c| [c.name, c.id, {:'data-base-cost' => c.base_cost,
+                                                                         :'data-base-time' => c.base_time}]},
+                                    f.object.service_id),
+                 { include_blank: true },
+                 { :class => 'mca-select-service' } %>
   </div>
 
   <div class="order-cell">

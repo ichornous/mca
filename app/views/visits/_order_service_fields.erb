@@ -1,6 +1,4 @@
-<%= f.check_box :_destroy %>
-<%= f.label :_destroy, 'Remove Entry' %>
-
+<fieldset>
 <div class="form-group">
   <%= f.label :service_id %><br>
   <%= f.select :service_id,
@@ -19,3 +17,7 @@
   <%= f.text_field :time, class: 'form-control' %>
 </div>
 
+<p>
+  <%= f.link_to_remove_form 'Remove service', class: 'mca-remove-content' %>
+</p>
+</fieldset>

@@ -31,6 +31,8 @@ $(document).on('ready page:load', function() {
     $('.datetimepicker').datetimepicker()
         .on('dp.change', dateChanged);
 
+
+
     var add_fields = function(link, key_id, content) {
         console.log('add fields: ' + link + ' ' + key_id + ' ' + content)
         var new_id = new Date().getTime();
@@ -38,8 +40,18 @@ $(document).on('ready page:load', function() {
         $(link).parent().before(content.replace(regexp, new_id));
     }
 
+    var remove_fields = function(link) {
+        $(link).prev("input[type=hidden]").val("1");
+        $(link).closest("fieldset").hide();
+    }
+
     $('.mca-add-content').on('click', function(event) {
         add_fields(event.target, $(event.target).data('id-key'), $(event.target).data('content'))
+        return false;
+    })
+
+    $('.mca-remove-content').on('click', function(event) {
+        remove_fields(event.target)
         return false;
     })
 })

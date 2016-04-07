@@ -7,6 +7,7 @@ module VisitsHelper
     include ActionView::Helpers::CaptureHelper
     include ActionView::Helpers::JavaScriptHelper
     include ERB::Util
+
     def link_to_add_form(display_name, method, options = {}, &block)
       key_id = SecureRandom.hex
 
@@ -20,6 +21,10 @@ module VisitsHelper
       options.merge!('data-content' => "#{fields}")
       options.merge!('data-id-key' => key_id)
       link_to display_name, '#', options
+    end
+
+    def link_to_remove_form(name, options = {})
+      hidden_field(:_destroy) + link_to(name, '#', options)
     end
   end
 end

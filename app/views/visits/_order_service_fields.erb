@@ -1,23 +1,23 @@
-<fieldset>
-<div class="form-group">
-  <%= f.label :service_id %><br>
-  <%= f.select :service_id,
-               options_for_select(Service.all.map {|c| [c.name, c.id, {:'data-base-cost' => c.base_cost, :'data-base-time' => c.base_time}]}, f.object.service_id),
-               include_blank: true,
-               class: 'form-control' %>
-</div>
+<div class="order-row">
+  <div class="order-cell">
+    <%= f.link_to_remove_form 'X', class: 'mca-remove-content' %>
+  </div>
 
-<div class="form-group">
-  <%= f.label :cost %><br>
-  <%= f.text_field :cost, class: 'form-control' %>
-</div>
+  <div class="order-cell">
+    <%= f.select :service_id,
+                 options_for_select(Service.all.map {|c| [c.name, c.id, {:'data-base-cost' => c.base_cost, :'data-base-time' => c.base_time}]}, f.object.service_id),
+                 include_blank: true %>
+  </div>
 
-<div class="form-group">
-  <%= f.label :time %><br>
-  <%= f.text_field :time, class: 'form-control' %>
-</div>
+  <div class="order-cell">
+    <%= f.text_field :amount %>
+  </div>
 
-<p>
-  <%= f.link_to_remove_form 'Remove service', class: 'mca-remove-content' %>
-</p>
-</fieldset>
+  <div class="order-cell">
+    <%= f.text_field :cost %>
+  </div>
+
+  <div class="order-cell">
+    <%= f.text_field :time %>
+  </div>
+</div>

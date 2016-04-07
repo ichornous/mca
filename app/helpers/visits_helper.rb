@@ -5,6 +5,7 @@ module VisitsHelper
     include ActionView::Context
     include ActionView::Helpers::UrlHelper
     include ActionView::Helpers::CaptureHelper
+    include ActionView::Helpers::FormTagHelper
     include ActionView::Helpers::JavaScriptHelper
     include ERB::Util
 
@@ -20,11 +21,11 @@ module VisitsHelper
 
       options.merge!('data-content' => "#{fields}")
       options.merge!('data-id-key' => key_id)
-      link_to display_name, '#', options
+      button_tag display_name, options
     end
 
     def link_to_remove_form(name, options = {})
-      hidden_field(:_destroy) + link_to(name, '#', options)
+      hidden_field(:_destroy) + button_tag(name, options)
     end
   end
 end

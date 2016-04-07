@@ -29,6 +29,7 @@ ActiveRecord::Schema.define(version: 20151230154932) do
   create_table "order_services", force: :cascade do |t|
     t.integer  "order_id"
     t.integer  "service_id"
+    t.decimal  "amount"
     t.decimal  "cost"
     t.decimal  "time"
     t.datetime "created_at", null: false

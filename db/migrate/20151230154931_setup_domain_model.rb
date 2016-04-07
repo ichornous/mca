@@ -32,6 +32,7 @@ class SetupDomainModel < ActiveRecord::Migration
     create_table :order_services do |t|
       t.belongs_to :order, index: true
       t.belongs_to :service, index: true
+      t.decimal :amount
       t.decimal :cost
       t.decimal :time
       t.timestamps null: false

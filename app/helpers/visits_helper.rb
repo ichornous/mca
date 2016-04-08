@@ -19,12 +19,17 @@ module VisitsHelper
 
       options ||= {}
 
+      options.merge!('name' => 'add-form')
       options.merge!('data-content' => "#{fields}")
       options.merge!('data-id-key' => key_id)
-      button_tag display_name, options
+      submit display_name, options
     end
 
     def link_to_remove_form(name, options = {})
+      options ||= {}
+      options.merge!('name' => 'remove-form')
+      options.merge!('value' => @index)
+
       hidden_field(:_destroy) + button_tag(name, options)
     end
   end

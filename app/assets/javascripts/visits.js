@@ -52,26 +52,28 @@ $(document).on('ready page:load', function() {
         $(link).closest(anchor).hide();
     }
 
-    /**
-     * Handle add new service item
-     */
-    $('.mca-add-content').on('click', function(event) {
-        add_fields($(event.target).data('anchor-id'), $(event.target).data('id-key'), $(event.target).data('content'))
-        return false;
-    })
-
-    /**
-     * Handle remove a service item.
-     */
-    $('.mca-remove-content').on('click', function(event) {
-        remove_fields(event.target, '.order-row')
-        return false;
-    })
+    ///**
+    // * Handle add new service item
+    // */
+    //$('.order-frame').on('click', '.mca-add-content', function(event) {
+    //    add_fields($(event.target).data('anchor-id'), $(event.target).data('id-key'), $(event.target).data('content'))
+    //    event.preventDefault();
+    //    return false;
+    //})
+    //
+    ///**
+    // * Handle remove a service item.
+    // */
+    //$('.order-frame').on('click', '.mca-remove-content', function(event) {
+    //    remove_fields(event.target, '.order-row');
+    //    event.preventDefault();
+    //    return false;
+    //})
 
     /**
      * Calculate prices
      */
-    $('.mca-select-service').on('change', function(event) {
+    $('.order-frame').on('change', '.mca-select-service', function(event) {
         var option = event.target.options[event.target.selectedIndex]
         console.log('Cost ' + $(option).data('base-cost') + ' Time ' + $(option).data('base-time'))
     });

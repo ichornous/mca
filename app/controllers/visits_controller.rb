@@ -28,7 +28,7 @@ class VisitsController < ApplicationController
     @visit = Visit.new
     @visit.build_order
 
-    order_service = @visit.order.order_services.build
+    @visit.order.order_services.build
   end
 
   # GET /events/1/edit
@@ -36,33 +36,39 @@ class VisitsController < ApplicationController
   end
 
   # POST /events
-  # POST /events.json
   def create
     @visit = Visit.new(event_params)
     puts event_params.inspect
-    respond_to do |format|
+    if params[:'add-form']
+      @visit.order.order_services.build
+    elsif params[:'remove-form']
+      order_services = @visit.order.order_services.to_a
+      order_services.delete_at(params[:'remove-form'].to_i - 1)
+      @visit.order.order_services = order_services
+    else
       if @visit.save
-        format.html { redirect_to edit_visit_url(@visit), notice: 'Event was successfully created.' }
-        format.json { render :show, status: :created, location: @visit }
-      else
-        format.html { render :new }
-        format.json { render json: @visit.errors, status: :unprocessable_entity }
+        redirect_to edit_visit_url(@visit), notice: 'Booking was successfully created.' and return
       end
     end
+    render :new
   end
 
   # PATCH/PUT /events/1
-  # PATCH/PUT /events/1.json
   def update
-    respond_to do |format|
+    new_visit = Visit.new(event_params)
+    if params[:'add-form']
+      new_visit.order.order_services.build
+      @visit = new_visit
+    elsif params[:'remove-form'].nil?
+      new_visit.order.order_services.reject{ |x| x.id == params[:'remove-form'] }
+      @visit = new_visit
+    else
+      puts new_visit.inspect
       if @visit.update(event_params)
-        format.html { redirect_to visits_url, notice: 'Event was successfully updated.' }
-        format.json { render :show, status: :ok, location: @visit }
-      else
-        format.html { render :edit }
-        format.json { render json: @visit.errors, status: :unprocessable_entity }
+        redirect_to edit_visit_url(@visit), notice: 'Booking was successfully updated.' and return
       end
     end
+    render :edit
   end
 
   # DELETE /events/1

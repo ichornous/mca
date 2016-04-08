@@ -1,34 +1,36 @@
-<div class="order-tbl">
-  <div class="order-tbl-header">
-    <%= f.fields_for :order_services, OrderService.new do |builder| %>
-        <div class="order-cell">
-        </div>
-        <div class="order-cell">
-          <%= builder.label :service_id %>
-        </div>
-        <div class="order-cell">
-          <%= builder.label :amount %>
-        </div>
-        <div class="order-cell">
-          <%= builder.label :cost %>
-        </div>
-        <div class="order-cell">
-          <%= builder.label :time %>
-        </div>
-    <% end %>
+<div class="order-frame">
+  <div class="order-tbl">
+    <div class="order-tbl-header">
+      <%= f.fields_for :order_services, OrderService.new do |builder| %>
+          <div class="order-cell">
+          </div>
+          <div class="order-cell">
+            <%= builder.label :service_id %>
+          </div>
+          <div class="order-cell">
+            <%= builder.label :amount %>
+          </div>
+          <div class="order-cell">
+            <%= builder.label :cost %>
+          </div>
+          <div class="order-cell">
+            <%= builder.label :time %>
+          </div>
+      <% end %>
+    </div>
+
+    <div id="order-items" class="order-rows">
+      <%= f.fields_for :order_services do |builder| %>
+          <%= render 'order_service_fields', :f => builder %>
+      <% end %>
+    </div>
   </div>
 
-  <div id="order-items" class="order-rows">
-    <%= f.fields_for :order_services do |builder| %>
+  <p>
+    <%= f.link_to_add_form 'Add service', :order_services, class: 'mca-add-content', :'data-anchor-id' => '#order-items' do |builder| %>
         <%= render 'order_service_fields', :f => builder %>
     <% end %>
-  </div>
+  </p>
+
+  <%= f.hidden_field :workshop_id %>
 </div>
-
-<p>
-  <%= f.link_to_add_form 'Add service', :order_services, class: 'mca-add-content', :'data-anchor-id' => '#order-items' do |builder| %>
-      <%= render 'order_service_fields', :f => builder %>
-  <% end %>
-</p>
-
-<%= f.hidden_field :workshop_id %>

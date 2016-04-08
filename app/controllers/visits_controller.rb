@@ -27,7 +27,7 @@ class VisitsController < ApplicationController
   def new
     @visit = Visit.new
     @visit.build_order
-
+    @visit.date = DateTime.now
     @visit.order.order_services.build
   end
 
@@ -142,6 +142,7 @@ class VisitsController < ApplicationController
                                     order_attributes: [:workshop_id,
                                                        order_services_attributes: [:_destroy,
                                                                                    :service_id,
+                                                                                   :amount,
                                                                                    :cost,
                                                                                    :time]])
     end

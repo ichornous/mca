@@ -15,7 +15,7 @@
 
               <div class="form-group">
                 <%= f.label :phone_number %><br>
-                <%= f.text_field :phone_number, class: 'form-control' %>
+                <%= f.text_field :phone_number, type: 'tel', class: 'form-control' %>
               </div>
 
               <%= f.fields_for :order do |builder| %>
@@ -29,7 +29,7 @@
 
               <div class="form-group">
                 <%= f.label :date %><br>
-                <%= f.datetime_select :date, class: 'form-control' %>
+                <%= f.datetime_local_field :date, class: 'form-control' %>
               </div>
 
               <div class="actions">

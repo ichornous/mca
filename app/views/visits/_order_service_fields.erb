@@ -13,14 +13,22 @@
   </div>
 
   <div class="order-cell">
-    <%= f.text_field :amount %>
+    <%= f.text_field :amount, :'data-id' => :amount, type: 'number', step: 'any' %>
   </div>
 
   <div class="order-cell">
-    <%= f.text_field :cost %>
+    <%= f.text_field :cost, :'data-id' => :cost, type: 'number', step: 'any' %>
   </div>
 
   <div class="order-cell">
-    <%= f.text_field :time %>
+    <%= f.text_field :time, :'data-id' => :time, type: 'number', step: 'any' %>
+  </div>
+
+  <div class="order-cell">
+    <%= text_field_tag :price_vat, nil, :'data-id' => :price_vat, type: 'number', step: 'any', readonly: true %>
+  </div>
+
+  <div class="order-cell">
+    <%= text_field_tag :price, nil, :'data-id' => :price, type: 'number', step: 'any', readonly: true %>
   </div>
 </div>

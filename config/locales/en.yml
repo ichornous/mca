@@ -21,5 +21,9 @@
 
 en:
   time:
+    input:
+      formats: "[:slashes]"
     formats:
       slashes: "%d/%m/%Y"
+    embed:
+      slashes: "dd/mm/yyyy"

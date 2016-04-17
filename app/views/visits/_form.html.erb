@@ -34,7 +34,7 @@
 
               <div class="form-inline">
                 <div class="form-group">
-                  <div class="input-daterange" id="mca-timeslot-range" data-date-format="dd/mm/yyyy">
+                  <div class="input-daterange" id="mca-timeslot-range" data-date-format="<%= t('time.embed.slashes') -%>">
                     <%= f.text_field :start_date, class: 'form-control input-small', value: l(f.object.start_date, format: :slashes) %>
                     <span class="add-on">to</span>
                     <%= f.text_field :end_date, class: 'form-control input-small', value: l(f.object.end_date, format: :slashes) %>

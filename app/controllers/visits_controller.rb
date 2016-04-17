@@ -75,6 +75,7 @@ class VisitsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def event_params
+      delocalize_config = { start_date: :time, end_date: :time }
       params.require(:visit).permit(:client_name,
                                     :car_name,
                                     :phone_number,
@@ -86,6 +87,6 @@ class VisitsController < ApplicationController
                                                                                    :service_id,
                                                                                    :amount,
                                                                                    :cost,
-                                                                                   :time]])
+                                                                                   :time]]).delocalize(delocalize_config)
     end
 end

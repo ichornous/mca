@@ -18,6 +18,9 @@ gem 'coffee-script-source', '1.8.0'
 # Devise. Authentication framework
 gem 'devise', '>= 3.4.1'
 
+# Locale aware date parsing
+gem "delocalize"
+
 # Font Awesome
 gem "font-awesome-rails"
 # Bootstrap

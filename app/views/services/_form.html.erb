@@ -1,17 +1,51 @@
-<%= form_for(@service) do |f| %>
+<div class="panel-group">
   <% if @service.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@service.errors.count, "error") %> prohibited this service from being saved:</h2>
+      <div id="error_explanation">
+        <h2><%= pluralize(@service.errors.count, "error") %> prohibited this service from being saved:</h2>
 
-      <ul>
-      <% @service.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
+        <ul>
+          <% @service.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
   <% end %>
 
-  <div class="actions">
-    <%= f.submit %>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      User info
+    </div>
+
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-lg-6">
+          <%= form_for(@service) do |f| %>
+              <div class="form-group <%= 'has-error' if @service.errors.include?(:name) -%>">
+                <%= f.label :name %><br>
+                <%= f.text_field :name, class: 'form-control' %>
+              </div>
+
+              <div class="form-group <%= 'has-error' if @service.errors.include?(:description) -%>">
+                <%= f.label :description %><br>
+                <%= f.text_field :description, class: 'form-control'%>
+              </div>
+
+              <div class="form-group <%= 'has-error' if @service.errors.include?(:base_time) -%>">
+                <%= f.label :base_time %><br>
+                <%= f.text_field :base_time, class: 'form-control' %>
+              </div>
+
+              <div class="form-group <%= 'has-error' if @service.errors.include?(:base_cost) -%>">
+                <%= f.label :base_cost %><br>
+                <%= f.text_field :base_cost, class: 'form-control' %>
+              </div>
+
+              <div class="actions">
+                <%= f.submit class:'btn btn-default'%>
+              </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
   </div>
-<% end %>
+</div>

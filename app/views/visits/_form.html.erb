@@ -9,6 +9,16 @@
         <div class="col-lg-6">
           <%= form_for(@visit) do |f| %>
               <div class="form-group">
+                <div class="form-inline">
+                  <div class="input-daterange" id="mca-timeslot-range" data-date-format="<%= t('time.embed.slashes') -%>">
+                    <%= f.text_field :start_date, class: 'form-control input-small', value: l(f.object.start_date, format: :slashes) %>
+                    <span class="add-on">to</span>
+                    <%= f.text_field :end_date, class: 'form-control input-small', value: l(f.object.end_date, format: :slashes) %>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
                 <%= f.label :client_name %><br>
                 <%= f.text_field :client_name, class: 'form-control' %>
               </div>
@@ -32,15 +42,6 @@
                 <%= f.text_area :description, class: 'form-control' %>
               </div>
 
-              <div class="form-inline">
-                <div class="form-group">
-                  <div class="input-daterange" id="mca-timeslot-range" data-date-format="<%= t('time.embed.slashes') -%>">
-                    <%= f.text_field :start_date, class: 'form-control input-small', value: l(f.object.start_date, format: :slashes) %>
-                    <span class="add-on">to</span>
-                    <%= f.text_field :end_date, class: 'form-control input-small', value: l(f.object.end_date, format: :slashes) %>
-                  </div>
-                </div>
-              </div>
               <div class="actions">
                 <%= f.submit class:'btn btn-default' %>
               </div>

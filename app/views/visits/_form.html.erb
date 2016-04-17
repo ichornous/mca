@@ -32,14 +32,15 @@
                 <%= f.text_area :description, class: 'form-control' %>
               </div>
 
-              <div class="form-group">
-                <div class="input-daterange" id="mca-timeslot-range">
-                  <%= f.date_field :start_date, class: 'form-control input-small' %>
-                  <span class="add-on">to</span>
-                  <%= f.date_field :end_date, class: 'form-control input-small' %>
+              <div class="form-inline">
+                <div class="form-group">
+                  <div class="input-daterange" id="mca-timeslot-range" data-date-format="dd/mm/yyyy">
+                    <%= f.text_field :start_date, class: 'form-control input-small', value: l(f.object.start_date, format: :slashes) %>
+                    <span class="add-on">to</span>
+                    <%= f.text_field :end_date, class: 'form-control input-small', value: l(f.object.end_date, format: :slashes) %>
+                  </div>
                 </div>
               </div>
-
               <div class="actions">
                 <%= f.submit class:'btn btn-default' %>
               </div>

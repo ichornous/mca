@@ -1,11 +1,20 @@
 class Visit < ActiveRecord::Base
+  @@event_colors = %w(#7bd148 #5484ed #a4bdfc #46d6db #7ae7bf #51b749 #fbd75b #ffb878 #ff887c #dc2127 #dbadff #e1e1e1)
+
   belongs_to :order
   belongs_to :workshop
 
   validates :start_date, presence: true
   validates :end_date, presence: true
+  validates :color, presence: true
+  validates_inclusion_of :color, in: @@event_colors
+
   validate :end_start_valid_range!
   accepts_nested_attributes_for :order
+
+  def self.event_colors
+    @@event_colors
+  end
 
   # Select all events occurring in a range
   #

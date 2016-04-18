@@ -25,3 +25,4 @@
 //= require datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.js
 //= require datatables-responsive/js/dataTables.responsive.js
 
+//= require jquery-simplecolorpicker/jquery.simplecolorpicker

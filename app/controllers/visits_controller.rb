@@ -1,4 +1,5 @@
 class VisitsController < ApplicationController
+  DEFAULT_COLOR = 'rgb(0,0,255)'
   before_action :set_visit, only: [:show, :edit, :update, :destroy]
   before_action :set_workshop
 
@@ -9,7 +10,7 @@ class VisitsController < ApplicationController
       @visits = Visit.range(@workshop, params['start'].to_datetime, params['end'].to_datetime)
       if @workshop.nil? then
         @visits.each do |x|
-          x.color = x.order.workshop.color rescue 'rgb(0,0,255)'
+          x.color = x.color rescue DEFAULT_COLOR
         end
       end
       @visits
@@ -82,6 +83,7 @@ class VisitsController < ApplicationController
                                     :description,
                                     :start_date,
                                     :end_date,
+                                    :color,
                                     order_attributes: [:workshop_id,
                                                        order_services_attributes: [:_destroy,
                                                                                    :service_id,

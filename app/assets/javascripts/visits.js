@@ -179,4 +179,8 @@ $(document).on('ready page:load', function() {
         setDefaults($(this));
         updatePrice($(this));
     });
+
+    $('.mca-select-color').simplecolorpicker({
+        theme: 'glyphicons'
+    });
 });

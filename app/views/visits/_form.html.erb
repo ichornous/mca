@@ -18,6 +18,16 @@
                 </div>
               </div>
 
+              <div class="form-inline">
+                <div class="form-group">
+                  <%= f.select :color,
+                               options_for_select(Visit.event_colors.map {|c| ['', c, {:'data-color' => c}]},
+                                                  f.object.color),
+                               { include_blank: true },
+                               { class: 'mca-select-color' } %>
+                </div>
+              </div>
+
               <div class="form-group">
                 <%= f.label :client_name %><br>
                 <%= f.text_field :client_name, class: 'form-control' %>

@@ -1,9 +1,12 @@
 $(document).on('ready page:load', function() {
-    $("#calendar").fullCalendar({
+    var calendarContainer = $("#calendar");
+    var cursorDate = calendarContainer.data('cursor-date');
+    calendarContainer.fullCalendar({
         events: '/visits.json',
         selectable: true,
         editable: true,
         selectHelper: true,
+        defaultDate: cursorDate,
         defaultView: 'basicWeek',
         customButtons: {
             selectWorkshop: {
@@ -15,6 +18,22 @@ $(document).on('ready page:load', function() {
         },
         header: {
             right: 'today selectWorkshop,prev,next'
+        },
+
+        /**
+         * Triggered when a new date-range is rendered, or when the view type switches.
+         * @param view View Object
+         * @param element jQuery object for the new view
+         */
+        viewRender: function(view, element) {
+            var dateStr = view.calendar.getDate().format('YYYY-MM-DD');
+            calendarContainer.data('cursor-date', dateStr);
+
+            var state = history.state;
+            if (!state)
+                return;
+            state.url = window.location.pathname + '?day=' + dateStr;
+            window.history.replaceState(state, '', state.url);
         },
 
         /**
@@ -31,14 +50,9 @@ $(document).on('ready page:load', function() {
             var elContent = element.find(".fc-content");
             elContent.empty();
             elContent.append(newDescription);
-        },
-        select: function (start, end, jsEvent, view, resource) {
-            console.log(start.format('YYYY-MM-DD'))
-        },
-        eventDragStop: function (event, jsEvent, ui, view) {
-            console.log(event)
         }
-    })
+    });
+
 
     $('#mca-timeslot-range').datepicker();
 

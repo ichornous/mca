@@ -1,11 +1,13 @@
 class VisitsController < ApplicationController
   DEFAULT_COLOR = 'rgb(0,0,255)'
-  before_action :set_visit, only: [:show, :edit, :update, :destroy]
+  before_action :set_visit, only: [:show, :update, :destroy]
   before_action :set_workshop
 
   # GET /events
   # GET /events.json
   def index
+    @cursor_date = DateTime.strptime(params[:day], '%Y-%m-%d') rescue DateTime.now
+
     if (params['start'] && params['end'])
       @visits = Visit.range(@workshop, params['start'].to_datetime, params['end'].to_datetime)
       if @workshop.nil? then
@@ -31,10 +33,6 @@ class VisitsController < ApplicationController
     @visit.order.order_services.build
   end
 
-  # GET /events/1/edit
-  def edit
-  end
-
   # POST /events
   def create
     @visit = Visit.new(event_params)
@@ -50,7 +48,7 @@ class VisitsController < ApplicationController
     if @visit.update(event_params)
       redirect_to edit_visit_url(@visit), notice: 'Booking was successfully updated.'
     else
-      render :edit
+      render :show
     end
   end
 

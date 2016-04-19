@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   resources :services
-  resources :visits
+  resources :visits, except: [:edit]
   resources :workshops
   resources :users
   resources :orders

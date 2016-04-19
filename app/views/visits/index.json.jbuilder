@@ -7,5 +7,5 @@ json.array!(@visits) do |visit|
   else
     json.services []
   end
-  json.url edit_visit_url(visit, format: :html)
+  json.url visit_url(visit, format: :html)
 end

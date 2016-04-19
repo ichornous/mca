@@ -1,19 +1,7 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Title:</strong>
-  <%= @visit.client_name %>
-</p>
+<h1>Editing Event</h1>
 
-<p>
-  <strong>Description:</strong>
-  <%= @visit.description %>
-</p>
+<%= render 'form' %>
 
-<p>
-  <strong>Start:</strong>
-  <%= @visit.date %>
-</p>
-
-<%= link_to 'Edit', edit_visit_path(@visit) %> |
 <%= link_to 'Back', visits_path %>

@@ -37,7 +37,7 @@ class VisitsController < ApplicationController
   def create
     @visit = Visit.new(event_params)
     if @visit.save
-      redirect_to edit_visit_url(@visit), notice: 'Booking was successfully created.'
+      redirect_to visit_url(@visit), notice: 'Booking was successfully created.'
     else
       render :new
     end
@@ -46,7 +46,7 @@ class VisitsController < ApplicationController
   # PATCH/PUT /events/1
   def update
     if @visit.update(event_params)
-      redirect_to edit_visit_url(@visit), notice: 'Booking was successfully updated.'
+      render :show, notice: 'Booking was successfully updated.'
     else
       render :show
     end

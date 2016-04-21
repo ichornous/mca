@@ -2,7 +2,6 @@ class VisitsController < ApplicationController
   DEFAULT_COLOR = 'rgb(0,0,255)'
   before_action :set_visit, only: [:show, :update, :destroy]
   before_action :set_workshop
-
   # GET /events
   # GET /events.json
   def index
@@ -29,7 +28,9 @@ class VisitsController < ApplicationController
     @visit = Visit.new
     @visit.start_date = DateTime.now
     @visit.end_date = DateTime.now
+    @visit.workshop = @workshop
     @visit.build_order
+    @visit.order.workshop = @workshop
     @visit.order.order_services.build
   end
 
@@ -37,7 +38,7 @@ class VisitsController < ApplicationController
   def create
     @visit = Visit.new(event_params)
     if @visit.save
-      redirect_to visit_url(@visit), notice: 'Booking was successfully created.'
+      redirect_to visits_url, notice: 'Booking was successfully created.'
     else
       render :new
     end
@@ -45,8 +46,9 @@ class VisitsController < ApplicationController
 
   # PATCH/PUT /events/1
   def update
+    logger.warn "Debug visits: #{event_params.to_yaml}"
     if @visit.update(event_params)
-      render :show, notice: 'Booking was successfully updated.'
+      redirect_to visits_url, notice: 'Booking was successfully updated.'
     else
       render :show
     end
@@ -75,18 +77,21 @@ class VisitsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def event_params
       delocalize_config = { start_date: :time, end_date: :time }
-      params.require(:visit).permit(:client_name,
-                                    :car_name,
-                                    :phone_number,
-                                    :description,
-                                    :start_date,
-                                    :end_date,
-                                    :color,
-                                    order_attributes: [:workshop_id,
-                                                       order_services_attributes: [:_destroy,
-                                                                                   :service_id,
-                                                                                   :amount,
-                                                                                   :cost,
-                                                                                   :time]]).delocalize(delocalize_config)
+      filtered = params.require(:visit).permit(:client_name,
+                                               :car_name,
+                                               :phone_number,
+                                               :description,
+                                               :start_date,
+                                               :end_date,
+                                               :color,
+                                               order_attributes: [
+                                                   order_services_attributes: [:_destroy,
+                                                                               :service_id,
+                                                                               :amount,
+                                                                               :cost,
+                                                                               :time]]).delocalize(delocalize_config)
+      filtered.merge!(workshop_id: @workshop.id)
+      filtered[:order_attributes].merge!(workshop_id: @workshop.id)
+      filtered
     end
 end

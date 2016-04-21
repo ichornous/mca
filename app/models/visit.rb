@@ -7,10 +7,14 @@ class Visit < ActiveRecord::Base
   validates :start_date, presence: true
   validates :end_date, presence: true
   validates :color, presence: true
+  validates :workshop, presence: true
   validates_inclusion_of :color, in: @@event_colors
 
+  validate :workshop_consistent!
   validate :end_start_valid_range!
   accepts_nested_attributes_for :order
+
+  after_initialize :init!
 
   def self.event_colors
     @@event_colors
@@ -31,6 +35,17 @@ class Visit < ActiveRecord::Base
   end
 
   private
+  def init!
+    self.color ||= Visit.event_colors[0]
+  end
+
+  def workshop_consistent!
+    return if order.nil?
+    if order.workshop != workshop
+      errors.add(:workshop, 'inconsistent with the order')
+    end
+  end
+
   def end_start_valid_range!
     if end_date and start_date and (end_date < start_date)
       errors.add(:end_date, 'is not valid')

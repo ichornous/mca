@@ -8,6 +8,8 @@
       <div class="row">
         <div class="col-lg-6">
           <%= form_for(@visit) do |f| %>
+              <%= f.hidden_field :workshop_id %>
+
               <div class="form-group">
                 <div class="form-inline">
                   <div class="input-daterange" id="mca-timeslot-range" data-date-format="<%= t('time.embed.slashes') -%>">
@@ -23,7 +25,7 @@
                   <%= f.select :color,
                                options_for_select(Visit.event_colors.map {|c| ['', c, {:'data-color' => c}]},
                                                   f.object.color),
-                               { include_blank: true },
+                               { include_blank: false },
                                { class: 'mca-select-color' } %>
                 </div>
               </div>

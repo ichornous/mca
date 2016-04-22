@@ -100,7 +100,7 @@ Vagrant.configure(2) do |config|
       sudo apt-get install -y build-essential
 
       sudo npm config set prefix /usr/local
-      sudo npm install -g bower --no-bin-links
+      sudo npm install -g bower
 
       wget -qO- https://get.docker.com/gpg | sudo apt-key add -
       wget -qO- https://get.docker.com/ | sh

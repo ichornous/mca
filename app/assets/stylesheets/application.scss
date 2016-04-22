@@ -14,9 +14,7 @@
  = require_tree .
 
  *= require fullcalendar/dist/fullcalendar
- = require jquery-ui
-
- *= require bootstrap/dist/css/bootstrap
+ *= require jquery-ui
  *= require bootstrap-datepicker/dist/css/bootstrap-datepicker3
  *= require datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css
  *= require datatables-responsive/css/responsive.dataTables.scss
@@ -24,6 +22,11 @@
  *= require jquery-simplecolorpicker/jquery.simplecolorpicker-glyphicons
  */
 @import "font-awesome";
+
+$icon-font-path: "bootstrap-sass/assets/fonts/bootstrap/";
+@import "bootstrap-sass/assets/stylesheets/bootstrap-sprockets";
+@import "bootstrap-sass/assets/stylesheets/bootstrap";
+
 //@import "bootstrap-sprockets";
 //@import "bootstrap";
 

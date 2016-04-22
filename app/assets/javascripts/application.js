@@ -18,7 +18,7 @@
 
 //= require moment
 //= require moment/locale/ru
-//= require bootstrap
+//= require bootstrap-sass/assets/javascripts/bootstrap-sprockets
 //= require bootstrap-datepicker
 //= require fullcalendar/dist/fullcalendar
 //= require datatables/media/js/jquery.dataTables.js

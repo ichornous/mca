@@ -58,10 +58,7 @@ class VisitsController < ApplicationController
   # DELETE /events/1.json
   def destroy
     @visit.destroy
-    respond_to do |format|
-      format.html { redirect_to events_url, notice: 'Event was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    redirect_to visits_url, notice: 'Event was successfully destroyed.'
   end
 
   private
@@ -84,14 +81,19 @@ class VisitsController < ApplicationController
                                                :start_date,
                                                :end_date,
                                                :color,
+                                               :workshop_id,
                                                order_attributes: [
+                                                   :workshop_id,
                                                    order_services_attributes: [:_destroy,
                                                                                :service_id,
                                                                                :amount,
                                                                                :cost,
                                                                                :time]]).delocalize(delocalize_config)
-      filtered.merge!(workshop_id: @workshop.id)
-      filtered[:order_attributes].merge!(workshop_id: @workshop.id)
+      # Only non-impersonated administrators can override `workshop_id`
+      unless current_user.admin? or current_user.is_impersonated? then
+        filtered.merge!(workshop_id: @workshop.id)
+        filtered[:order_attributes].merge!(workshop_id: @workshop.id)
+      end
       filtered
     end
 end

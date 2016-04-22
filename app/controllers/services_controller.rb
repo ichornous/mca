@@ -17,10 +17,6 @@ class ServicesController < ApplicationController
     @service = Service.new
   end
 
-  # GET /services/1/edit
-  def edit
-  end
-
   # POST /services
   # POST /services.json
   def create
@@ -28,7 +24,7 @@ class ServicesController < ApplicationController
 
     respond_to do |format|
       if @service.save
-        format.html { redirect_to edit_service_url(@service), notice: 'Service was successfully created.' }
+        format.html { redirect_to services_url, notice: 'Service was successfully created.' }
         format.json { render :show, status: :created, location: @service }
       else
         format.html { render :new }
@@ -42,10 +38,10 @@ class ServicesController < ApplicationController
   def update
     respond_to do |format|
       if @service.update(service_params)
-        format.html { redirect_to @service, notice: 'Service was successfully updated.' }
+        format.html { redirect_to services_url, notice: 'Service was successfully updated.' }
         format.json { render :show, status: :ok, location: @service }
       else
-        format.html { render :edit }
+        format.html { render :show }
         format.json { render json: @service.errors, status: :unprocessable_entity }
       end
     end

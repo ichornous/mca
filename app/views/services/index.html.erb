@@ -39,8 +39,7 @@
                   <td><%= service.base_cost %></td>
                   <% if current_user.admin? and not current_user.is_impersonated? %>
                       <td>
-                        <%= link_to 'Show', service %> |
-                        <%= link_to 'Edit', edit_service_path(service) %> |
+                        <%= link_to 'Edit', service_path(service) %> |
                         <%= link_to 'Destroy', service, method: :delete, data: { confirm: 'Are you sure?' } %>
                       </td>
                   <% end %>

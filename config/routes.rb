@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :services
+  resources :services, except: [:edit]
   resources :visits, except: [:edit]
   resources :workshops
   resources :users

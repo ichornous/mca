@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class EventsControllerTest < ActionController::TestCase
+class VisitsControllerTest < ActionController::TestCase
   setup do
     visit = events(:one)
   end

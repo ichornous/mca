@@ -2,6 +2,7 @@ class VisitsController < ApplicationController
   DEFAULT_COLOR = 'rgb(0,0,255)'
   before_action :set_visit, only: [:show, :update, :destroy]
   before_action :set_workshop
+
   # GET /events
   # GET /events.json
   def index
@@ -38,7 +39,7 @@ class VisitsController < ApplicationController
   def create
     @visit = Visit.new(event_params)
     if @visit.save
-      redirect_to visits_url, notice: 'Booking was successfully created.'
+      redirect_to visits_url(day: fmt_day(@visit.start_date)), notice: 'Booking was successfully created.'
     else
       render :new
     end
@@ -46,9 +47,8 @@ class VisitsController < ApplicationController
 
   # PATCH/PUT /events/1
   def update
-    logger.warn "Debug visits: #{event_params.to_yaml}"
     if @visit.update(event_params)
-      redirect_to visits_url, notice: 'Booking was successfully updated.'
+      redirect_to visits_url(day: fmt_day(@visit.start_date)), notice: 'Booking was successfully updated.'
     else
       render :show
     end
@@ -62,6 +62,10 @@ class VisitsController < ApplicationController
   end
 
   private
+    def fmt_day(date)
+      date.strftime('%Y-%m-%d')
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_visit
       @visit = Visit.find(params[:id])

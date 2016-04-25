@@ -40,17 +40,14 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # gem 'bcrypt', '~> 3.1.7'
 
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw]
-# Use Unicorn as the app server
-group :production do
-  gem 'unicorn'
-  gem 'foreman'
-end
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
-group :test do
-  gem 'factory_girl'
+group :development, :test do
+  gem 'faker'
+  gem 'factory_girl_rails', '~> 4.0'
 end
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
@@ -63,10 +60,18 @@ group :development, :test do
 
   # Sqlite
   gem 'sqlite3'
+
+  # Rspec
+  gem 'rspec-rails'
 end
 
 group :production do
+  # Heroku setup
   gem 'rails_12factor'
   gem 'thin'
   gem 'pg'
+
+  # Docker setup
+  gem 'unicorn'
+  gem 'foreman'
 end

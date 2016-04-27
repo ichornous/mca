@@ -1,18 +1,34 @@
 FactoryGirl.define do
-  factory :visit do |f|
-    f.client_name { Faker::StarWars.character }
-    f.car_name { Faker::StarWars.vehicle }
-    f.description { Faker::Lorem.paragraph }
+  factory :visit do
+    client_name { Faker::StarWars.character }
+    car_name { Faker::StarWars.vehicle }
+    description { Faker::Lorem.paragraph }
 
-    f.phone_number { Faker::PhoneNumber.cell_phone }
-    f.color { Visit.event_colors.sample }
-    f.returning { false }
+    phone_number { Faker::PhoneNumber.cell_phone }
+    color { Visit.event_colors.sample }
+    returning { false }
 
-    s = Faker::Date.between(2.days.from_now, 5.days.from_now)
-    f.start_date s
-    f.end_date { s.advance(days: rand(4).to_i) }
+    workshop
+    order nil
 
-    f.workshop
-    f.order
+    start_date DateTime.now
+    end_date { start_date }
+
+
+    trait :in_the_past do
+      start_date 1.month.ago
+    end
+
+    trait :in_the_future do
+      start_date 1.month.from_now
+    end
+
+    trait :short do
+      end_date { start_date.advance(days: 1) }
+    end
+
+    trait :long do
+      end_date { start_date.advance(days: 4) }
+    end
   end
 end

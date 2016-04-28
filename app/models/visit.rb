@@ -29,9 +29,9 @@ class Visit < ActiveRecord::Base
   # Both ends are excluded from the range
   def self.range(workshop, from, to)
     workshop.visits.
-        where('start_date > :lo and end_date < :up',
-              lo: from.to_formatted_s(:db),
-              up: to.to_formatted_s(:db))
+        where('(start_date <= :up) and (:lo <= end_date)',
+              lo: from.beginning_of_day.to_formatted_s(:db),
+              up: to.end_of_day.to_formatted_s(:db))
   end
 
   private

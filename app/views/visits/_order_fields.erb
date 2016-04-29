@@ -18,10 +18,10 @@
             <%= builder.label :time %>
           </th>
           <th class="order-cell">
-            <%= label_tag 'Price (VAT)' %>
+            <%= label_tag t('.price_vat_html') %>
           </th>
           <th class="order-cell">
-            <%= label_tag 'Price' %>
+            <%= label_tag t('.price_total_html') %>
           </th>
       <% end %>
     </tr>
@@ -36,7 +36,8 @@
     <tfoot>
       <tr class="order-row">
         <td colspan="7" class="order-cell">
-          <%= f.link_to_add_form 'Add service', :order_services, class: 'mca-add-content', :'data-anchor-id' => '#order-items' do |builder| %>
+          <%= f.link_to_add_form t('.add_service_html'),
+                                 :order_services, class: 'mca-add-content', :'data-anchor-id' => '#order-items' do |builder| %>
               <%= render 'order_service_fields', :f => builder %>
           <% end %>
         </td>
@@ -44,9 +45,9 @@
 
       <tr class="order-row">
         <td colspan="4" class="order-cell"></td>
-        <th class="order-cell">Time</th>
+        <th class="order-cell"><%= t('.total_time_html') %></th>
         <td class="order-cell"></td>
-        <th class="order-cell">Price</th>
+        <th class="order-cell"><%= t('.total_price_html') %></th>
       </tr>
 
       <tr class="order-row">

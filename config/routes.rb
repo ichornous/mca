@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  scope '/:locale', locale: /en|ru/ do
+  scope '/(:locale)', locale: /en|ru/ do
     resources :services, except: [:edit]
     resources :visits, except: [:edit]
     resources :workshops

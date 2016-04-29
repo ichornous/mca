@@ -52,9 +52,8 @@ $(document).on('ready page:load', function() {
             elContent.append(newDescription);
         }
     });
-
-
-    $('#mca-timeslot-range').datepicker();
+    
+    $('#mca-timeslot-range').datepicker({ language: $('#mca-timeslot-range').data('locale') });
 
     /**
      * visits/new nested form management

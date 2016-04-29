@@ -20,6 +20,7 @@
 //= require moment/locale/ru
 //= require bootstrap-sass/assets/javascripts/bootstrap-sprockets
 //= require bootstrap-datepicker
+//= require bootstrap-datepicker/js/locales/bootstrap-datepicker.ru
 //= require fullcalendar/dist/fullcalendar
 //= require datatables/media/js/jquery.dataTables.js
 //= require datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.js

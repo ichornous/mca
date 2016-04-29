@@ -28,9 +28,37 @@ en:
     embed:
       slashes: "dd/mm/yyyy"
 
+  helpers:
+    submit:
+      create: "Create %{model}"
+      update: "Update %{model}"
+
   activerecord:
+    models:
+      visit: "Booking"
+
+    attributes:
+      visit:
+        client_name: "Client"
+        car_name: "Car"
+        description: "Details"
+        phone_number: "Phone"
+        color: "Color"
+
     errors:
       models:
         visit:
           inconsistent_workshop: "Form data is inconsistent"
           date_range_invalid: "Date range is invalid"
+
+  visits:
+    form:
+      booking_info: "Booking info"
+      range_to: "to"
+
+    order_fields:
+      price_vat_html: "Price (VAT)"
+      price_total_html: "Price"
+      add_service_html: "Add service"
+      total_time_html: "Total time"
+      total_price_html: "Total price"

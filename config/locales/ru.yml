@@ -7,9 +7,42 @@ ru:
     embed:
       slashes: "dd/mm/yyyy"
 
+  helpers:
+    submit:
+      create: "Создать %{model}"
+      update: "Обновить %{model}"
+
   activerecord:
+    models:
+      visit: "Запись"
+
+    attributes:
+      visit:
+        client_name: "Клиент"
+        car_name: "Автомобиль"
+        description: "Детали"
+        phone_number: "Телефон"
+        color: "Цвет"
+
+      order_service:
+        service_id: "Услуга"
+        amount: "Количество"
+        cost: "Цена"
+        time: "Время"
+
     errors:
       models:
         visit:
           inconsistent_workshop: "Даные формы не согласованы"
           date_range_invalid: "Интервал бронирования неправильный"
+
+  visits:
+    form:
+      booking_info: "Запись клиента"
+      range_to: "по"
+    order_fields:
+      price_vat_html: "Цена (НДС)"
+      price_total_html: "Стоимость"
+      add_service_html: "Добавить услугу"
+      total_time_html: "Всего времени"
+      total_price_html: "Всего стоимость"

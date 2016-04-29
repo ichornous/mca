@@ -2,7 +2,7 @@ $(document).on('ready page:load', function() {
     var calendarContainer = $("#calendar");
     var cursorDate = calendarContainer.data('cursor-date');
     calendarContainer.fullCalendar({
-        events: '/visits.json',
+        events: '/en/visits.json',
         selectable: true,
         editable: true,
         selectHelper: true,

@@ -27,3 +27,10 @@ en:
       slashes: "%d/%m/%Y"
     embed:
       slashes: "dd/mm/yyyy"
+
+  activerecord:
+    errors:
+      models:
+        visit:
+          inconsistent_workshop: "Form data is inconsistent"
+          date_range_invalid: "Date range is invalid"

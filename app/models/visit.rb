@@ -39,16 +39,17 @@ class Visit < ActiveRecord::Base
     self.color ||= Visit.event_colors[0]
   end
 
+  # Ensure that the order's workshop matches the visit's one
   def workshop_consistent!
     return if order.nil?
     if order.workshop != workshop
-      errors.add(:workshop, 'inconsistent with the order')
+      errors.add(:workshop, :inconsistent_workshop)
     end
   end
 
   def end_start_valid_range!
     if end_date and start_date and (end_date < start_date)
-      errors.add(:end_date, 'is not valid')
+      errors.add(:end_date, :date_range_invalid)
     end
   end
 end

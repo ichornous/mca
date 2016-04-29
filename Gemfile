@@ -52,6 +52,7 @@ end
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 group :test do
+  gem 'rspec-collection_matchers'
   gem 'faker'
   gem 'factory_girl_rails', '~> 4.0'
 end

@@ -1,16 +1,17 @@
 Rails.application.routes.draw do
-  resources :services, except: [:edit]
-  resources :visits, except: [:edit]
-  resources :workshops
-  resources :users
-  resources :orders
+  scope '/:locale', locale: /en|ru/ do
+    resources :services, except: [:edit]
+    resources :visits, except: [:edit]
+    resources :workshops
+    resources :users
+    resources :orders
+  end
 
   devise_for :users, :path => 'u', :controllers => {:confirmations => 'confirmations'}
   devise_scope :user do
-    put "/u/confirmation" => "confirmations#confirm"
+    put "/u/confirmation" => 'confirmations#confirm'
   end
-
-  get 'home/index'
+  get '/:locale' => 'visits#index'
 
   #get 'visit/index'
 

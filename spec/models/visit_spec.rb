@@ -107,5 +107,15 @@ describe Visit, type: :model do
     it 'is invalid if the visit`s workshop does not match the order`s workshop' do
       expect(build(:visit, order: build(:order))).to_not be_valid
     end
+
+    it 'notifies inconsistent error if the end date is less then the start date' do
+      expect(build(:visit, start_date: Date.today, end_date: 1.day.ago).errors_on(:end_date)).
+          to include(I18n.t('activerecord.errors.models.visit.date_range_invalid'))
+    end
+
+    it 'notifies inconsistent error if the visit`s workshop does not match the order`s workshop' do
+      expect(build(:visit, order: build(:order)).errors_on(:workshop)).
+          to include(I18n.t('activerecord.errors.models.visit.inconsistent_workshop'))
+    end
   end
 end

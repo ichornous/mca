@@ -1,0 +1,15 @@
+ru:
+  time:
+    input:
+      formats: "[:slashes]"
+    formats:
+      slashes: "%d/%m/%Y"
+    embed:
+      slashes: "dd/mm/yyyy"
+
+  activerecord:
+    errors:
+      models:
+        visit:
+          inconsistent_workshop: "Даные формы не согласованы"
+          date_range_invalid: "Интервал бронирования неправильный"

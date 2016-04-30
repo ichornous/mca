@@ -5,8 +5,13 @@
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
+
+  <script type="text/javascript">
+    window.I18n = <%= current_translations.to_json.html_safe %>
+  </script>
 </head>
 <body>
+
 <div id="wrapper">
   <nav class="navbar navbar-default" role="navigation" style="margin-bottom: 0">
     <div class="container-fluid">

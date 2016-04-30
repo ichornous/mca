@@ -37,6 +37,10 @@ ru:
           date_range_invalid: "Интервал бронирования неправильный"
 
   visits:
+    index:
+      btn_create_visit: "Создать"
+      title_html: "Календарь"
+
     form:
       booking_info: "Запись клиента"
       range_to: "по"

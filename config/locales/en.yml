@@ -52,6 +52,10 @@ en:
           date_range_invalid: "Date range is invalid"
 
   visits:
+    index:
+      btn_create_visit: "New Visit"
+      title_html: "Calendar"
+
     form:
       booking_info: "Booking info"
       range_to: "to"

@@ -1,8 +1,10 @@
 $(document).on('ready page:load', function() {
     var calendarContainer = $("#calendar");
     var cursorDate = calendarContainer.data('cursor-date');
+    var locale = $('#calendar').data('locale');
     calendarContainer.fullCalendar({
-        events: '/en/visits.json',
+        events: '/' + locale + '/visits.json',
+        lang: locale,
         selectable: true,
         editable: true,
         selectHelper: true,
@@ -10,9 +12,9 @@ $(document).on('ready page:load', function() {
         defaultView: 'basicWeek',
         customButtons: {
             selectWorkshop: {
-                text: 'New Event',
+                text: I18n.visits.index.btn_create_visit,
                 click: function() {
-                    window.location='/visits/new';
+                    window.location='/' + locale + '/visits/new';
                 }
             }
         },
@@ -52,8 +54,10 @@ $(document).on('ready page:load', function() {
             elContent.append(newDescription);
         }
     });
-    
-    $('#mca-timeslot-range').datepicker({ language: $('#mca-timeslot-range').data('locale') });
+
+    $('#mca-timeslot-range').datepicker({
+        language: $('#mca-timeslot-range').data('locale')
+    });
 
     /**
      * visits/new nested form management

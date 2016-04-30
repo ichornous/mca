@@ -36,6 +36,7 @@ en:
   activerecord:
     models:
       visit: "Booking"
+      user: "User"
 
     attributes:
       visit:
@@ -45,11 +46,22 @@ en:
         phone_number: "Phone"
         color: "Color"
 
+      user:
+        username: "Login"
+        first_name: "First name"
+        last_name: "Last name"
+        email: "e-mail"
+        locale: "Language"
+        workshop: "Workshop"
+        role: "Role"
+
     errors:
       models:
         visit:
           inconsistent_workshop: "Form data is inconsistent"
           date_range_invalid: "Date range is invalid"
+        user:
+          locale_not_supported: "Locale is not supported"
 
   visits:
     index:

@@ -25,6 +25,7 @@
               <th colspan="1">Login</th>
               <th colspan="1">Email</th>
               <th colspan="1">Role</th>
+              <th colspan="1">Locale</th>
               <% if current_user.admin? and not current_user.is_impersonated? %>
                   <th colspan="1">Workshop</th>
               <% end %>
@@ -40,6 +41,7 @@
                   <td><%= user.username %></td>
                   <td><%= user.email %></td>
                   <td><%= user.role.humanize %> </td>
+                  <td><%= user.locale %> </td>
                   <% if current_user.admin? and not current_user.is_impersonated? %>
                       <td><%= user.workshop.description unless user.workshop.nil? %></td>
                   <% end %>

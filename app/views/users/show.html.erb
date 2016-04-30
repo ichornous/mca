@@ -1,6 +1,5 @@
 <p id="notice"><%= notice %></p>
 
-
 <p>
   <strong>Login:</strong>
   <%= @user.username %>
@@ -24,6 +23,11 @@
 <p>
   <strong>Role:</strong>
   <%= @user.role.humanize %>
+</p>
+
+<p>
+  <strong>Language:</strong>
+  <%= @user.locale %>
 </p>
 
 <%= link_to 'Edit', edit_user_path(@user) %> |

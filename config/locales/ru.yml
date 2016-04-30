@@ -15,6 +15,7 @@ ru:
   activerecord:
     models:
       visit: "Запись"
+      user: "Пользователь"
 
     attributes:
       visit:
@@ -29,13 +30,23 @@ ru:
         amount: "Количество"
         cost: "Цена"
         time: "Время"
+      user:
+        username: "Логин"
+        first_name: "Имя"
+        last_name: "Фамилия"
+        email: "e-mail"
+        locale: "Язык"
+        workshop: "Салон"
+        role: "Роль"
+
 
     errors:
       models:
         visit:
           inconsistent_workshop: "Даные формы не согласованы"
           date_range_invalid: "Интервал бронирования неправильный"
-
+        user:
+          locale_not_supported: "Выбранный язык не поддерживается"
   visits:
     index:
       btn_create_visit: "Создать"
@@ -44,6 +55,7 @@ ru:
     form:
       booking_info: "Запись клиента"
       range_to: "по"
+
     order_fields:
       price_vat_html: "Цена (НДС)"
       price_total_html: "Стоимость"

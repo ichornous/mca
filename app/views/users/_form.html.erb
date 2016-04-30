@@ -50,6 +50,14 @@
                 <% end %>
               </div>
 
+              <div class="form-group <%= 'has-error' if @user.errors.include?(:locale) -%>">
+                <%= f.label :locale %><br>
+                <%= f.select :locale,
+                             options_for_select(User.supported_locales, f.object.locale),
+                             { include_blank: true },
+                             { :class => 'mca-select-language' } %>
+              </div>
+
               <% if current_user.admin? and not current_user.is_impersonated? %>
                   <div class="form-group <%= 'has-error' if @user.errors.include?(:workshop) -%>">
                     <%= f.label :workshop %><br>

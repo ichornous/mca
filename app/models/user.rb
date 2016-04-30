@@ -1,4 +1,11 @@
 class User < ActiveRecord::Base
+  # Include default devise modules. Others available are:
+  # :ldap_authenticatable, :confirmable, :lockable, :timeoutable and :omniauthable
+  devise :database_authenticatable, :registerable, :confirmable,
+         :recoverable, :rememberable, :trackable, :validatable
+
+  SUPPORTED_LOCALES = %w(en ru)
+
   belongs_to :workshop, :class_name => "Workshop"
   belongs_to :impersonation, :class_name => "Workshop"
 
@@ -11,6 +18,7 @@ class User < ActiveRecord::Base
   after_initialize :set_default_role, :if => :new_record?
 
   validates :username, presence: true
+  validate :locale_supported!
 
   def password_required?
     super if confirmed?
@@ -58,8 +66,14 @@ class User < ActiveRecord::Base
     true
   end
 
-  # Include default devise modules. Others available are:
-  # :ldap_authenticatable, :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable, :confirmable,
-         :recoverable, :rememberable, :trackable, :validatable
+  def self.supported_locales
+    SUPPORTED_LOCALES
+  end
+
+  private
+  def locale_supported!
+    if not User.supported_locales.include?(locale) and not locale.nil?
+      errors.add(:locale, :locale_not_supported)
+    end
+  end
 end

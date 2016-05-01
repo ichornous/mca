@@ -42,7 +42,7 @@ class UsersController < ApplicationController
     end
 
     if @user.save
-      redirect_to @user, notice: 'User was successfully created.'
+      redirect_to @user, notice: I18n.t(:created, scope: [:activerecord, :messages, :user])
     else
       render :new
     end
@@ -57,7 +57,7 @@ class UsersController < ApplicationController
     end
 
     if @user.update(user_params)
-      redirect_to @user, notice: 'User was successfully updated.'
+      redirect_to @user, notice: I18n.t(:updated, scope: [:activerecord, :messages, :user])
     else
       render :edit
     end

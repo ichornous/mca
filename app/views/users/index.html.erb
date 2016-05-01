@@ -20,16 +20,32 @@
           <table id="user-list" class="table table-striped table-bordered table-hover no-footer dtr-inline">
             <thead>
             <tr role="row">
-              <th colspan="1">First Name</th>
-              <th colspan="1">Last Name</th>
-              <th colspan="1">Login</th>
-              <th colspan="1">Email</th>
-              <th colspan="1">Role</th>
-              <th colspan="1">Locale</th>
+              <th colspan="1">
+                <%= User.human_attribute_name :first_name %>
+              </th>
+              <th colspan="1">
+                <%= User.human_attribute_name :last_name %>
+              </th>
+              <th colspan="1">
+                <%= User.human_attribute_name :username %>
+              </th>
+              <th colspan="1">
+                <%= User.human_attribute_name :email %>
+              </th>
+              <th colspan="1">
+                <%= User.human_attribute_name :role %>
+              </th>
+              <th colspan="1">
+                <%= User.human_attribute_name :locale %>
+              </th>
               <% if current_user.admin? and not current_user.is_impersonated? %>
-                  <th colspan="1">Workshop</th>
+                  <th colspan="1">
+                    <%= User.human_attribute_name :workshop %>
+                  </th>
               <% end %>
-              <th colspan="1">Manage</th>
+              <th colspan="1">
+                <%= t('.manage_html') %>
+              </th>
             </tr>
             </thead>
 
@@ -46,8 +62,8 @@
                       <td><%= user.workshop.description unless user.workshop.nil? %></td>
                   <% end %>
                   <td>
-                    <%= link_to 'Edit', user_path(user) %> |
-                    <%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                    <%= link_to t('.edit_html'), user_path(user) %> |
+                    <%= link_to t('.delete_html'), user, method: :delete, data: { confirm: t('.consent_html') } %></td>
                 </tr>
             <% end %>
             </tbody>

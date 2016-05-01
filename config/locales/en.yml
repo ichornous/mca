@@ -34,6 +34,10 @@ en:
       update: "Update %{model}"
 
   activerecord:
+    messages:
+      user:
+        created: "User was successfully created."
+        updated: "User was successfully updated."
     models:
       visit: "Booking"
       user: "User"
@@ -62,6 +66,15 @@ en:
           date_range_invalid: "Date range is invalid"
         user:
           locale_not_supported: "Locale is not supported"
+
+  users:
+    index:
+      manage_html: "Manage"
+      edit_html: "Edit"
+      delete_html: "Delete"
+      consent_html: "Are you sure?"
+    form:
+      profile_title_html: "Profile"
 
   visits:
     index:

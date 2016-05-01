@@ -13,6 +13,11 @@ ru:
       update: "Обновить %{model}"
 
   activerecord:
+    messages:
+      user:
+        created: "Пользователь успешно создан."
+        updated: "Пользователь успешно обновлен."
+
     models:
       visit: "Запись"
       user: "Пользователь"
@@ -47,6 +52,16 @@ ru:
           date_range_invalid: "Интервал бронирования неправильный"
         user:
           locale_not_supported: "Выбранный язык не поддерживается"
+
+  users:
+    index:
+      manage_html: "Управление"
+      edit_html: "Изменить"
+      delete_html: "Удалить"
+      consent_html: "Вы уверены?"
+    form:
+      profile_title_html: "Профиль"
+
   visits:
     index:
       btn_create_visit: "Создать"

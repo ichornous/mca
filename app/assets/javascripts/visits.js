@@ -3,7 +3,7 @@ $(document).on('ready page:load', function() {
     var cursorDate = calendarContainer.data('cursor-date');
     var locale = $('#calendar').data('locale');
     calendarContainer.fullCalendar({
-        events: '/' + locale + '/visits.json',
+        events: '/visits.json',
         lang: locale,
         selectable: true,
         editable: true,
@@ -14,7 +14,7 @@ $(document).on('ready page:load', function() {
             selectWorkshop: {
                 text: I18n.visits.index.btn_create_visit,
                 click: function() {
-                    window.location='/' + locale + '/visits/new';
+                    window.location='/visits/new';
                 }
             }
         },

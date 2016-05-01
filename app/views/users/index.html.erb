@@ -46,8 +46,7 @@
                       <td><%= user.workshop.description unless user.workshop.nil? %></td>
                   <% end %>
                   <td>
-                    <%= link_to 'Details', user %> |
-                    <%= link_to 'Edit', edit_user_path(user) %> |
+                    <%= link_to 'Edit', user_path(user) %> |
                     <%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
                 </tr>
             <% end %>

@@ -1,11 +1,13 @@
 Rails.application.routes.draw do
-  scope '/(:locale)', locale: /en|ru/ do
-    resources :services, except: [:edit]
-    resources :visits, except: [:edit]
-    resources :workshops
-    resources :users
-    resources :orders
-  end
+  # scope '/(:locale)', locale: /en|ru/ do
+  #
+  # end
+
+  resources :services, except: [:edit]
+  resources :visits, except: [:edit]
+  resources :users, except: [:edit]
+  resources :workshops
+  resources :orders
 
   devise_for :users, :path => 'u', :controllers => {:confirmations => 'confirmations'}
   devise_scope :user do

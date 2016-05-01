@@ -2,7 +2,7 @@ class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
   before_action :set_workshop
 
-  before_action :set_assignable_roles, only: [:new, :edit, :create, :update]
+  before_action :set_assignable_roles, only: [:new, :show, :create, :update]
   before_action :authorize_user
 
   # Show users for a given workshop
@@ -19,18 +19,14 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
-  end
-
-  # GET /users/new
-  def new
-    @user = User.new
     if current_user.admin? and not current_user.is_impersonated?
       @workshop_list = Workshop.all()
     end
   end
 
-  # GET /users/1/edit
-  def edit
+  # GET /users/new
+  def new
+    @user = User.new
     if current_user.admin? and not current_user.is_impersonated?
       @workshop_list = Workshop.all()
     end

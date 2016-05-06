@@ -7,15 +7,10 @@ class VisitsController < ApplicationController
   # GET /events.json
   def index
     @cursor_date = DateTime.strptime(params[:day], '%Y-%m-%d') rescue DateTime.now
-
-    if (params['start'] && params['end'])
-      @visits = Visit.range(@workshop, params['start'].to_datetime, params['end'].to_datetime)
-      if @workshop.nil? then
-        @visits.each do |x|
-          x.color = x.color rescue DEFAULT_COLOR
-        end
-      end
-      @visits
+    start_date = params['start']
+    end_date = params['end']
+    if (start_date && end_date)
+      Visit.range(@workshop, start_date.to_datetime, end_date.to_datetime)
     end
   end
 
@@ -39,7 +34,7 @@ class VisitsController < ApplicationController
   def create
     @visit = Visit.new(event_params)
     if @visit.save
-      redirect_to visits_url(day: fmt_day(@visit.start_date)), notice: 'Booking was successfully created.'
+      redirect_to visits_url(day: fmt_day(@visit.start_date)), notice:  I18n.t(:created, scope: [:activerecord, :messages, :visit])
     else
       render :new
     end
@@ -48,7 +43,7 @@ class VisitsController < ApplicationController
   # PATCH/PUT /events/1
   def update
     if @visit.update(event_params)
-      redirect_to visits_url(day: fmt_day(@visit.start_date)), notice: 'Booking was successfully updated.'
+      redirect_to visits_url(day: fmt_day(@visit.start_date)), notice: I18n.t(:updated, scope: [:activerecord, :messages, :visit])
     else
       render :show
     end
@@ -58,7 +53,7 @@ class VisitsController < ApplicationController
   # DELETE /events/1.json
   def destroy
     @visit.destroy
-    redirect_to visits_url, notice: 'Event was successfully destroyed.'
+    redirect_to visits_url, notice: I18n.t(:canceled, scope: [:activerecord, :messages, :visit])
   end
 
   private

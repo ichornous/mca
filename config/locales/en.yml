@@ -35,6 +35,10 @@ en:
 
   activerecord:
     messages:
+      visit:
+        created: "Booking was successfully created."
+        updated: "Booking was successfully updated."
+        canceled: "Booking was successfully canceled."
       user:
         created: "User was successfully created."
         updated: "User was successfully updated."

@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :set_user, only: [:show, :update, :destroy]
   before_action :set_workshop
+  before_action :set_workshop_list, only: [:show, :new, :update]
 
   before_action :set_assignable_roles, only: [:new, :show, :create, :update]
   before_action :authorize_user
@@ -19,17 +20,11 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
-    if current_user.admin? and not current_user.is_impersonated?
-      @workshop_list = Workshop.all()
-    end
   end
 
   # GET /users/new
   def new
     @user = User.new
-    if current_user.admin? and not current_user.is_impersonated?
-      @workshop_list = Workshop.all()
-    end
   end
 
   # POST /users
@@ -42,7 +37,7 @@ class UsersController < ApplicationController
     end
 
     if @user.save
-      redirect_to @user, notice: I18n.t(:created, scope: [:activerecord, :messages, :user])
+      redirect_to @user, notice: t('.success')
     else
       render :new
     end
@@ -57,9 +52,9 @@ class UsersController < ApplicationController
     end
 
     if @user.update(user_params)
-      redirect_to @user, notice: I18n.t(:updated, scope: [:activerecord, :messages, :user])
+      redirect_to @user, notice: t('.success', locale: @user.locale)
     else
-      render :edit
+      render :show
     end
   end
 
@@ -67,7 +62,7 @@ class UsersController < ApplicationController
   # DELETE /users/1.json
   def destroy
     @user.destroy
-    redirect_to users_url, notice: 'User was successfully destroyed.'
+    redirect_to users_url, t('.success')
   end
 
   private
@@ -77,6 +72,12 @@ class UsersController < ApplicationController
 
     def set_workshop
       @workshop = current_user.current_workshop
+    end
+
+    def set_workshop_list
+      if current_user.admin? and not current_user.is_impersonated?
+        @workshop_list = Workshop.all()
+      end
     end
 
     def set_assignable_roles

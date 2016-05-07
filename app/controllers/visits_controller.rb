@@ -34,7 +34,7 @@ class VisitsController < ApplicationController
   def create
     @visit = Visit.new(event_params)
     if @visit.save
-      redirect_to visits_url(day: fmt_day(@visit.start_date)), notice:  I18n.t(:created, scope: [:activerecord, :messages, :visit])
+      redirect_to visits_url(day: fmt_day(@visit.start_date)), notice: t('.success')
     else
       render :new
     end
@@ -43,7 +43,7 @@ class VisitsController < ApplicationController
   # PATCH/PUT /events/1
   def update
     if @visit.update(event_params)
-      redirect_to visits_url(day: fmt_day(@visit.start_date)), notice: I18n.t(:updated, scope: [:activerecord, :messages, :visit])
+      redirect_to visits_url(day: fmt_day(@visit.start_date)), notice: t('.success')
     else
       render :show
     end
@@ -53,7 +53,7 @@ class VisitsController < ApplicationController
   # DELETE /events/1.json
   def destroy
     @visit.destroy
-    redirect_to visits_url, notice: I18n.t(:canceled, scope: [:activerecord, :messages, :visit])
+    redirect_to visits_url, notice: t('.success')
   end
 
   private

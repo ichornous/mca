@@ -13,15 +13,6 @@ ru:
       update: "Обновить %{model}"
 
   activerecord:
-    messages:
-      visit:
-        created: "Бронировка успешно создана."
-        updated: "Бронировка успешно обновлена."
-        canceled: "Бронировка успешно отменена."
-      user:
-        created: "Пользователь успешно создан."
-        updated: "Пользователь успешно обновлен."
-
     models:
       visit: "Запись"
       user: "Пользователь"
@@ -56,8 +47,14 @@ ru:
           date_range_invalid: "Интервал бронирования неправильный"
         user:
           locale_not_supported: "Выбранный язык не поддерживается"
-
   users:
+    create:
+      success: "Пользователь успешно создан."
+    update:
+      success: "Пользователь успешно обновлен."
+    destroy:
+      success: "Пользователь успешно удален."
+
     index:
       manage_html: "Управление"
       edit_html: "Изменить"
@@ -67,6 +64,13 @@ ru:
       profile_title_html: "Профиль"
 
   visits:
+    create:
+      success: "Бронировка успешно создана."
+    update:
+      success: "Бронировка успешно обновлена."
+    destroy:
+      success: "Бронировка успешно отменена."
+
     index:
       btn_create_visit: "Создать"
       title_html: "Календарь"

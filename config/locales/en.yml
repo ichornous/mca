@@ -34,14 +34,6 @@ en:
       update: "Update %{model}"
 
   activerecord:
-    messages:
-      visit:
-        created: "Booking was successfully created."
-        updated: "Booking was successfully updated."
-        canceled: "Booking was successfully canceled."
-      user:
-        created: "User was successfully created."
-        updated: "User was successfully updated."
     models:
       visit: "Booking"
       user: "User"
@@ -72,6 +64,13 @@ en:
           locale_not_supported: "Locale is not supported"
 
   users:
+    create:
+      success: "User was successfully created."
+    update:
+      success: "User was successfully updated."
+    destroy:
+      success: "User was successfully removed."
+
     index:
       manage_html: "Manage"
       edit_html: "Edit"
@@ -81,6 +80,13 @@ en:
       profile_title_html: "Profile"
 
   visits:
+    create:
+      success: "Booking was successfully created."
+    update:
+      success: "Booking was successfully updated."
+    delete:
+      success: "Booking was successfully canceled."
+
     index:
       btn_create_visit: "New Visit"
       title_html: "Calendar"

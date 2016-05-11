@@ -76,6 +76,6 @@ group :production do
   gem 'pg'
 
   # Docker setup
-  gem 'unicorn'
-  gem 'foreman'
+  gem 'unicorn', platforms: :ruby
+  gem 'foreman', platforms: :ruby
 end

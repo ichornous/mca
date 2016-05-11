@@ -17,6 +17,8 @@
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 require 'support/factory_girl'
+require 'support/controller_macros'
+require 'support/devise'
 
 RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods

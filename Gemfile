@@ -52,6 +52,10 @@ end
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 group :test do
+  # Rspec
+  gem 'rspec-rails'
+  gem 'shoulda-matchers'
+  gem 'shoulda-kept-assign-to'
   gem 'rspec-collection_matchers'
   gem 'faker'
   gem 'factory_girl_rails', '~> 4.0'
@@ -63,9 +67,6 @@ group :development, :test do
 
   # Sqlite
   gem 'sqlite3'
-
-  # Rspec
-  gem 'rspec-rails'
 end
 
 group :production do

@@ -1,6 +1,7 @@
 FactoryGirl.define do
   factory :user do
     workshop
+    impersonation nil
 
     first_name { Faker::Name.first_name }
     last_name { Faker::Name.last_name }
@@ -17,18 +18,6 @@ FactoryGirl.define do
 
     trait :locale_ru do
       locale {'ru'}
-    end
-
-    #
-    # Authority
-    #
-    trait :in_workshop do
-      association :workshop, factory: :workshop_singleton
-    end
-
-    trait :in_disguise do
-      workshop
-      association :impersonation, factory: :workshop_singleton
     end
 
     #

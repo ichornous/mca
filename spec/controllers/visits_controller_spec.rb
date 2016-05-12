@@ -22,14 +22,19 @@ describe VisitsController, type: :controller do
       end
 
       context 'disguised user is logged in' do
-        with_user :user, :in_disguise
-        before { get :index }
+        let (:workshop_1) { create(:workshop) }
+        let (:workshop_2) { create(:workshop) }
+        let (:disguised_user) { create(:user, workshop: workshop_1, impersonation: workshop_2) }
+        before {
+          sign_in disguised_user
+          get :index
+        }
 
         it { is_expected.to respond_with :ok}
         it { is_expected.to render_with_layout :application }
         it { is_expected.to render_template :index }
 
-        it { is_expected.to assign_to(:workshop).with(user.impersonation) }
+        it { is_expected.to assign_to(:workshop).with(disguised_user.impersonation) }
         it { is_expected.to_not assign_to(:visits) }
         it { is_expected.to assign_to(:cursor_date) }
       end
@@ -45,15 +50,16 @@ describe VisitsController, type: :controller do
     # Event API request
     #
     context 'range of events is queried' do
-      let (:evt_in_range) { create(:visit, :lock_workshop, :started_4days_from_now) }
-      let (:evt_out_of_range) { create(:visit, :lock_workshop, :started_4days_ago) }
+      let (:workshop_1) { create(:workshop) }
+      let (:evt_in_range) { create(:visit, :started_4days_from_now, workshop: workshop_1) }
+      let (:evt_out_of_range) { create(:visit, :started_4days_ago, workshop: workshop_1) }
 
       let (:workshop_2) { create(:workshop) }
       let (:evt_in_range_diff) { create(:visit, :started_4days_from_now, workshop: workshop_2) }
       let (:evt_out_of_range_diff) { create(:visit, :started_4days_ago, workshop: workshop_2) }
 
-      let (:user) { create(:user, :in_workshop) }
-      let (:disguised_user) { create(:user, :in_workshop, impersonation: workshop_2) }
+      let (:user) { create(:user, workshop: workshop_1) }
+      let (:disguised_user) { create(:user, workshop: workshop_1, impersonation: workshop_2) }
 
       let (:range_start) { 4.days.from_now }
       let (:end_start) { 8.days.from_now }

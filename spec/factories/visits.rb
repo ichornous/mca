@@ -17,11 +17,6 @@ FactoryGirl.define do
     workshop
     order nil
 
-    trait :lock_workshop do
-      association :workshop, factory: :workshop_singleton
-      association :order, factory: :order_lock_workshop
-    end
-
     start_date 1.day.ago
     end_date { start_date.advance(days: 2) }
 

@@ -2,11 +2,11 @@ require 'rails_helper'
 
 describe Visit, type: :model do
   describe '.range' do
-    let (:ws) { create(:workshop_singleton)}
+    let (:ws) { create(:workshop)}
 
     it 'does not return visits which are not intersected with `start` and `end`' do
-      v1 = create(:visit, :started_4days_ago, :last_4days, :lock_workshop)
-      v2 = create(:visit, :started_4days_from_now, :last_4days, :lock_workshop)
+      v1 = create(:visit, :started_4days_ago, :last_4days, workshop: ws)
+      v2 = create(:visit, :started_4days_from_now, :last_4days, workshop: ws)
 
       result = Visit.range(ws, 1.day.from_now, 2.days.from_now)
 
@@ -15,7 +15,7 @@ describe Visit, type: :model do
     end
 
     it 'returns visits which are scheduled between `start` and `end`' do
-      v1 = create(:visit, :lock_workshop)
+      v1 = create(:visit, workshop: ws)
 
       result = Visit.range(ws, 1.week.ago, 1.week.from_now)
 
@@ -23,7 +23,7 @@ describe Visit, type: :model do
     end
 
     it 'returns visits which start before `start` and end after `start`' do
-      v1 = create(:visit, :last_4days, :lock_workshop)
+      v1 = create(:visit, :last_4days, workshop: ws)
 
       result = Visit.range(ws, Date.today, 1.week.from_now)
 
@@ -31,7 +31,7 @@ describe Visit, type: :model do
     end
 
     it 'returns visits which are scheduled before `end` and end after `end`' do
-      v1 = create(:visit, :last_4days, :lock_workshop)
+      v1 = create(:visit, :last_4days, workshop: ws)
 
       result = Visit.range(ws, 1.week.ago, Date.today)
 
@@ -39,7 +39,7 @@ describe Visit, type: :model do
     end
 
     it 'returns visits which are scheduled before `start` and end after `end`' do
-      v1 = create(:visit, :started_4days_ago, :last_8days, :lock_workshop)
+      v1 = create(:visit, :started_4days_ago, :last_8days, workshop: ws)
 
       result = Visit.range(ws, 1.day.ago, 1.day.from_now)
 
@@ -47,7 +47,7 @@ describe Visit, type: :model do
     end
 
     it 'returns visits including the start date' do
-      v1 = create(:visit, :lock_workshop)
+      v1 = create(:visit, workshop: ws)
 
       result = Visit.range(ws, 1.day.ago, 1.day.ago)
 
@@ -55,7 +55,7 @@ describe Visit, type: :model do
     end
 
     it 'returns visits including the end date' do
-      v1 = create(:visit, :lock_workshop)
+      v1 = create(:visit, workshop: ws)
 
       result = Visit.range(ws, 1.day.from_now, 1.day.from_now)
 
@@ -74,6 +74,8 @@ describe Visit, type: :model do
   end
 
   describe '#valid?' do
+    let (:ws) { create(:workshop)}
+
     it 'should have a valid factory' do
       expect(build(:visit)).to be_valid
     end
@@ -101,7 +103,8 @@ describe Visit, type: :model do
     end
 
     it 'is valid if the visit`s workshop match the order`s workshop' do
-      expect(build(:visit, :lock_workshop)).to be_valid
+      o1 = build(:order, workshop: ws)
+      expect(build(:visit, workshop: ws, order: o1)).to be_valid
     end
 
     it 'is invalid if the visit`s workshop does not match the order`s workshop' do

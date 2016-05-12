@@ -10,7 +10,7 @@ class VisitsController < ApplicationController
     start_date = params['start']
     end_date = params['end']
     if (start_date && end_date)
-      Visit.range(@workshop, start_date.to_datetime, end_date.to_datetime)
+      @visits = Visit.range(@workshop, start_date.to_datetime, end_date.to_datetime)
     end
   end
 

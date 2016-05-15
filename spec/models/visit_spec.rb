@@ -1,6 +1,32 @@
 require 'rails_helper'
 
 describe Visit, type: :model do
+  describe 'factories' do
+    context 'factory visit_with_order' do
+      let (:visit) { create(:visit_with_order) }
+
+      it 'assigns an order' do
+        expect(visit.order).to_not be_nil
+      end
+
+      it 'assigns order items' do
+        expect(visit.order.order_services.count).to eq(3)
+      end
+
+      it 'assigns the order to each order item' do
+        expect(visit.order.order_services).to_not include(not_have_attributes(order: visit.order))
+      end
+
+      it 'persists an order' do
+        expect(Visit.find(visit.id).order).to_not be_nil
+      end
+
+      it 'persists order items' do
+        expect(OrderService.where(order_id: visit.order.id).count).to eq(3)
+      end
+    end
+  end
+
   describe '.range' do
     let (:ws) { create(:workshop)}
 

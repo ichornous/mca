@@ -57,8 +57,10 @@ group :test do
   gem 'shoulda-matchers'
   gem 'shoulda-kept-assign-to'
   gem 'rspec-collection_matchers'
+  gem 'timecop'
   gem 'faker'
   gem 'factory_girl_rails', '~> 4.0'
+  gem 'spring-commands-rspec'
 end
 
 group :development, :test do

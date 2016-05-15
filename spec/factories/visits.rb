@@ -35,5 +35,24 @@ FactoryGirl.define do
     trait :last_8days do
       end_date { start_date.advance(days: 8) }
     end
+
+    factory :visit_with_order do
+      transient do
+        service_count 3
+      end
+
+      after(:create) do |visit, evaluator|
+        visit.order = create(:order, workshop: visit.workshop)
+        create_list(:order_service, evaluator.service_count, order: visit.order)
+        visit.save!
+      end
+    end
+
+    factory :visit_invalid_fields do
+      client_name { '' }
+      color { 'rgb(123,45,67)' }
+      start_date { 1.day.from_now }
+      end_date { 1.day.ago }
+    end
   end
 end

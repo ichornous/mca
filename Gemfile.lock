@@ -180,6 +180,8 @@ GEM
     shoulda-matchers (3.1.1)
       activesupport (>= 4.0.0)
     spring (1.7.1)
+    spring-commands-rspec (1.0.4)
+      spring (>= 0.9.1)
     sprockets (3.6.0)
       concurrent-ruby (~> 1.0)
       rack (> 1, < 3)
@@ -196,6 +198,7 @@ GEM
     thor (0.19.1)
     thread_safe (0.3.5)
     tilt (2.0.2)
+    timecop (0.8.1)
     turbolinks (2.5.3)
       coffee-rails
     tzinfo (1.2.2)
@@ -242,8 +245,10 @@ DEPENDENCIES
   shoulda-kept-assign-to
   shoulda-matchers
   spring
+  spring-commands-rspec
   sqlite3
   thin
+  timecop
   turbolinks
   tzinfo-data
   uglifier (>= 1.3.0)

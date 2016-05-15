@@ -3,6 +3,9 @@ class OrderService < ActiveRecord::Base
   belongs_to :order
   belongs_to :service
 
+  #validates :order
+  validates :service, presence: true
+
   private
   def default_values
     self.amount ||= 1.0

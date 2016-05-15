@@ -1,7 +1,7 @@
 class Visit < ActiveRecord::Base
   @@event_colors = %w(#7bd148 #5484ed #a4bdfc #46d6db #7ae7bf #51b749 #fbd75b #ffb878 #ff887c #dc2127 #dbadff #e1e1e1)
 
-  belongs_to :order
+  belongs_to :order, :dependent => :destroy
   belongs_to :workshop
 
   validates :start_date, presence: true
@@ -12,7 +12,7 @@ class Visit < ActiveRecord::Base
 
   validate :workshop_consistent!
   validate :end_start_valid_range!
-  accepts_nested_attributes_for :order
+  accepts_nested_attributes_for :order, update_only: true
 
   after_initialize :init!
 
@@ -42,7 +42,7 @@ class Visit < ActiveRecord::Base
   # Ensure that the order's workshop matches the visit's one
   def workshop_consistent!
     return if order.nil?
-    if order.workshop != workshop
+    if order.workshop_id != workshop_id
       errors.add(:workshop, :inconsistent_workshop)
     end
   end

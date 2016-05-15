@@ -19,9 +19,11 @@
 require 'support/factory_girl'
 require 'support/controller_macros'
 require 'support/devise'
+require 'support/custom_matchers'
 
 RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods
+  config.alias_it_should_behave_like_to :it_has_behavior, 'has behavior:'
 
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest

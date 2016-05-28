@@ -1,5 +1,5 @@
 json.array!(@visits) do |visit|
-  json.extract! visit, :id, :car_name, :description, :color
+  json.extract! visit, :id, :client_name, :car_name, :description, :color
   json.start visit.start_date.to_date.beginning_of_day
   json.end visit.end_date.end_of_day
   unless visit.order.nil? or visit.order.order_services.nil?

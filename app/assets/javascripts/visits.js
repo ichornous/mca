@@ -47,7 +47,7 @@ $(document).on('ready page:load', function() {
             var newDescription =
                     /*moment(event.start).format("HH:mm") + '-'
                     + moment(event.end).format("HH:mm") + '<br/>' + */
-                '<strong>' + event.car_name + '</strong> ' + event.services.join('+')
+                '<strong>' + (event.car_name? event.car_name : event.client_name) + '</strong> ' + event.services.join('+')
                 ;
             var elContent = element.find(".fc-content");
             elContent.empty();

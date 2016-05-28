@@ -1,7 +1,6 @@
 class ApplicationController < ActionController::Base
-  # rescue_from DeviseLdapAuthenticatable::LdapException do |exception|
-  #   render :text => exception, :status => 500
-  # end
+  include PunditHelper
+
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
@@ -12,8 +11,14 @@ class ApplicationController < ActionController::Base
   #   { locale: I18n.locale }.merge options
   # end
 
+  private
   def set_locale!
     cu_locale = current_user.locale rescue nil
     I18n.locale = cu_locale || I18n.default_locale
+  end
+
+  def user_not_authorized
+    flash[:alert] = 'Access denied.'
+    redirect_to (request.referrer || root_path)
   end
 end

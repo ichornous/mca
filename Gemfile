@@ -17,6 +17,7 @@ gem 'coffee-script-source', '1.8.0'
 
 # Devise. Authentication framework
 gem 'devise', '>= 3.4.1'
+gem 'pundit'
 
 # Locale aware date parsing
 gem "delocalize"

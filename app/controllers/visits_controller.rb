@@ -10,10 +10,11 @@ class VisitsController < ApplicationController
     render nothing: true, status: 404
   end
 
-  rescue_from NoMethodError do |exception|
-    logger.warn("Attempt to send invalid query #{exception}")
-    render nothing: true, status: 400
-  end
+#  rescue_from NoMethodError do |exception|
+#    logger.warn("Attempt to send invalid query #{exception}")
+#    render nothing: true, status: 400
+#s  end
+
   # GET /events
   # GET /events.json
   #
@@ -23,6 +24,8 @@ class VisitsController < ApplicationController
   #  +end+:: End of the date range
   #  +day+:: Selected day
   def index
+    authorize Visit
+
     cursor_date_value = parse_day(params[:day])
     @cursor_date = fmt_day(cursor_date_value)
 
@@ -37,6 +40,7 @@ class VisitsController < ApplicationController
   # GET /events/1
   # GET /events/1.json
   def show
+    authorize @visit
   end
 
   # GET /events/new
@@ -53,11 +57,15 @@ class VisitsController < ApplicationController
     @visit.build_order
     @visit.order.workshop = @workshop
     @visit.order.order_services.build
+
+    authorize @visit
   end
 
   # POST /events
   def create
     @visit = Visit.new(event_params)
+    authorize @visit
+
     if @visit.save
       redirect_to visits_url(day: fmt_day(@visit.start_date)), notice: t('.success')
     else
@@ -67,6 +75,8 @@ class VisitsController < ApplicationController
 
   # PATCH/PUT /events/1
   def update
+    authorize @visit
+
     if @visit.update(event_params)
       redirect_to visits_url(day: fmt_day(@visit.start_date)), notice: t('.success')
     else
@@ -77,6 +87,8 @@ class VisitsController < ApplicationController
   # DELETE /events/1
   # DELETE /events/1.json
   def destroy
+    authorize @visit
+
     @visit.destroy
     redirect_to visits_url, notice: t('.success')
   end

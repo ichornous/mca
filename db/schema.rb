@@ -11,7 +11,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160430194535) do
+ActiveRecord::Schema.define(version: 20160601141026) do
+
+  create_table "bookings", force: :cascade do |t|
+    t.integer  "order_id"
+    t.text     "description"
+    t.datetime "start_date"
+    t.datetime "end_date"
+    t.string   "color"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "bookings", ["order_id"], name: "index_bookings_on_order_id", unique: true
 
   create_table "cars", force: :cascade do |t|
     t.integer "workshop_id"
@@ -97,24 +109,6 @@ ActiveRecord::Schema.define(version: 20160430194535) do
   add_index "users", ["impersonation_id"], name: "index_users_on_impersonation_id"
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   add_index "users", ["workshop_id"], name: "index_users_on_workshop_id"
-
-  create_table "visits", force: :cascade do |t|
-    t.integer  "workshop_id"
-    t.integer  "order_id"
-    t.boolean  "returning"
-    t.text     "description"
-    t.string   "client_name"
-    t.string   "car_name"
-    t.string   "phone_number"
-    t.datetime "start_date"
-    t.datetime "end_date"
-    t.string   "color"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
-  end
-
-  add_index "visits", ["order_id"], name: "index_visits_on_order_id"
-  add_index "visits", ["workshop_id"], name: "index_visits_on_workshop_id"
 
   create_table "workshops", force: :cascade do |t|
     t.string   "description"

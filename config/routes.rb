@@ -2,12 +2,20 @@ Rails.application.routes.draw do
   # scope '/(:locale)', locale: /en|ru/ do
   #
   # end
+  namespace :api, defaults: { format: :json } do
+    namespace :v1 do
+      resources :workshops do
+        resources :orders, except: [:edit, :new]
+      end
+    end
+  end
 
   resources :services, except: [:edit]
-  resources :visits, except: [:edit]
+  resources :bookings, except: [:edit]
   resources :users, except: [:edit]
-  resources :workshops
-  resources :orders
+  resources :workshops, except: [:edit], defaults: { format: :html } do
+    resources :orders, except: [:edit]
+  end
 
   devise_for :users, :path => 'u', :controllers => {:confirmations => 'confirmations'}
   devise_scope :user do

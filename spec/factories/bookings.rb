@@ -5,17 +5,9 @@ FactoryGirl.define do
   # - started_4days_from_now (start 4 days in the future)
   # - last_4days (last 4 day)
   # - last_8days (last 8 days)
-  factory :visit do
-    client_name { Faker::StarWars.character }
-    car_name { Faker::StarWars.vehicle }
+  factory :booking do
     description { Faker::Lorem.paragraph }
-
-    phone_number { Faker::PhoneNumber.cell_phone }
-    color { Visit.event_colors.sample }
-    returning { false }
-
-    workshop
-    order nil
+    color { Booking.event_colors.sample }
 
     start_date 1.day.ago
     end_date { start_date.advance(days: 2) }
@@ -36,20 +28,20 @@ FactoryGirl.define do
       end_date { start_date.advance(days: 8) }
     end
 
-    factory :visit_with_order do
+    factory :booking_with_order do
       transient do
         service_count 3
+        order_workshop { create(:workshop) }
       end
 
-      after(:create) do |visit, evaluator|
-        visit.order = create(:order, workshop: visit.workshop)
-        create_list(:order_service, evaluator.service_count, order: visit.order)
-        visit.save!
+      after(:create) do |booking, evaluator|
+        booking.order = create(:orders, workshop: evaluator.order_workshop)
+        create_list(:order_service, evaluator.service_count, orders: booking.order)
+        booking.save!
       end
     end
 
-    factory :visit_invalid_fields do
-      client_name { '' }
+    factory :booking_invalid_fields do
       color { 'rgb(123,45,67)' }
       start_date { 1.day.from_now }
       end_date { 1.day.ago }

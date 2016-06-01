@@ -14,11 +14,11 @@ ru:
 
   activerecord:
     models:
-      visit: "Запись"
+      booking: "Запись"
       user: "Пользователь"
 
     attributes:
-      visit:
+      booking:
         client_name: "Клиент"
         car_name: "Автомобиль"
         description: "Детали"
@@ -39,11 +39,16 @@ ru:
         workshop: "Салон"
         role: "Роль"
 
-
     errors:
       models:
-        visit:
-          inconsistent_workshop: "Даные формы не согласованы"
+        client:
+          not_found: "Заданный клиент не найден"
+        car:
+          not_found: "Заданный автомобиль не найден"
+        booking:
+          attributes:
+            order:
+              blank: "Даные формы не согласованы"
           date_range_invalid: "Интервал бронирования неправильный"
         user:
           locale_not_supported: "Выбранный язык не поддерживается"

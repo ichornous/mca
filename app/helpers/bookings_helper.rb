@@ -1,6 +1,6 @@
 require 'securerandom'
 
-module VisitsHelper
+module BookingsHelper
   class ActionView::Helpers::FormBuilder
     include ActionView::Context
     include ActionView::Helpers::UrlHelper

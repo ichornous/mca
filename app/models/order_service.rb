@@ -1,6 +1,6 @@
 class OrderService < ActiveRecord::Base
   after_initialize :default_values
-  belongs_to :order
+  belongs_to :order, inverse_of: :order_services
   belongs_to :service
 
   #validates :order

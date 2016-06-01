@@ -37,25 +37,25 @@ orders = Order.create([
                       ])
 
 order_services = OrderService.create([
-                                         { order: orders[0], service: services[0] },
-                                         { order: orders[0], service: services[1] },
-                                         { order: orders[1], service: services[0] },
-                                         { order: orders[1], service: services[1] },
-                                         { order: orders[1], service: services[2] },
-                                         { order: orders[2], service: services[0] },
-                                         { order: orders[3], service: services[1] },
-                                         { order: orders[4], service: services[2] },
-                                         { order: orders[4], service: services[0] },
-                                         { order: orders[5], service: services[1] },
-                                         { order: orders[6], service: services[2] },
+                                         {orders: orders[0], service: services[0] },
+                                         {orders: orders[0], service: services[1] },
+                                         {orders: orders[1], service: services[0] },
+                                         {orders: orders[1], service: services[1] },
+                                         {orders: orders[1], service: services[2] },
+                                         {orders: orders[2], service: services[0] },
+                                         {orders: orders[3], service: services[1] },
+                                         {orders: orders[4], service: services[2] },
+                                         {orders: orders[4], service: services[0] },
+                                         {orders: orders[5], service: services[1] },
+                                         {orders: orders[6], service: services[2] },
                                      ])
-visits = Visit.create([
+visits = Booking.create([
                           {
                               car_name: orders[0].car.description,
                               description: 'Just a poor guy', client_name: 'Igor', phone_number: '+380123456789',
                               start_date: DateTime.new(2016, 4, 12, 12, 0, 0, '+2'),
                               end_date: DateTime.new(2016, 4, 12, 12, 0, 0, '+2'),
-                              order: orders[0],
+                              orders: orders[0],
                               workshop: workshops[0]
                           },
                           {
@@ -63,7 +63,7 @@ visits = Visit.create([
                               description: 'Right from saloon', client_name: 'Igor', phone_number: '+380123456789',
                               start_date: DateTime.new(2016, 4, 12, 12, 0, 0, '+2'),
                               end_date: DateTime.new(2016, 4, 12, 12, 0, 0, '+2'),
-                              order: orders[1],
+                              orders: orders[1],
                               workshop: workshops[0]
                           },
                           {
@@ -71,7 +71,7 @@ visits = Visit.create([
                               description: 'Not his car', client_name: 'Tom', phone_number: '+380000456789',
                               start_date: DateTime.new(2016, 4, 12, 12, 0, 0, '+2'),
                               end_date: DateTime.new(2016, 4, 12, 12, 0, 0, '+2'),
-                              order: orders[2],
+                              orders: orders[2],
                               workshop: workshops[0]
                           },
                           {
@@ -79,7 +79,7 @@ visits = Visit.create([
                               description: 'Have already been here', client_name: 'Tom', phone_number: '+380000456789',
                               start_date: DateTime.new(2016, 4, 11, 12, 0, 0, '+2'),
                               end_date: DateTime.new(2016, 4, 12, 12, 0, 0, '+2'),
-                              order: orders[3],
+                              orders: orders[3],
                               workshop: workshops[0]
                           },
                           {
@@ -87,7 +87,7 @@ visits = Visit.create([
                               description: 'Is he a cat??', client_name: 'Tom', phone_number: '+380000456789',
                               start_date: DateTime.new(2016, 4, 11, 12, 0, 0, '+2'),
                               end_date: DateTime.new(2016, 4, 12, 12, 0, 0, '+2'),
-                              order: orders[4],
+                              orders: orders[4],
                               workshop: workshops[0]
                           },
                           {
@@ -95,7 +95,7 @@ visits = Visit.create([
                               description: 'Not his car', client_name: 'Justas', phone_number: '+382123456789',
                               start_date: DateTime.new(2016, 4, 11, 12, 0, 0, '+2'),
                               end_date: DateTime.new(2016, 4, 12, 12, 0, 0, '+2'),
-                              order: orders[5],
+                              orders: orders[5],
                               workshop: workshops[0]
                           },
                           {
@@ -103,7 +103,7 @@ visits = Visit.create([
                               description: 'Not his car', client_name: 'Maxim', phone_number: '+383123456789',
                               start_date: DateTime.new(2016, 4, 12, 12, 0, 0, '+2'),
                               end_date: DateTime.new(2016, 4, 13, 12, 0, 0, '+2'),
-                              order: orders[6],
+                              orders: orders[6],
                               workshop: workshops[0]
                           },
                       ])

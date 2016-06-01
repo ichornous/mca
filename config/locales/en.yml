@@ -35,11 +35,11 @@ en:
 
   activerecord:
     models:
-      visit: "Booking"
+      booking: "Booking"
       user: "User"
 
     attributes:
-      visit:
+      booking:
         client_name: "Client"
         car_name: "Car"
         description: "Details"
@@ -57,8 +57,14 @@ en:
 
     errors:
       models:
-        visit:
-          inconsistent_workshop: "Form data is inconsistent"
+        client:
+          not_found: "Requested client not found"
+        car:
+          not_found: "Requested car not found"
+        booking:
+          attributes:
+            order:
+              blank: "Form data is inconsistent"
           date_range_invalid: "Date range is invalid"
         user:
           locale_not_supported: "Locale is not supported"

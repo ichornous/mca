@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe VisitsController, type: :controller do
+describe BookingsController, type: :controller do
   include Devise::TestHelpers
 
   describe 'GET #index' do
@@ -37,7 +37,7 @@ describe VisitsController, type: :controller do
       it { is_expected.to respond_with :ok}
       it { is_expected.to render_template :index }
 
-      it { is_expected.to assign_to(:visits) }
+      it { is_expected.to assign_to(:bookings) }
       it { is_expected.to assign_to(:cursor_date) }
       it { is_expected.to assign_to(:workshop).with(user.current_workshop) }
     end
@@ -66,30 +66,30 @@ describe VisitsController, type: :controller do
       let (:largest_date) { 10.years.from_now }
 
       before do
-        21.times { |n| create(:visit, start_date: n.days.from_now - 2.weeks) }
-        21.times { |n| create(:visit, start_date: n.days.from_now - 2.weeks, workshop: user.current_workshop) }
+        21.times { |n| create(:booking, start_date: n.days.from_now - 2.weeks) }
+        21.times { |n| create(:booking, start_date: n.days.from_now - 2.weeks, workshop: user.current_workshop) }
       end
 
       context 'when date range is not given' do
-        it { expect(assigns[:visits]).to be_empty }
+        it { expect(assigns[:bookings]).to be_empty }
       end
-      
+
       context 'when only start date is given' do
         let (:arg_start) { 1.day.ago }
 
-        it { expect(assigns[:visits]).to be_empty }
+        it { expect(assigns[:bookings]).to be_empty }
       end
 
       context 'when only end date is given' do
         let (:arg_end) { 1.day.ago }
 
-        it { expect(assigns[:visits]).to be_empty }
+        it { expect(assigns[:bookings]).to be_empty }
       end
 
       context 'when full range is given' do
         let (:arg_start) { 7.days.ago }
         let (:arg_end) { 7.days.from_now }
-        let (:subject) { assigns[:visits] }
+        let (:subject) { assigns[:bookings] }
 
         it 'returns only visits for the user`s current workshop' do
           is_expected.to include(have_attributes(workshop_id: user.current_workshop.id))
@@ -100,7 +100,7 @@ describe VisitsController, type: :controller do
         end
 
         it 'returns visits from a given date range' do
-          is_expected.to match_array(Visit.range(user.current_workshop, arg_start, arg_end))
+          is_expected.to match_array(Booking.range(user.current_workshop, arg_start, arg_end))
         end
 
         it 'does not return visits which ended before the beginning of a given range' do
@@ -118,16 +118,16 @@ describe VisitsController, type: :controller do
 
       context 'when full range is given' do
         before do
-          21.times { |n| create(:visit, start_date: n.days.from_now - 2.weeks, workshop: user.workshop) }
-          21.times { |n| create(:visit, start_date: n.days.from_now - 2.weeks, workshop: user.impersonation) }
+          21.times { |n| create(:booking, start_date: n.days.from_now - 2.weeks, workshop: user.workshop) }
+          21.times { |n| create(:booking, start_date: n.days.from_now - 2.weeks, workshop: user.impersonation) }
         end
 
         let (:arg_start) { 7.days.ago }
         let (:arg_end) { 7.days.from_now }
-        let (:subject) { assigns[:visits] }
+        let (:subject) { assigns[:bookings] }
 
         it 'returns visits from the impersonated workshop' do
-          is_expected.to match_array(Visit.range(user.impersonation, arg_start, arg_end))
+          is_expected.to match_array(Booking.range(user.impersonation, arg_start, arg_end))
         end
       end
     end
@@ -182,8 +182,8 @@ describe VisitsController, type: :controller do
   end
 
   describe 'GET #show' do
-    let (:foreign_visit) { create(:visit) }
-    let (:relevant_visit) { create(:visit, workshop: user.workshop) }
+    let (:foreign_visit) { create(:booking) }
+    let (:relevant_visit) { create(:booking, workshop: user.workshop) }
 
     context 'user is signed in' do
       before { sign_in user }
@@ -244,7 +244,7 @@ describe VisitsController, type: :controller do
           admin.save
           admin
         }
-        let (:impersonated_visit) { create(:visit, workshop: workshop) }
+        let (:impersonated_visit) { create(:booking, workshop: workshop) }
 
         it 'can see a visit from the current workshop' do
           get :show, id: impersonated_visit.id
@@ -299,11 +299,11 @@ describe VisitsController, type: :controller do
       end
 
       shared_context 'assigns a new visit' do
-        let (:subject) { assigns[:visit] }
+        let (:subject) { assigns[:booking] }
 
         it { is_expected.to_not be_nil }
         it 'returns a new visit' do
-          is_expected.to be_a(Visit)
+          is_expected.to be_a(Booking)
         end
 
         it 'assigns the user`s current workshop to a new visit' do
@@ -384,38 +384,38 @@ describe VisitsController, type: :controller do
       visit.merge!(order_attributes: order_attributes) if defined?(order_attributes)
       visit.merge!(workshop_id: supplied_workshop_id) if defined?(supplied_workshop_id)
 
-      post :create, visit: visit
+      post :create, booking: visit
     end
 
     shared_context 'creates a new visit' do
       it 'should create a new visit with associated services' do
         expect {
           send_request!
-        }.to change(Visit, :count).by(1)
+        }.to change(Booking, :count).by(1)
       end
 
       it 'redirects to the visit`s date in the calendar' do
         send_request!
 
-        expect(response).to redirect_to visits_path(day: Visit.last.start_date.strftime('%Y-%m-%d'))
+        expect(response).to redirect_to visits_path(day: Booking.last.start_date.strftime('%Y-%m-%d'))
       end
 
       it 'should assign the current user`s workshop id' do
         send_request!
 
-        expect(Visit.last.workshop_id).to eq(current_workshop.id)
+        expect(Booking.last.workshop_id).to eq(current_workshop.id)
       end
 
       it 'should create an associated order' do
         send_request!
 
-        expect(Visit.last.order).to_not be_nil
+        expect(Booking.last.order).to_not be_nil
       end
 
       it 'should assign the current user`s workshop id to the corresponding order' do
         send_request!
 
-        expect(Visit.last.order.workshop_id).to eq(current_workshop.id)
+        expect(Booking.last.order.workshop_id).to eq(current_workshop.id)
       end
 
       it 'does not create a new service' do
@@ -425,7 +425,7 @@ describe VisitsController, type: :controller do
 
     shared_context 'does not create a visit' do
       it 'does not create a new visit' do
-        expect { send_request! }.to_not change(Visit, :count)
+        expect { send_request! }.to_not change(Booking, :count)
       end
 
       it 'does not create a new order service' do
@@ -450,7 +450,7 @@ describe VisitsController, type: :controller do
     shared_context 'handle nested services' do
       let (:current_workshop) { user.current_workshop }
       let (:supplied_workshop_id) { current_workshop.id }
-      let (:visit) { attributes_for(:visit) }
+      let (:booking) { attributes_for(:booking) }
 
       context 'order attributes are not given' do
         let (:order_attributes) { nil }
@@ -484,7 +484,7 @@ describe VisitsController, type: :controller do
         it 'establishes association between order and services' do
           send_request!
 
-          expect(Visit.last.order.services).to match_array(services)
+          expect(Booking.last.order.services).to match_array(services)
         end
 
         it 'creates corresponding OrderService records' do
@@ -505,7 +505,7 @@ describe VisitsController, type: :controller do
       end
 
       context 'invalid service is specified' do
-        let (:order) { attributes_for(:order_service).merge(service_id: 1) }
+        let (:orders) { attributes_for(:order_service).merge(service_id: 1) }
         let (:order_attributes) {
           { order_services_attributes: {'1': order} }
         }
@@ -516,7 +516,7 @@ describe VisitsController, type: :controller do
 
     shared_context 'ignores supplied workshop id' do
       let (:current_workshop) { user.current_workshop }
-      let (:visit) { attributes_for(:visit) }
+      let (:booking) { attributes_for(:booking) }
       let (:order_attributes) { {} }
 
       context 'alternative workshop exists' do
@@ -534,7 +534,7 @@ describe VisitsController, type: :controller do
     end
 
     shared_context 'override workshop id' do
-      let (:visit) { attributes_for(:visit) }
+      let (:booking) { attributes_for(:booking) }
       let (:order_attributes) { {} }
 
       context 'alternative workshop exists' do
@@ -592,7 +592,7 @@ describe VisitsController, type: :controller do
     end
 
     context 'user is not signed in' do
-      let (:visit) { attributes_for(:visit) }
+      let (:booking) { attributes_for(:booking) }
 
       before { send_request! }
 
@@ -606,47 +606,47 @@ describe VisitsController, type: :controller do
     def send_request!
       visit_attrs.merge!(order_attributes: order_attributes) if defined?(order_attributes)
       visit_attrs.merge!(workshop_id: alter_workshop_id) if defined?(alter_workshop_id) and alter_workshop_id != visit.workshop.id
-      put :update, id: visit.id, visit: visit_attrs
+      put :update, id: visit.id, booking: visit_attrs
     end
 
     def query_visit
-      Visit.find(visit.id)
+      Booking.find(visit.id)
     end
 
-    let (:visit) { create(:visit_with_order, workshop: user.current_workshop) }
-    let (:visit_attrs) { attributes_for(:visit) }
+    let (:booking) { create(:visit_with_order, workshop: user.current_workshop) }
+    let (:visit_attrs) { attributes_for(:booking) }
 
-    before { visit }
+    before { booking }
 
     shared_context 'updates a visit' do
       it 'should not create a new visit' do
         expect {
           send_request!
-        }.to change(Visit, :count).by(0)
+        }.to change(Booking, :count).by(0)
       end
 
       it 'redirects to the visit`s date in the calendar' do
         send_request!
 
-        expect(response).to redirect_to visits_path(day: Visit.last.start_date.strftime('%Y-%m-%d'))
+        expect(response).to redirect_to visits_path(day: Booking.last.start_date.strftime('%Y-%m-%d'))
       end
 
       it 'should assign the current user`s workshop id' do
         send_request!
 
-        expect(Visit.last.workshop_id).to eq(current_workshop.id)
+        expect(Booking.last.workshop_id).to eq(current_workshop.id)
       end
 
       it 'should create an associated order' do
         send_request!
 
-        expect(Visit.last.order).to_not be_nil
+        expect(Booking.last.order).to_not be_nil
       end
 
       it 'should assign the current user`s workshop id to the corresponding order' do
         send_request!
 
-        expect(Visit.last.order.workshop_id).to eq(current_workshop.id)
+        expect(Booking.last.order.workshop_id).to eq(current_workshop.id)
       end
 
       it 'does not create new services' do
@@ -670,17 +670,17 @@ describe VisitsController, type: :controller do
       it 'does not remove order items' do
         send_request!
 
-        expect(OrderService.exists?(id: visit.order.order_services[0].id)).to be_truthy
-        expect(OrderService.exists?(id: visit.order.order_services[1].id)).to be_truthy
-        expect(OrderService.exists?(id: visit.order.order_services[2].id)).to be_truthy
+        expect(OrderService.exists?(id: booking.order.order_services[0].id)).to be_truthy
+        expect(OrderService.exists?(id: booking.order.order_services[1].id)).to be_truthy
+        expect(OrderService.exists?(id: booking.order.order_services[2].id)).to be_truthy
       end
 
       it 'does not remove services' do
         send_request!
 
-        expect(Service.exists?(id: visit.order.order_services[0].service.id)).to be_truthy
-        expect(Service.exists?(id: visit.order.order_services[1].service.id)).to be_truthy
-        expect(Service.exists?(id: visit.order.order_services[2].service.id)).to be_truthy
+        expect(Service.exists?(id: booking.order.order_services[0].service.id)).to be_truthy
+        expect(Service.exists?(id: booking.order.order_services[1].service.id)).to be_truthy
+        expect(Service.exists?(id: booking.order.order_services[2].service.id)).to be_truthy
       end
     end
 
@@ -692,7 +692,7 @@ describe VisitsController, type: :controller do
       end
 
       it 'provides validation errors' do
-        expect(assigns[:visit].errors.any?).to be_truthy
+        expect(assigns[:booking].errors.any?).to be_truthy
       end
     end
 
@@ -714,7 +714,7 @@ describe VisitsController, type: :controller do
       context 'valid data provided with a destroy flag on an order item' do
         let (:order_attributes) { { order_services_attributes: order_service_attributes } }
         let (:order_service_attributes) {
-          {'1' => { id: visit.order.order_services[2].id, _destroy: '1' }}
+          {'1' => {id: booking.order.order_services[2].id, _destroy: '1' }}
         }
 
         it_has_behavior 'updates a visit'
@@ -722,14 +722,14 @@ describe VisitsController, type: :controller do
         it 'removes the item from the order' do
           send_request!
 
-          expect(Order.find(visit.order.id).order_services).to contain_exactly(visit.order.order_services[0],
-                                                                                   visit.order.order_services[1])
+          expect(Order.find(booking.order.id).order_services).to contain_exactly(booking.order.order_services[0],
+                                                                                 booking.order.order_services[1])
         end
 
         it 'removes the item from the database' do
           send_request!
 
-          expect(OrderService.exists?(visit.order.order_services[2].id)).to be_falsey
+          expect(OrderService.exists?(booking.order.order_services[2].id)).to be_falsey
         end
       end
 
@@ -782,7 +782,7 @@ describe VisitsController, type: :controller do
       end
 
       context 'invalid data in visit fields' do
-        let (:visit_attrs) { attributes_for(:visit_invalid_fields) }
+        let (:visit_attrs) { attributes_for(:booking_invalid_fields) }
 
         it_has_behavior 'does not change the order'
         it_has_behavior 'reports validation errors'
@@ -852,7 +852,7 @@ describe VisitsController, type: :controller do
     end
 
     context 'user is not signed in' do
-      let (:visit) { create(:visit_with_order, workshop: create(:workshop)) }
+      let (:booking) { create(:visit_with_order, workshop: create(:workshop)) }
 
       it 'redirects to the new session page' do
         send_request!
@@ -868,12 +868,12 @@ describe VisitsController, type: :controller do
     end
 
     def query_visit
-      Visit.find(visit.id)
+      Booking.find(visit.id)
     end
 
-    let (:visit) { create(:visit_with_order, workshop: workshop) }
+    let (:booking) { create(:visit_with_order, workshop: workshop) }
 
-    before { visit }
+    before { booking }
 
     shared_context 'cancel a visit' do
       it 'redirects to the :index page' do
@@ -883,13 +883,13 @@ describe VisitsController, type: :controller do
       end
 
       it 'removes a visit' do
-        expect{ send_request! }.to change(Visit, :count).by(-1)
+        expect{ send_request! }.to change(Booking, :count).by(-1)
       end
 
       it 'removes the visit' do
         send_request!
 
-        expect(Visit.exists?(visit.id)).to be_falsey
+        expect(Booking.exists?(booking.id)).to be_falsey
       end
 
       it 'removes an order' do
@@ -899,7 +899,7 @@ describe VisitsController, type: :controller do
       it 'removes the associated order' do
         send_request!
 
-        expect(Order.exists?(visit.order.id)).to be_falsey
+        expect(Order.exists?(booking.order.id)).to be_falsey
       end
 
       it 'remove order items' do
@@ -907,9 +907,9 @@ describe VisitsController, type: :controller do
       end
 
       it 'remove the order items' do
-        ids = [visit.order.order_services[0].id,
-               visit.order.order_services[1].id,
-               visit.order.order_services[2].id]
+        ids = [booking.order.order_services[0].id,
+               booking.order.order_services[1].id,
+               booking.order.order_services[2].id]
 
         send_request!
 
@@ -930,13 +930,13 @@ describe VisitsController, type: :controller do
       end
 
       it 'does not remove a visit' do
-        expect{ send_request! }.to_not change(Visit, :count)
+        expect{ send_request! }.to_not change(Booking, :count)
       end
 
       it 'does not remove the visit' do
         send_request!
 
-        expect(Visit.exists?(visit.id)).to be_truthy
+        expect(Booking.exists?(booking.id)).to be_truthy
       end
 
       it 'does not remove an order' do
@@ -946,7 +946,7 @@ describe VisitsController, type: :controller do
       it 'does not remove the associated order' do
         send_request!
 
-        expect(Order.exists?(visit.order.id)).to be_truthy
+        expect(Order.exists?(booking.order.id)).to be_truthy
       end
 
       it 'does not remove order items' do
@@ -954,9 +954,9 @@ describe VisitsController, type: :controller do
       end
 
       it 'does not remove the order items' do
-        ids = [visit.order.order_services[0].id,
-               visit.order.order_services[1].id,
-               visit.order.order_services[2].id]
+        ids = [booking.order.order_services[0].id,
+               booking.order.order_services[1].id,
+               booking.order.order_services[2].id]
 
         send_request!
 

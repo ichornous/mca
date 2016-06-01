@@ -69,18 +69,18 @@ class OrdersController < ApplicationController
     if params[:action] == 'index'
       access &= @order_policy.index?(@workshop)
     elsif params[:action] == 'show'
-      access &= @order_policy.show?(@order)
+      access &= @order_policy.show?(@model)
     elsif params[:action] == 'create' or params[:action] == 'new'
       access &= @order_policy.create?(@workshop)
     elsif params[:action] == 'update' or params[:action] == 'edit'
-      access &= @order_policy.update?(@order)
+      access &= @order_policy.update?(@model)
       # if we move `event` from one `workshop` into another
       if @order.workshop != @workshop
-        access &= @workshop_policy.update?(@visit.workshop)
+        access &= @workshop_policy.update?(booking.workshop)
         access &= @workshop_policy.update?(@workshop)
       end
     elsif params[:action] == 'destroy'
-      access &= @order_policy.delete?(@visit)
+      access &= @order_policy.delete?(booking)
     else
       access = false
     end
@@ -95,6 +95,6 @@ class OrdersController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def order_params
-    params.require(:order).permit(:state)
+    params.require(:orders).permit(:state)
   end
 end

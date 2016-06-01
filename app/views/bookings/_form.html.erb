@@ -1,9 +1,9 @@
-<% if @visit.errors.any? %>
+<% if booking.errors.any? %>
     <div class="panel panel-danger">
-      <div class="panel-heading"><%= pluralize(@visit.errors.count, "error") %> prohibited this visit from being saved:</div>
+      <div class="panel-heading"><%= pluralize(booking.errors.count, "error") %> prohibited this visit from being saved:</div>
       <div class="panel-body">
         <ul>
-          <% @visit.errors.full_messages.each do |message| %>
+          <% booking.errors.full_messages.each do |message| %>
               <li><%= message %></li>
           <% end %>
         </ul>
@@ -19,7 +19,7 @@
     <div class="panel-body">
       <div class="row">
         <div class="col-lg-6">
-          <%= form_for(@visit) do |f| %>
+          <%= form_for(booking) do |f| %>
               <%= f.hidden_field :workshop_id %>
 
               <div class="form-group">
@@ -37,7 +37,7 @@
               <div class="form-inline">
                 <div class="form-group">
                   <%= f.select :color,
-                               options_for_select(Visit.event_colors.map {|c| ['', c, {:'data-color' => c}]},
+                               options_for_select(Booking.event_colors.map {|c| ['', c, {:'data-color' => c}]},
                                                   f.object.color),
                                { include_blank: false },
                                { class: 'mca-select-color' } %>
@@ -59,7 +59,7 @@
                 <%= f.text_field :phone_number, type: 'tel', class: 'form-control' %>
               </div>
 
-              <%= f.fields_for :order do |builder| %>
+              <%= f.fields_for :orders do |builder| %>
                   <%= render 'order_fields', :f => builder %>
               <% end %>
 

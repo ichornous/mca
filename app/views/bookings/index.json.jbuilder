@@ -1,4 +1,4 @@
-json.array!(@visits) do |visit|
+json.array!(bookings) do |visit|
   json.extract! visit, :id, :client_name, :car_name, :description, :color
   json.start visit.start_date.to_date.beginning_of_day
   json.end visit.end_date.end_of_day

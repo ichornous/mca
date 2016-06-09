@@ -115,6 +115,7 @@ module Api
 
         params[:booking].delocalize({ start_date: :time, end_date: :time })
       end
+
       # Use callbacks to share common setup or constraints between actions.
       def set_order
         authorize @order = @workshop.orders.find(params[:id])

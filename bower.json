@@ -18,6 +18,8 @@
     "tests"
   ],
   "dependencies": {
+    "angular": "latest",
+    "angular-route": "latest",
     "jquery": "^2.2.3",
     "fullcalendar": "^2.6.1",
     "bootstrap-datepicker": "^1.6.0",

@@ -10,8 +10,8 @@ class ApplicationController < ActionController::Base
   # def default_url_options(options = {})
   #   { locale: I18n.locale }.merge options
   # end
-
-  after_action :verify_authorized
+  def index
+  end
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 

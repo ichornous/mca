@@ -24,6 +24,7 @@ gem "delocalize"
 
 # Font Awesome
 gem "font-awesome-rails"
+gem 'angular-rails-templates'
 # Bootstrap
 #gem 'bootstrap-sass', '~> 3.2.0'
 

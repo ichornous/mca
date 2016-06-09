@@ -10,17 +10,21 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :services, except: [:edit]
-  resources :bookings, except: [:edit]
-  resources :users, except: [:edit]
-  resources :workshops, except: [:edit]
-  resources :orders
+
+  # resources :services, except: [:edit]
+  # resources :bookings, except: [:edit]
+  # resources :users, except: [:edit]
+  # resources :workshops, except: [:edit]
+  # resources :orders
 
   devise_for :users, :path => 'u', :controllers => {:confirmations => 'confirmations'}
   devise_scope :user do
     put "/u/confirmation" => 'confirmations#confirm'
   end
-  get '/:locale' => 'visits#index'
+  root 'application#index'
+  get '*path' => 'application#index'
+
+#  get '/:locale' => 'visits#index'
 
   #get 'visit/index'
 
@@ -28,7 +32,7 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  root 'visits#index'
+  #root 'visits#index'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

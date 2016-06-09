@@ -9,10 +9,11 @@
   <script type="text/javascript">
     window.I18n = <%= current_translations.to_json.html_safe %>
   </script>
+  <base href="/">
 </head>
 <body>
 
-<div id="wrapper">
+<div id="wrapper" ng-app="AngularRails">
   <nav class="navbar navbar-default" role="navigation" style="margin-bottom: 0">
     <div class="container-fluid">
       <div class="navbar-header">
@@ -35,9 +36,9 @@
                 </a>
                 <ul class="dropdown-menu dropdown-user">
                   <li>
-                    <%= link_to(user_path(current_user)) do %>
-                        <%= fa_icon 'user', text: 'User Profile' %>
-                    <% end %>
+                    <!--< %= link_to(user_path(current_user)) do %>-->
+                        <!--< %= fa_icon 'user', text: 'User Profile' %>-->
+                    <!--< % end %>-->
                   </li>
                   <li class="divider"></li>
                   <li>

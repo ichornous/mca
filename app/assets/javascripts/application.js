@@ -10,11 +10,15 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
+
 //= require jquery
 //= require jquery_ujs
 //= require jquery-ui/sortable
-//= require turbolinks
-//= require_tree .
+//= require angular
+//= require angular-route
+//= require angular-rails-templates
+//= require_tree ../templates
+
 
 //= require moment
 //= require moment/locale/ru
@@ -28,3 +32,4 @@
 //= require datatables-responsive/js/dataTables.responsive.js
 
 //= require jquery-simplecolorpicker/jquery.simplecolorpicker
+//= require_tree .

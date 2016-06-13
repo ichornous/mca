@@ -36,7 +36,7 @@ class Order < ActiveRecord::Base
   #
   # Scopes
   #
-  scope :in_range, -> (from, to) { joins(:booking).where('(bookings.start_date <= :up) and (:lo <= bookings.end_date)',
+  scope :in_range, -> (from, to) { where('(start_date <= :up) and (:lo <= end_date)',
                                          lo: from.beginning_of_day.to_formatted_s(:db),
                                          up: to.end_of_day.to_formatted_s(:db)) }
   scope :in_workshop, -> (ws) { where(workshop_id: ws.id) }
@@ -63,7 +63,7 @@ class Order < ActiveRecord::Base
 
   private
   def init!
-    self.color ||= Booking.event_colors[0]
+    self.color ||= Order.event_colors[0]
   end
 
   def end_start_valid_range!

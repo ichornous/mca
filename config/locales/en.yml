@@ -61,10 +61,7 @@ en:
           not_found: "Requested client not found"
         car:
           not_found: "Requested car not found"
-        booking:
-          attributes:
-            order:
-              blank: "Form data is inconsistent"
+        order:
           date_range_invalid: "Date range is invalid"
         user:
           locale_not_supported: "Locale is not supported"

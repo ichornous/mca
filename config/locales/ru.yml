@@ -45,10 +45,7 @@ ru:
           not_found: "Заданный клиент не найден"
         car:
           not_found: "Заданный автомобиль не найден"
-        booking:
-          attributes:
-            order:
-              blank: "Даные формы не согласованы"
+        order:
           date_range_invalid: "Интервал бронирования неправильный"
         user:
           locale_not_supported: "Выбранный язык не поддерживается"

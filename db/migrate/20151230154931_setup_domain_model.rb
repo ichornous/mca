@@ -33,7 +33,7 @@ class SetupDomainModel < ActiveRecord::Migration
     end
 
     create_table :order_services do |t|
-      t.belongs_to :orders, index: true
+      t.belongs_to :order, index: true
       t.belongs_to :service, index: true
       t.decimal :amount
       t.decimal :cost
@@ -49,7 +49,7 @@ class SetupDomainModel < ActiveRecord::Migration
 
     create_table :visits do |t|
       t.belongs_to :workshop, index: true
-      t.belongs_to :orders, index: true
+      t.belongs_to :order, index: true
       t.boolean :returning
       t.text :description
       t.string :client_name

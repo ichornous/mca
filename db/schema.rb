@@ -11,19 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160601141026) do
-
-  create_table "bookings", force: :cascade do |t|
-    t.integer  "order_id"
-    t.text     "description"
-    t.datetime "start_date"
-    t.datetime "end_date"
-    t.string   "color"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-  end
-
-  add_index "bookings", ["order_id"], name: "index_bookings_on_order_id", unique: true
+ActiveRecord::Schema.define(version: 20160613081233) do
 
   create_table "cars", force: :cascade do |t|
     t.integer "workshop_id"
@@ -64,6 +52,10 @@ ActiveRecord::Schema.define(version: 20160601141026) do
     t.string   "state"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.string   "description"
+    t.string   "color"
+    t.datetime "start_date"
+    t.datetime "end_date"
   end
 
   add_index "orders", ["car_id"], name: "index_orders_on_car_id"

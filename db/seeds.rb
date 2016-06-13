@@ -37,74 +37,60 @@ orders = Order.create([
                       ])
 
 order_services = OrderService.create([
-                                         {orders: orders[0], service: services[0] },
-                                         {orders: orders[0], service: services[1] },
-                                         {orders: orders[1], service: services[0] },
-                                         {orders: orders[1], service: services[1] },
-                                         {orders: orders[1], service: services[2] },
-                                         {orders: orders[2], service: services[0] },
-                                         {orders: orders[3], service: services[1] },
-                                         {orders: orders[4], service: services[2] },
-                                         {orders: orders[4], service: services[0] },
-                                         {orders: orders[5], service: services[1] },
-                                         {orders: orders[6], service: services[2] },
+                                         {order: orders[0], service: services[0] },
+                                         {order: orders[0], service: services[1] },
+                                         {order: orders[1], service: services[0] },
+                                         {order: orders[1], service: services[1] },
+                                         {order: orders[1], service: services[2] },
+                                         {order: orders[2], service: services[0] },
+                                         {order: orders[3], service: services[1] },
+                                         {order: orders[4], service: services[2] },
+                                         {order: orders[4], service: services[0] },
+                                         {order: orders[5], service: services[1] },
+                                         {order: orders[6], service: services[2] },
                                      ])
 visits = Booking.create([
                           {
-                              car_name: orders[0].car.description,
-                              description: 'Just a poor guy', client_name: 'Igor', phone_number: '+380123456789',
+                              description: 'Just a poor guy',
                               start_date: DateTime.new(2016, 4, 12, 12, 0, 0, '+2'),
                               end_date: DateTime.new(2016, 4, 12, 12, 0, 0, '+2'),
-                              orders: orders[0],
-                              workshop: workshops[0]
+                              order: orders[0]
                           },
                           {
-                              car_name: orders[1].car.description,
-                              description: 'Right from saloon', client_name: 'Igor', phone_number: '+380123456789',
+                              description: 'Right from saloon',
                               start_date: DateTime.new(2016, 4, 12, 12, 0, 0, '+2'),
                               end_date: DateTime.new(2016, 4, 12, 12, 0, 0, '+2'),
-                              orders: orders[1],
-                              workshop: workshops[0]
+                              order: orders[1]
                           },
                           {
-                              car_name: orders[2].car.description,
-                              description: 'Not his car', client_name: 'Tom', phone_number: '+380000456789',
+                              description: 'Not his car',
                               start_date: DateTime.new(2016, 4, 12, 12, 0, 0, '+2'),
                               end_date: DateTime.new(2016, 4, 12, 12, 0, 0, '+2'),
-                              orders: orders[2],
-                              workshop: workshops[0]
+                              order: orders[2]
                           },
                           {
-                              car_name: orders[3].car.description,
-                              description: 'Have already been here', client_name: 'Tom', phone_number: '+380000456789',
+                              description: 'Have already been here',
                               start_date: DateTime.new(2016, 4, 11, 12, 0, 0, '+2'),
                               end_date: DateTime.new(2016, 4, 12, 12, 0, 0, '+2'),
-                              orders: orders[3],
-                              workshop: workshops[0]
+                              order: orders[3]
                           },
                           {
-                              car_name: orders[4].car.description,
-                              description: 'Is he a cat??', client_name: 'Tom', phone_number: '+380000456789',
+                              description: 'Is he a cat??',
                               start_date: DateTime.new(2016, 4, 11, 12, 0, 0, '+2'),
                               end_date: DateTime.new(2016, 4, 12, 12, 0, 0, '+2'),
-                              orders: orders[4],
-                              workshop: workshops[0]
+                              order: orders[4]
                           },
                           {
-                              car_name: orders[5].car.description,
-                              description: 'Not his car', client_name: 'Justas', phone_number: '+382123456789',
+                              description: 'Not his car',
                               start_date: DateTime.new(2016, 4, 11, 12, 0, 0, '+2'),
                               end_date: DateTime.new(2016, 4, 12, 12, 0, 0, '+2'),
-                              orders: orders[5],
-                              workshop: workshops[0]
+                              order: orders[5]
                           },
                           {
-                              car_name: orders[6].car.description,
-                              description: 'Not his car', client_name: 'Maxim', phone_number: '+383123456789',
+                              description: 'Not his car',
                               start_date: DateTime.new(2016, 4, 12, 12, 0, 0, '+2'),
                               end_date: DateTime.new(2016, 4, 13, 12, 0, 0, '+2'),
-                              orders: orders[6],
-                              workshop: workshops[0]
+                              order: orders[6]
                           },
                       ])
 

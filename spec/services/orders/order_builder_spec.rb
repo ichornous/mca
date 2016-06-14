@@ -3,7 +3,6 @@ describe OrderBuilder do
     before do
       subject.set_workshop(workshop) if defined?(workshop)
       subject.set_attributes(order_attributes) if defined?(order_attributes) and order_attributes
-      subject.set_booking_attributes(booking_attributes) if defined?(booking_attributes) and booking_attributes
       subject.set_client_attributes(client_attributes) if defined?(client_attributes) and client_attributes
       subject.set_car_attributes(car_attributes) if defined?(car_attributes) and car_attributes
     end
@@ -30,7 +29,6 @@ describe OrderBuilder do
       end
 
       it_has_behavior 'does not create order'
-      it_has_behavior 'does not create booking'
       it_has_behavior 'does not create client'
       it_has_behavior 'does not create car'
     end
@@ -46,20 +44,6 @@ describe OrderBuilder do
 
       it 'assigns order attributes' do
         expect(subject.create).to have_attributes(order_attributes) if order_attributes
-      end
-    end
-
-    shared_context 'creates booking' do
-      it 'creates new record in the booking table' do
-        expect{ subject.create }.to change(Booking, :count).by(1)
-      end
-
-      it 'associates the booking with the order' do
-        expect(subject.create.booking).to_not be_nil
-      end
-
-      it 'assigns booking attributes' do
-        expect(subject.create.booking).to have_attributes(booking_attributes)
       end
     end
 
@@ -97,12 +81,6 @@ describe OrderBuilder do
       end
     end
 
-    shared_context 'does not create booking' do
-      it 'no new booking record is added' do
-        expect{ subject.create }.to_not change(Booking, :count)
-      end
-    end
-
     shared_context 'does not create client' do
       it 'no new client record is added' do
         expect{ subject.create }.to_not change(Client, :count)
@@ -117,16 +95,15 @@ describe OrderBuilder do
 
     context 'valid parameters' do
       let (:workshop) { create(:workshop) }
-      let (:order_attributes) { {state: 'new'} }
-      let (:booking_attributes) { attributes_for(:booking) }
+      let (:order_attributes) { attributes_for(:order) }
 
       context 'create a client and a car' do
         let (:client_attributes) { attributes_for(:client) }
         let (:car_attributes) { attributes_for(:car) }
 
+
         it_has_behavior 'succeeds'
         it_has_behavior 'creates order'
-        it_has_behavior 'creates booking'
         it_has_behavior 'creates client'
         it_has_behavior 'creates car'
       end
@@ -140,7 +117,6 @@ describe OrderBuilder do
 
         it_has_behavior 'succeeds'
         it_has_behavior 'creates order'
-        it_has_behavior 'creates booking'
         it_has_behavior 'does not create client'
         it_has_behavior 'does not create car'
       end
@@ -148,8 +124,7 @@ describe OrderBuilder do
 
     context 'invalid parameters' do
       let (:workshop) { create(:workshop) }
-      let (:order_attributes) { {state: 'new'} }
-      let (:booking_attributes) { attributes_for(:booking) }
+      let (:order_attributes) { attributes_for(:order) }
       let (:client_attributes) { attributes_for(:client) }
       let (:car_attributes) { attributes_for(:car) }
 
@@ -157,7 +132,13 @@ describe OrderBuilder do
         it 'reports nothing but car and client keys' do
           subject.create
 
-          expect(subject.errors.count).to eq(2)
+          expect(subject.errors.count).to eq(3)
+        end
+
+        it 'reports order validation error' do
+          subject.create
+
+          expect(subject.errors).to include(order: include(:client, :car))
         end
 
         it 'reports a missing client' do
@@ -191,15 +172,15 @@ describe OrderBuilder do
         it_has_behavior 'reports missing car and client'
       end
 
-      context 'booking is invalid' do
-        let (:booking_attributes) { attributes_for(:booking_invalid_fields) }
+      context 'order is invalid' do
+        let (:order_attributes) { attributes_for(:order_invalid_fields) }
 
         it_has_behavior 'fails gently'
 
-        it 'reports booking errors' do
+        it 'reports order errors' do
           subject.create
 
-          expect(subject.errors).to include(:booking)
+          expect(subject.errors).to include(:order)
         end
       end
     end

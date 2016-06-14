@@ -12,13 +12,13 @@ class OrderBuilder
   def create
     ActiveRecord::Base.transaction do
       order = @workshop.orders.build(@order_attributes)
-      order.client = get_client
-      order.car = get_car
+      order.client = create_client
+      order.car = create_car
 
       if order.save
         @order = order
       else
-        report_errors(order)
+        report_errors(:order, order)
         raise ActiveRecord::Rollback
       end
       @order
@@ -56,21 +56,33 @@ class OrderBuilder
   end
 
   private
-  def get_client
+  def create_client
     if @client_id
       @workshop.clients.find(@client_id)
     elsif @client_attributes
-      @workshop.clients.build(@client_attributes)
+      client = @workshop.clients.build(@client_attributes)
+      if client.save
+        client
+      else
+        report_errors(:client, client)
+        nil
+      end
     end
   rescue ActiveRecord::RecordNotFound => exception
     fail(:client, :id, I18n.t('activerecord.errors.models.client.not_found'))
   end
 
-  def get_car
+  def create_car
     if @car_id
       @workshop.cars.find(@car_id)
     elsif @car_attributes
-      @workshop.cars.build(@car_attributes)
+      car = @workshop.cars.build(@car_attributes)
+      if car.save
+        car
+      else
+        report_errors(:car, car)
+        nil
+      end
     end
   rescue ActiveRecord::RecordNotFound => exception
     fail(:car, :id, I18n.t('activerecord.errors.models.car.not_found'))
@@ -82,17 +94,7 @@ class OrderBuilder
     end
   end
 
-  def report_errors(order)
-    [:client, :car].each do |submodel|
-      (order.errors.messages[submodel] || []).each do |message|
-        fail(submodel, :id, message)
-      end
-
-      report_submodel_errors(submodel, order.send(submodel))
-    end
-  end
-
-  def report_submodel_errors(key, model)
+  def report_errors(key, model)
     if model
       model.errors.messages.each do |k, v|
         fail(key, k, v)

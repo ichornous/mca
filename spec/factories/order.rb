@@ -5,6 +5,9 @@ FactoryGirl.define do
     car
     state 'NEW'
 
+    description { Faker::Lorem.paragraph }
+    color { Order.event_colors.sample }
+
     start_date 0.days.from_now
     end_date 1.day.from_now
 

@@ -4,7 +4,6 @@ class OrderBuilder
 
   def initialize
     @order_attributes ||= {}
-    @booking_attributes ||= {}
     @client_attributes ||= {}
     @car_attributes ||= {}
     @errors = {}
@@ -15,7 +14,6 @@ class OrderBuilder
       order = @workshop.orders.build(@order_attributes)
       order.client = get_client
       order.car = get_car
-      order.build_booking(@booking_attributes)
 
       if order.save
         @order = order
@@ -37,13 +35,7 @@ class OrderBuilder
 
   def set_attributes(attrs = {})
     if attrs
-      copy_attrs(@order_attributes, attrs, [:state])
-    end
-  end
-
-  def set_booking_attributes(attrs = {})
-    if attrs
-      copy_attrs(@booking_attributes, attrs, [:start_date, :end_date, :color, :description])
+      copy_attrs(@order_attributes, attrs, [:start_date, :end_date, :description, :color, :state])
     end
   end
 
@@ -91,7 +83,7 @@ class OrderBuilder
   end
 
   def report_errors(order)
-    [:client, :car, :booking].each do |submodel|
+    [:client, :car].each do |submodel|
       (order.errors.messages[submodel] || []).each do |message|
         fail(submodel, :id, message)
       end
@@ -116,7 +108,6 @@ class OrderBuilder
   end
 
   attr_accessor :order_attributes
-  attr_accessor :booking_attributes
   attr_accessor :client_id
   attr_accessor :client_attributes
   attr_accessor :car_id

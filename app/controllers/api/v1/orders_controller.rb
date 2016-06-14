@@ -45,12 +45,11 @@ module Api
       #
       # ==Create a new order along with booking details, a client and a car
       # {
-      #   booking: {
-      #     start_date: '05-06-2016'
-      #     end_date: '20-06-2016'
-      #     color: '#ff0000'
-      #     description: 'Lorem impsum'
-      #   },
+      #
+      #   start_date: '05-06-2016'
+      #   end_date: '20-06-2016'
+      #   color: '#ff0000'
+      #   description: 'Lorem impsum',
       #   client: {
       #     name: 'John Doe',
       #     phone_number: ['+.....']
@@ -62,12 +61,10 @@ module Api
       #
       # ==Create a new order for a returning client and a new car
       # {
-      #   booking: {
-      #     start_date: '05-06-2016'
-      #     end_date: '20-06-2016'
-      #     color: '#ff0000'
-      #     description: 'Lorem impsum'
-      #   },
+      #   start_date: '05-06-2016'
+      #   end_date: '20-06-2016'
+      #   color: '#ff0000'
+      #   description: 'Lorem impsum',
       #   client: 223,
       #   car: {
       #     description: 'Mercedes C-Klass (2016)'
@@ -77,8 +74,7 @@ module Api
       def create
         order_builder = OrderBuilder.new
         order_builder.set_workshop(@workshop)
-        order_builder.set_attributes(state: 'new')
-        order_builder.set_booking_attributes(booking_params)
+        order_builder.set_attributes(order_params)
         order_builder.set_client_attributes(params[:client])
         order_builder.set_car_attributes(params[:car])
 
@@ -110,11 +106,10 @@ module Api
         render json: { errors: error_hash }, status: :unprocessable_entity
       end
 
-      def booking_params
-        return nil unless params[:booking]
-
-        params[:booking].delocalize({ start_date: :time, end_date: :time })
+      def order_params
+        params.permit(:start_date, :end_date, :description, :color).delocalize({ start_date: :time, end_date: :time })
       end
+
       # Use callbacks to share common setup or constraints between actions.
       def set_order
         authorize @order = @workshop.orders.find(params[:id])
@@ -124,7 +119,7 @@ module Api
         authorize @workshop = Workshop.find(params[:workshop_id])
       end
 
-      def order_params
+      def order_service_params
         permitted = params.permit(services: [:service_id, :amount, :cost, :time])
         permitted[:order_service_attributes] = permitted.delete :services
         permitted.permit!

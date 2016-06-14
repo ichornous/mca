@@ -171,12 +171,19 @@ describe Api::V1::OrdersController, type: :controller do
     end
   end
 
-  describe 'POST #create', focus: true do
+  describe 'POST #create' do
+
     def send_request!
       order = {}
-      order.merge!(booking: booking_as_args(booking_attributes)) if defined?(booking_attributes) and booking_attributes
       order.merge!(client: client_attributes) if defined?(client_attributes) and client_attributes
       order.merge!(car: car_attributes) if defined?(car_attributes) and car_attributes
+
+      if defined?(order_attributes) and order_attributes
+        order.merge!(start_date: order_attributes[:start_date].strftime('%d/%m/%Y')) if order_attributes[:start_date]
+        order.merge!(end_date: order_attributes[:end_date].strftime('%d/%m/%Y')) if order_attributes[:end_date]
+        order.merge!(description: order_attributes[:description]) if order_attributes[:description]
+        order.merge!(color: order_attributes[:color]) if order_attributes[:color]
+      end
 
       opts = {}
       opts.merge!(order)
@@ -190,7 +197,7 @@ describe Api::V1::OrdersController, type: :controller do
       let (:user) { create(:sales, workshop: workshop) }
       before { sign_in user }
 
-      let (:booking_attributes) { attributes_for(:booking) }
+      let (:order_attributes) { attributes_for(:order) }
       let (:client_attributes) { attributes_for(:client) }
       let (:car_attributes) { attributes_for(:car) }
 
@@ -199,31 +206,21 @@ describe Api::V1::OrdersController, type: :controller do
           expect{ send_request! }.to change(Order, :count).by(1)
         end
 
-        it 'creates a new booking' do
-          expect{ send_request! }.to change(Booking, :count).by(1)
-        end
-
-        it 'assigns booking attributes to the newly created booking' do
-          send_request!
-
-          expect(Booking.last).to have_attributes(description: booking_attributes[:description],
-                                                  color: booking_attributes[:color])
-          expect(Booking.last).to have_attributes(start_date: be_between(booking_attributes[:start_date].beginning_of_day,
-                                                                         booking_attributes[:start_date].end_of_day)) if booking_attributes[:start_date]
-          expect(Booking.last).to have_attributes(end_date: be_between(booking_attributes[:end_date].beginning_of_day,
-                                                                       booking_attributes[:end_date].end_of_day)) if booking_attributes[:end_date]
-        end
-
         it 'returns the id of the newly created order' do
           send_request!
 
-          expect(json['id']).to eq(Booking.last.id)
+          expect(json['id']).to eq(Order.last.id)
         end
 
-        it 'associates the booking with the order' do
+        it 'assigns order attributes to the newly created order' do
           send_request!
 
-          expect(Order.last.booking).to eq(Booking.last)
+          expect(Order.last).to have_attributes(description: order_attributes[:description],
+                                                color: order_attributes[:color])
+          expect(Order.last).to have_attributes(start_date: be_between(order_attributes[:start_date].beginning_of_day,
+                                                                       order_attributes[:start_date].end_of_day)) if order_attributes[:start_date]
+          expect(Order.last).to have_attributes(end_date: be_between(order_attributes[:end_date].beginning_of_day,
+                                                                     order_attributes[:end_date].end_of_day)) if order_attributes[:end_date]
         end
       end
 
@@ -275,7 +272,7 @@ describe Api::V1::OrdersController, type: :controller do
         end
       end
 
-      context 'valid parameters' do
+      context 'valid parameters', focus: true do
         it_has_behavior 'processes api request with success'
 
         context 'do not reuse a client and an order' do
@@ -305,7 +302,6 @@ describe Api::V1::OrdersController, type: :controller do
       end
 
       context 'invalid parameters' do
-        let (:booking_attributes) { attributes_for(:booking_invalid_fields) }
         let! (:client) { create(:client) }
         let! (:car) { create(:car) }
 

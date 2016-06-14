@@ -1,9 +1,11 @@
 $(document).on('ready page:load', function() {
     var calendarContainer = $("#calendar");
     var cursorDate = calendarContainer.data('cursor-date');
+    var workshop_id = calendarContainer.data('workshop-id');
     var locale = $('#calendar').data('locale');
+
     calendarContainer.fullCalendar({
-        events: '/visits.json',
+        events: '/api/v1/workshops/' + workshop_id + '/orders',
         lang: locale,
         selectable: true,
         editable: true,
@@ -12,7 +14,7 @@ $(document).on('ready page:load', function() {
         defaultView: 'basicWeek',
         customButtons: {
             selectWorkshop: {
-                text: I18n.visits.index.btn_create_visit,
+                text: I18n.orders.index.btn_create_visit,
                 click: function() {
                     window.location='/visits/new';
                 }

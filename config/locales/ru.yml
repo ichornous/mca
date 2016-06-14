@@ -65,7 +65,7 @@ ru:
     form:
       profile_title_html: "Профиль"
 
-  visits:
+  orders:
     create:
       success: "Бронировка успешно создана."
     update:

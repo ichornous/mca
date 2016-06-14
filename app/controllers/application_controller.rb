@@ -11,8 +11,6 @@ class ApplicationController < ActionController::Base
   #   { locale: I18n.locale }.merge options
   # end
 
-  after_action :verify_authorized
-
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   private

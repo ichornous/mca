@@ -28,7 +28,7 @@ module Api
         @orders = Order.in_workshop(@workshop)
         @orders = @orders.in_range(start_date.to_datetime, end_date.to_datetime) if start_date and end_date
 
-        render json: @orders
+        respond_with(@orders)
       end
 
       # GET /api/v1/orders/1

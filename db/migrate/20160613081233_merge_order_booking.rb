@@ -4,13 +4,15 @@ class MergeOrderBooking < ActiveRecord::Migration
     add_column :orders, :color, :string
     add_column :orders, :start_date, :datetime
     add_column :orders, :end_date, :datetime
-    
-    Booking.all().each do |booking|
-      booking.order.description = booking.description
-      booking.order.color = booking.color
-      booking.order.start_date = booking.start_date
-      booking.order.end_date = booking.end_date
-      booking.order.save!
+
+    if defined?(Booking) and defined?(Order)
+      Booking.all().each do |booking|
+        booking.order.description = booking.description
+        booking.order.color = booking.color
+        booking.order.start_date = booking.start_date
+        booking.order.end_date = booking.end_date
+        booking.order.save!
+      end
     end
 
     remove_index :bookings, :order_id
@@ -26,13 +28,15 @@ class MergeOrderBooking < ActiveRecord::Migration
       t.string :color
     end
 
-    Order.all().each do |order|
-      Booking.create(
-          order_id: order.id,
-          description: order.description,
-          color: order.color,
-          start_date: order.start_date,
-          end_date: order.end_date)
+    if defined?(Booking) and defined?(Order)
+      Order.all().each do |order|
+        Booking.create(
+            order_id: order.id,
+            description: order.description,
+            color: order.color,
+            start_date: order.start_date,
+            end_date: order.end_date)
+      end
     end
 
     remove_column :orders, :description

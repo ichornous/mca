@@ -27,14 +27,13 @@ class OrdersController < ApplicationController
   def create
     order_builder = OrderBuilder.new
     order_builder.set_workshop(@workshop)
-    order_builder.set_attributes(state: 'new')
-    order_builder.set_booking_attributes(booking_params)
+    order_builder.set_attributes(order_params)
     order_builder.set_client_attributes(params[:client])
     order_builder.set_car_attributes(params[:car])
 
     @order = order_builder.create
     if @order
-      redirect_to visits_url(day: fmt_day(booking.start_date)), notice: t('.success')
+      redirect_to orders_url(day: fmt_day(@order.start_date)), notice: t('.success')
     else
       render :new
     end
@@ -71,5 +70,9 @@ class OrdersController < ApplicationController
 
   def parse_day(str)
     DateTime.strptime(str, DEFAULT_DATE_FORMAT) rescue DateTime.now
+  end
+
+  def order_params
+    params.require(:order).permit(:description, :start_date, :end_date, :color)
   end
 end

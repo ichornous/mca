@@ -82,7 +82,7 @@ en:
     form:
       profile_title_html: "Profile"
 
-  visits:
+  orders:
     create:
       success: "Booking was successfully created."
     update:

@@ -1,8 +1,8 @@
 class OrdersController < ApplicationController
   DEFAULT_DATE_FORMAT = '%Y-%m-%d'
 
-  before_action :set_order, only: [:show, :update, :destroy]
   before_action :set_workshop
+  before_action :set_order, only: [:show, :update, :destroy]
 
   def index
     authorize Order
@@ -14,12 +14,22 @@ class OrdersController < ApplicationController
   # GET /orders/1
   # GET /orders/1.json
   def show
+    @client = @order.client
+    @car = @order.car
   end
 
   # GET /orders/new
   def new
-    @order = @workshop.build_order
+    @order = @workshop.orders.build
+    @order.start_date = DateTime.now
+    @order.end_date = DateTime.now
+
+    @client = @workshop.clients.build
+    @car = @workshop.cars.build
+
     authorize @order
+    authorize @car
+    authorize @client
   end
 
   # POST /events
@@ -61,7 +71,7 @@ class OrdersController < ApplicationController
   end
 
   def set_workshop
-    authorize @workshop = Workshop.find(params[:workshop_id])
+    authorize @workshop = current_user.current_workshop
   end
 
   def fmt_day(date)

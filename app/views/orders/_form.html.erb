@@ -1,9 +1,9 @@
-<% if booking.errors.any? %>
+<% if @order.errors.any? %>
     <div class="panel panel-danger">
-      <div class="panel-heading"><%= pluralize(booking.errors.count, "error") %> prohibited this visit from being saved:</div>
+      <div class="panel-heading"><%= pluralize(@order.errors.count, "error") %> prohibited this visit from being saved:</div>
       <div class="panel-body">
         <ul>
-          <% booking.errors.full_messages.each do |message| %>
+          <% @order.errors.full_messages.each do |message| %>
               <li><%= message %></li>
           <% end %>
         </ul>
@@ -19,7 +19,7 @@
     <div class="panel-body">
       <div class="row">
         <div class="col-lg-6">
-          <%= form_for(booking) do |f| %>
+          <%= form_for(@order) do |f| %>
               <%= f.hidden_field :workshop_id %>
 
               <div class="form-group">
@@ -37,31 +37,35 @@
               <div class="form-inline">
                 <div class="form-group">
                   <%= f.select :color,
-                               options_for_select(Booking.event_colors.map {|c| ['', c, {:'data-color' => c}]},
+                               options_for_select(Order.event_colors.map {|c| ['', c, {:'data-color' => c}]},
                                                   f.object.color),
                                { include_blank: false },
                                { class: 'mca-select-color' } %>
                 </div>
               </div>
 
-              <div class="form-group">
-                <%= f.label :client_name %><br>
-                <%= f.text_field :client_name, class: 'form-control' %>
-              </div>
+              <%= fields_for @client do |u| %>
+                  <div class="form-group">
+                    <%= u.label :name %><br>
+                    <%= u.text_field :name, class: 'form-control' %>
+                  </div>
 
-              <div class="form-group">
-                <%= f.label :car_name %><br>
-                <%= f.text_field :car_name, class: 'form-control' %>
-              </div>
-
-              <div class="form-group">
-                <%= f.label :phone_number %><br>
-                <%= f.text_field :phone_number, type: 'tel', class: 'form-control' %>
-              </div>
-
-              <%= f.fields_for :orders do |builder| %>
-                  <%= render 'order_fields', :f => builder %>
+                  <div class="form-group">
+                    <%= u.label :phone %><br>
+                    <%= u.text_field :phone, type: 'tel', class: 'form-control' %>
+                  </div>
               <% end %>
+
+              <%= fields_for @car do |u| %>
+                  <div class="form-group">
+                    <%= u.label :description %><br>
+                    <%= u.text_field :description, class: 'form-control' %>
+                  </div>
+              <% end %>
+
+              <!--< %= f.fields_for :orders do |builder| %>-->
+                  <!--< %= render 'order_fields', :f => builder %>-->
+              <!--< % end %>-->
 
               <div class="form-group">
                 <%= f.label :description %><br>

@@ -1,4 +1,6 @@
 ru:
+  errors:
+    connection_refused: "В подключении отказано"
   time:
     input:
       formats: "[:slashes]"

@@ -12,9 +12,7 @@ Rails.application.routes.draw do
 
   resources :services, except: [:edit]
   resources :users, except: [:edit]
-  resources :workshops, except: [:edit], defaults: { format: :html } do
-    resources :orders, except: [:edit]
-  end
+  resources :orders, except: [:edit], defaults: { format: :html }
 
   devise_for :users, :path => 'u', :controllers => {:confirmations => 'confirmations'}
   devise_scope :user do

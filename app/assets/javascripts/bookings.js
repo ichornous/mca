@@ -16,7 +16,7 @@ $(document).on('ready page:load', function() {
             selectWorkshop: {
                 text: I18n.orders.index.btn_create_visit,
                 click: function() {
-                    window.location='/visits/new';
+                    window.location='/orders/new';
                 }
             }
         },

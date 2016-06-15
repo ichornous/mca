@@ -1,31 +1,23 @@
 describe OrderBuilder do
+  let(:subject) { OrderBuilder.new(workshop) }
+  let(:workshop) { create(:workshop) }
+
   describe '#create' do
     before do
-      subject.set_workshop(workshop) if defined?(workshop)
-      subject.set_attributes(order_attributes) if defined?(order_attributes) and order_attributes
-      subject.set_client_attributes(client_attributes) if defined?(client_attributes) and client_attributes
-      subject.set_car_attributes(car_attributes) if defined?(car_attributes) and car_attributes
+      subject.order_attributes = order_attributes if defined?(order_attributes) and order_attributes
+      subject.client_attributes = client_attributes if defined?(client_attributes) and client_attributes
+      subject.car_attributes = car_attributes if defined?(car_attributes) and car_attributes
     end
 
     shared_context 'succeeds' do
       it 'returns a non null result' do
-        expect(subject.create).to_not be_nil
-      end
-
-      it 'returns an object of type Order' do
-        expect(subject.create).to be_a(Order)
+        expect(subject.create).to_not be_falsey
       end
     end
 
     shared_context 'fails gently' do
       it 'returns a null result' do
-        expect(subject.create).to be_nil
-      end
-
-      it 'populates errors' do
-        subject.create
-
-        expect(subject.errors).to_not be_empty
+        expect(subject.create).to be_falsey
       end
 
       it_has_behavior 'does not create order'
@@ -39,11 +31,15 @@ describe OrderBuilder do
       end
 
       it 'creates an order in a given workshop' do
-        expect(subject.create.try(:workshop)).to eq(workshop)
+        subject.create
+
+        expect(subject.order.try(:workshop)).to eq(workshop)
       end
 
       it 'assigns order attributes' do
-        expect(subject.create).to have_attributes(order_attributes) if order_attributes
+        subject.create
+
+        expect(subject.order).to have_attributes(order_attributes) if order_attributes
       end
     end
 
@@ -52,12 +48,22 @@ describe OrderBuilder do
         expect{ subject.create }.to change(Client, :count).by(1)
       end
 
+      it 'associates saves the newly created client' do
+        subject.create
+
+        expect(subject.client).to eq(Client.last)
+      end
+
       it 'associates the client with the order' do
-        expect(subject.create.client).to_not be_nil
+        subject.create
+
+        expect(subject.client).to eq(subject.order.client)
       end
 
       it 'assigns client attributes' do
-        expect(subject.create.client).to have_attributes(client_attributes)
+        subject.create
+
+        expect(subject.client).to have_attributes(client_attributes)
       end
     end
 
@@ -66,12 +72,22 @@ describe OrderBuilder do
         expect{ subject.create }.to change(Car, :count).by(1)
       end
 
-      it 'associates the car with the order' do
-        expect(subject.create.car).to_not be_nil
+      it 'associates saves the newly created client' do
+        subject.create
+
+        expect(subject.car).to eq(Car.last)
+      end
+
+      it 'associates the client with the order' do
+        subject.create
+
+        expect(subject.car).to eq(subject.order.car)
       end
 
       it 'assigns client attributes' do
-        expect(subject.create.car).to have_attributes(car_attributes)
+        subject.create
+
+        expect(subject.car).to have_attributes(car_attributes)
       end
     end
 
@@ -94,13 +110,11 @@ describe OrderBuilder do
     end
 
     context 'valid parameters' do
-      let (:workshop) { create(:workshop) }
       let (:order_attributes) { attributes_for(:order) }
 
       context 'create a client and a car' do
         let (:client_attributes) { attributes_for(:client) }
         let (:car_attributes) { attributes_for(:car) }
-
 
         it_has_behavior 'succeeds'
         it_has_behavior 'creates order'
@@ -112,13 +126,25 @@ describe OrderBuilder do
         let! (:client) { create(:client, workshop: workshop) }
         let! (:car) { create(:car, workshop: workshop) }
 
-        let (:client_attributes) { client.id }
-        let (:car_attributes) { car.id }
+        let (:client_attributes) { attributes_for(:client).merge(id: client.id) }
+        let (:car_attributes) { attributes_for(:car).merge(id: car.id) }
 
         it_has_behavior 'succeeds'
         it_has_behavior 'creates order'
         it_has_behavior 'does not create client'
         it_has_behavior 'does not create car'
+
+        it 'assigns new attributes to client' do
+          subject.create
+
+          expect(subject.client).to have_attributes(client_attributes.except(:id))
+        end
+
+        it 'assigns new attributes to car' do
+          subject.create
+
+          expect(subject.car).to have_attributes(car_attributes.except(:id))
+        end
       end
     end
 
@@ -155,21 +181,27 @@ describe OrderBuilder do
       end
 
       context 'car and client are missing' do
-        let (:client_attributes) { 1 }
-        let (:car_attributes) { 1 }
+        let (:client_attributes) { attributes_for(:client).merge(id: 1) }
+        let (:car_attributes) { attributes_for(:car).merge(id: 1) }
 
-        it_has_behavior 'fails gently'
-        it_has_behavior 'reports missing car and client'
+        it 'fails with not found error' do
+          expect {
+            subject.create
+          }.to raise_error(ActiveRecord::RecordNotFound)
+        end
       end
 
       context 'car and client belong to different workshop' do
         let! (:client) { create(:client) }
         let! (:car) { create(:car) }
-        let (:client_attributes) { client.id }
-        let (:car_attributes) { car.id }
+        let (:client_attributes) { attributes_for(:client).merge(id: client.id) }
+        let (:car_attributes) { attributes_for(:car).merge(id: car.id) }
 
-        it_has_behavior 'fails gently'
-        it_has_behavior 'reports missing car and client'
+        it 'fails with not found error' do
+          expect {
+            subject.create
+          }.to raise_error(ActiveRecord::RecordNotFound)
+        end
       end
 
       context 'order is invalid' do
@@ -180,7 +212,7 @@ describe OrderBuilder do
         it 'reports order errors' do
           subject.create
 
-          expect(subject.errors).to include(:order)
+          expect(subject.order.errors).to include(:end_date)
         end
       end
     end

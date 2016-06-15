@@ -72,16 +72,21 @@ module Api
       # }
       #
       def create
-        order_builder = OrderBuilder.new
-        order_builder.set_workshop(@workshop)
-        order_builder.set_attributes(order_params)
-        order_builder.set_client_attributes(params[:client])
-        order_builder.set_car_attributes(params[:car])
+        order_builder = OrderBuilder.new(@workshop)
+        order_builder.order_attributes = unsafe_params[:order].except(:id)
+        order_builder.client_attributes = unsafe_params[:client]
+        order_builder.car_attributes = unsafe_params[:car]
 
         if order_builder.create
           render json: { id: order_builder.order.id }, status: :ok
         else
-          report_error(order_builder.errors)
+          errors = {}
+          [:order, :client, :car].each do |key|
+            next unless order_builder.send(key).try(:errors).try(:any?)
+            errors.merge!(key => order_builder.send(key).send(:errors))
+          end
+
+          render json: { errors: errors }, status: :unprocessable_entity
         end
       end
 
@@ -103,11 +108,7 @@ module Api
 
       private
       def report_error(error_hash = {})
-        render json: { errors: error_hash }, status: :unprocessable_entity
-      end
 
-      def order_params
-        params.permit(:start_date, :end_date, :description, :color).delocalize({ start_date: :time, end_date: :time })
       end
 
       # Use callbacks to share common setup or constraints between actions.
@@ -119,10 +120,9 @@ module Api
         authorize @workshop = Workshop.find(params[:workshop_id])
       end
 
-      def order_service_params
-        permitted = params.permit(services: [:service_id, :amount, :cost, :time])
-        permitted[:order_service_attributes] = permitted.delete :services
-        permitted.permit!
+      def unsafe_params
+        @unsafe_params ||= ActiveSupport::HashWithIndifferentAccess.new(params)
+        @unsafe_params
       end
     end
   end

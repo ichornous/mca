@@ -35,16 +35,17 @@ class OrdersController < ApplicationController
   # POST /events
   # POST /events.json
   def create
-    order_builder = OrderBuilder.new
-    order_builder.set_workshop(@workshop)
-    order_builder.set_attributes(order_params)
-    order_builder.set_client_attributes(params[:client])
-    order_builder.set_car_attributes(params[:car])
+    order_builder = OrderBuilder.new(@workshop)
+    order_builder.order_attributes = unsafe_params[:order].except(:id)
+    order_builder.client_attributes = unsafe_params[:client]
+    order_builder.car_attributes = unsafe_params[:car]
 
-    @order = order_builder.create
-    if @order
-      redirect_to orders_url(day: fmt_day(@order.start_date)), notice: t('.success')
+    if order_builder.create
+      redirect_to orders_url(day: fmt_day(order_builder.order.start_date)), notice: t('.success')
     else
+      @client_errors = order_builder.client.errors
+      @car_errors = order_builder.car.errors
+      @order_errors = order_builder.order.errors
       render :new
     end
   end
@@ -52,6 +53,19 @@ class OrdersController < ApplicationController
   # PATCH/PUT /events/1
   # PATCH/PUT /events/1.json
   def update
+    order_builder = OrderBuilder.new(@workshop)
+    order_builder.order_attributes = unsafe_params[:order].merge(id: @order.id)
+    order_builder.client_attributes = unsafe_params[:client]
+    order_builder.car_attributes = unsafe_params[:car]
+
+    if order_builder.create
+      redirect_to orders_url(day: fmt_day(order_builder.order.start_date)), notice: t('.success')
+    else
+      @client_errors = order_builder.client.errors
+      @car_errors = order_builder.car.errors
+      @order_errors = order_builder.order.errors
+      render :show
+    end
   end
 
   # DELETE /events/1
@@ -82,7 +96,8 @@ class OrdersController < ApplicationController
     DateTime.strptime(str, DEFAULT_DATE_FORMAT) rescue DateTime.now
   end
 
-  def order_params
-    params.require(:order).permit(:description, :start_date, :end_date, :color)
+  def unsafe_params
+    @unsafe_params ||= ActiveSupport::HashWithIndifferentAccess.new(params)
+    @unsafe_params
   end
 end

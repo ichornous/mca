@@ -73,6 +73,7 @@ describe Api::V1::OrdersController, type: :controller do
       opts.merge!(start: arg_start.iso8601) if defined?(arg_start)
       opts.merge!(end: arg_end.iso8601) if defined?(arg_end)
       opts.merge!(workshop_id: workshop.id)
+      opts.merge!(format: :json)
       get :index, opts
     end
 
@@ -134,6 +135,7 @@ describe Api::V1::OrdersController, type: :controller do
       opts = {}
       opts.merge!(id: id || order.id)
       opts.merge!(workshop_id: workshop.id)
+      opts.merge!(format: :json)
       get :show, opts
     end
 
@@ -174,20 +176,22 @@ describe Api::V1::OrdersController, type: :controller do
   describe 'POST #create' do
 
     def send_request!
-      order = {}
-      order.merge!(client: client_attributes) if defined?(client_attributes) and client_attributes
-      order.merge!(car: car_attributes) if defined?(car_attributes) and car_attributes
+      opts = {}
+
+      opts.merge!(client: client_attributes) if defined?(client_attributes) and client_attributes
+      opts.merge!(car: car_attributes) if defined?(car_attributes) and car_attributes
 
       if defined?(order_attributes) and order_attributes
+        order = {}
         order.merge!(start_date: order_attributes[:start_date].strftime('%d/%m/%Y')) if order_attributes[:start_date]
         order.merge!(end_date: order_attributes[:end_date].strftime('%d/%m/%Y')) if order_attributes[:end_date]
         order.merge!(description: order_attributes[:description]) if order_attributes[:description]
         order.merge!(color: order_attributes[:color]) if order_attributes[:color]
+        opts.merge!(order: order)
       end
 
-      opts = {}
-      opts.merge!(order)
       opts.merge!(workshop_id: workshop.id)
+      opts.merge!(format: :json)
       post :create, opts
     end
 
@@ -254,7 +258,7 @@ describe Api::V1::OrdersController, type: :controller do
         end
       end
 
-      shared_context 'reports failure' do
+      shared_context 'reports not found' do
         before do
           send_request!
         end
@@ -264,11 +268,7 @@ describe Api::V1::OrdersController, type: :controller do
         end
 
         it 'returns status :unprocessable_entry' do
-          expect(response).to have_http_status(:unprocessable_entity)
-        end
-
-        it 'returns a json object with entry `errors`' do
-          expect(json).to include('errors')
+          expect(response).to have_http_status(:not_found)
         end
       end
 
@@ -292,8 +292,8 @@ describe Api::V1::OrdersController, type: :controller do
           let! (:client) { create(:client, workshop: workshop) }
           let! (:car) { create(:car, workshop: workshop) }
 
-          let (:client_attributes) { client.id }
-          let (:car_attributes) { car.id }
+          let (:client_attributes) { attributes_for(:client).merge(id: client.id) }
+          let (:car_attributes) { attributes_for(:car).merge(id: car.id) }
 
           it_has_behavior 'creates a new order'
           it_has_behavior 'associates order with client and car'
@@ -305,10 +305,10 @@ describe Api::V1::OrdersController, type: :controller do
         let! (:client) { create(:client) }
         let! (:car) { create(:car) }
 
-        let (:client_attributes) { client.id }
-        let (:car_attributes) { car.id }
+        let (:client_attributes) { attributes_for(:client).merge(id: client.id) }
+        let (:car_attributes) { attributes_for(:car).merge(id: car.id) }
 
-        it_has_behavior 'reports failure'
+        it_has_behavior 'reports not found'
         it_has_behavior 'does not create client, car'
         it_has_behavior 'does not create an order'
       end

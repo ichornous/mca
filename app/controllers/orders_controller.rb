@@ -3,12 +3,11 @@ class OrdersController < ApplicationController
 
   before_action :set_workshop
   before_action :set_order, only: [:show, :update, :destroy]
-
+  before_action :set_date, only: [:index, :new]
   def index
     authorize Order
 
-    cursor_date_value = parse_day(params[:day])
-    @cursor_date = fmt_day(cursor_date_value)
+    @cursor_date = fmt_day(@cursor_date_value)
   end
 
   # GET /orders/1
@@ -21,8 +20,8 @@ class OrdersController < ApplicationController
   # GET /orders/new
   def new
     @order = @workshop.orders.build
-    @order.start_date = DateTime.now
-    @order.end_date = DateTime.now
+    @order.start_date = @cursor_date_value
+    @order.end_date = @cursor_date_value
 
     @client = @workshop.clients.build
     @car = @workshop.cars.build
@@ -43,6 +42,10 @@ class OrdersController < ApplicationController
     if order_builder.create
       redirect_to orders_url(day: fmt_day(order_builder.order.start_date)), notice: t('.success')
     else
+      @order = order_builder.order
+      @client = order_builder.client
+      @car = order_builder.car
+
       @client_errors = order_builder.client.errors
       @car_errors = order_builder.car.errors
       @order_errors = order_builder.order.errors
@@ -88,12 +91,16 @@ class OrdersController < ApplicationController
     authorize @workshop = current_user.current_workshop
   end
 
+  def set_date
+    @cursor_date_value = parse_day(params[:day]) || DateTime.now
+  end
+
   def fmt_day(date)
     date.strftime(DEFAULT_DATE_FORMAT)
   end
 
   def parse_day(str)
-    DateTime.strptime(str, DEFAULT_DATE_FORMAT) rescue DateTime.now
+    DateTime.strptime(str, DEFAULT_DATE_FORMAT) rescue nil
   end
 
   def unsafe_params

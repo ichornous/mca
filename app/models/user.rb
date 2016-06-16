@@ -18,6 +18,7 @@ class User < ActiveRecord::Base
   after_initialize :set_default_role, :if => :new_record?
 
   validates :username, presence: true
+  validates :workshop, presence: true
   validate :locale_supported!
 
   def password_required?

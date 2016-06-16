@@ -64,6 +64,10 @@ class OrdersController < ApplicationController
     if order_builder.create
       redirect_to orders_url(day: fmt_day(order_builder.order.start_date)), notice: t('.success')
     else
+      @order = order_builder.order
+      @client = order_builder.client
+      @car = order_builder.car
+
       @client_errors = order_builder.client.errors
       @car_errors = order_builder.car.errors
       @order_errors = order_builder.order.errors

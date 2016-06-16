@@ -198,7 +198,7 @@ describe OrdersController do
       it 'redirects to index' do
         expect(response).to redirect_to(orders_url(day: to_dashes(1.day.from_now)))
       end
-      
+
       it 'records were created' do
         expect(Order.count).to eq(1)
         expect(Car.count).to eq(1)
@@ -253,10 +253,124 @@ describe OrdersController do
 
       opts = {}
       opts.merge!(id: order_id)
+      opts.merge!(order: order_params) if defined?(order_params) and not order_params.nil?
+      opts.merge!(client: client_params) if defined?(client_params) and not client_params.nil?
+      opts.merge!(car: car_params) if defined?(car_params) and not car_params.nil?
       patch :update, opts
     end
 
     let (:order_id) { 0 }
+
+    let! (:workshop) { create(:workshop) }
+    let! (:user) { create(:sales, workshop: workshop) }
+
+    context 'valid parameters' do
+      before { send_request! }
+
+      let (:order_params) {
+        attributes_for(:order).
+            merge(start_date: to_slashes(1.day.from_now)).
+            merge(end_date: to_slashes(2.days.from_now))
+      }
+
+      let (:car_params) { attributes_for(:car) }
+      let (:client_params) { attributes_for(:client) }
+
+      context 'order exists' do
+        let! (:order) { create(:order, workshop: workshop) }
+        let! (:order_id) { order.id }
+
+        it 'redirects to index' do
+          expect(response).to redirect_to(orders_url(day: to_dashes(1.day.from_now)))
+        end
+
+        it 'assigns order attributes appropriately' do
+          expect(Order.last).to have_attributes(
+                                    start_date: be_within_same_day(1.day.from_now),
+                                    end_date: be_within_same_day(2.days.from_now),
+                                    color: order_params[:color],
+                                    description: order_params[:description])
+        end
+
+        context 'keep car and client' do
+          let (:car_params) { attributes_for(:car).merge(id: order.car.id) }
+          let (:client_params) { attributes_for(:client).merge(id: order.client.id) }
+
+          it 'does not create a new client' do
+            expect(Client.count).to eq(1)
+          end
+
+          it 'does not create a new car' do
+            expect(Car.count).to eq(1)
+          end
+        end
+
+        it 'creates a new client' do
+          expect(Client.count).to eq(2)
+        end
+
+        it 'creates a new car' do
+          expect(Car.count).to eq(2)
+        end
+
+        it 'assigns client attributes appropriately' do
+          expect(Client.last).to have_attributes(client_params)
+        end
+
+        it 'assigns car attributes appropriately' do
+          expect(Car.last).to have_attributes(car_params)
+        end
+      end
+
+      context 'no permission' do
+        let! (:order) { create(:order) }
+        let! (:order_id) { order.id }
+
+        it 'redirects to index' do
+          expect(response).to have_http_status(:not_found)
+        end
+      end
+
+      context 'order is missing' do
+        it 'fails with record not_found' do
+          expect(response).to have_http_status(:not_found)
+        end
+      end
+    end
+
+    context 'invalid parameters' do
+      before { send_request! }
+
+      let!(:order) { create(:order, workshop: workshop)}
+      let!(:order_id) { order.id }
+
+      let (:order_params) {
+        attributes_for(:order).
+            merge(start_date: to_slashes(1.day.from_now)).
+            merge(end_date: to_slashes(1.day.ago))
+      }
+      let (:car_params) { attributes_for(:car) }
+      let (:client_params) { attributes_for(:client) }
+
+      it 'succeeds' do
+        expect(response).to have_http_status(:success)
+      end
+
+      it 'renders template :new' do
+        expect(response).to render_template(:show)
+      end
+
+      it 'assigns validation errors' do
+        expect(assigns(:order_errors)).to_not be_empty
+      end
+
+      it 'no records were created' do
+        expect(Order.count).to eq(1)
+        expect(Car.count).to eq(1)
+        expect(Client.count).to eq(1)
+      end
+    end
+
     it_has_behavior 'forbids unauthenticated access'
   end
 

@@ -42,6 +42,9 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw]
 
+# Pagination
+gem 'kaminari'
+
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console', '~> 2.0'

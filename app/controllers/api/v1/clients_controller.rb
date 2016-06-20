@@ -23,7 +23,7 @@ module Api
         query = params[:query]
 
         @clients = @workshop.clients.all()
-        @clients.where('lower(name) LIKE ?', "%#{query.downcase}%") if query
+        @clients = @clients.where('lower(name) LIKE ?', "%#{query.downcase}%") if query
         @clients = @clients.limit(limit) if limit
         @clients = @clients.page(page || DEFAULT_PAGE).per(page_size || DEFAULT_PAGE_SIZE) if page or page_size
 

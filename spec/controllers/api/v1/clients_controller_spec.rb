@@ -105,6 +105,7 @@ describe Api::V1::ClientsController, type: :controller do
       context 'limit and page_max are provided' do
         let (:limit) { 20 }
         let (:page_size) { 3 }
+
         it_has_behavior 'processes api request with success'
 
         it 'returns clients' do
@@ -120,7 +121,26 @@ describe Api::V1::ClientsController, type: :controller do
         end
       end
 
+      context 'query is given' do
+        let!(:client_1) { create(:client, name: '7890 1234', workshop: workshop) }
+        let!(:client_2) { create(:client, name: '1234 5678', workshop: workshop) }
 
+        let (:query) { '1234' }
+
+        it_has_behavior 'processes api request with success'
+
+        it 'returns matching names' do
+          send_request!
+
+          expect(assigns[:clients]).to include(client_1, client_2)
+        end
+
+        it 'does not return clients which do not match the query' do
+          send_request!
+
+          expect(assigns[:clients]).to_not include(*clients)
+        end
+      end
     end
   end
 

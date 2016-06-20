@@ -6,6 +6,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :workshops do
         resources :orders, except: [:edit, :new]
+        resources :clients, except: [:edit, :new]
       end
     end
   end

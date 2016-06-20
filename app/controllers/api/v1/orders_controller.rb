@@ -6,7 +6,6 @@ module Api
       before_action :set_workshop
       before_action :set_order, only: [:show, :update, :destroy]
 
-      class AuthenticationError < StandardError; end
 
       rescue_from ActiveRecord::RecordNotFound do |exception|
         logger.warn("Attempt to query a non existent record: #{exception}")

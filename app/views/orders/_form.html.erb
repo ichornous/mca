@@ -47,12 +47,12 @@
               <%= fields_for @client do |u| %>
                   <div class="form-group">
                     <%= u.label :name %><br>
-                    <%= u.text_field :name, class: 'form-control' %>
+                    <%= u.text_field :name, placeholder: t('.client.name.placeholder'), class: 'form-control' %>
                   </div>
 
                   <div class="form-group">
                     <%= u.label :phone %><br>
-                    <%= u.text_field :phone, type: 'tel', class: 'form-control' %>
+                    <%= u.text_field :phone, placeholder: t('.client.phone.placeholder'), type: 'tel', class: 'form-control' %>
                   </div>
               <% end %>
 

@@ -37,8 +37,14 @@ en:
     models:
       booking: "Booking"
       user: "User"
+      order: "Order"
+      client: "Client"
 
     attributes:
+      client:
+        name: "Client name"
+        phone: "Phone number"
+
       booking:
         client_name: "Client"
         car_name: "Car"
@@ -95,6 +101,11 @@ en:
       title_html: "Calendar"
 
     form:
+      client:
+        name:
+          placeholder: "Client name"
+        phone:
+          placeholder: "Phone number"
       booking_info: "Booking info"
       range_to: "to"
 

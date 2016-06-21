@@ -18,8 +18,14 @@ ru:
     models:
       booking: "Запись"
       user: "Пользователь"
+      client: "Клиент"
+      order: "Заказ"
 
     attributes:
+      client:
+        name: "Имя клиента"
+        phone: "Телефон"
+
       booking:
         client_name: "Клиент"
         car_name: "Автомобиль"
@@ -80,6 +86,11 @@ ru:
       title_html: "Календарь"
 
     form:
+      client:
+        name:
+          placeholder: "Имя клиента"
+        phone:
+          placeholder: "+38 (012) 345-67-89"
       booking_info: "Запись клиента"
       range_to: "по"
 

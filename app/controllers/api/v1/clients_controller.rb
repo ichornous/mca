@@ -9,13 +9,17 @@ module Api
       before_action :set_workshop
       before_action :set_client, only: [:show, :update, :destroy]
 
-      ##
-      # == Params
-      # limit (default is unlimited) Maximum number of search results
-      # page (default is 0)
-      # page_size (default is 10)
-      # query Search query
+      # Searches for registered clients in the database based on a given `query`
       #
+      # == Parameters:
+      # query::
+      #   Search pattern
+      # limit::
+      #   Maximum number of search results. Default is unlimited
+      # page::
+      #   When pagination is turned on, specifies the index of a results page. Default is `DEFAULT_PAGE`
+      # page_size::
+      #   Maximum number of search results on a single page. Default is `DEFAULT_PAGE_SIZE`
       def index
         page = params[:page]
         page_size = params[:page_size]

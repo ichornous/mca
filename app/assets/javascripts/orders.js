@@ -95,7 +95,7 @@ $(document).on('ready page:load', function() {
     });
 
     $('#client-phone-input .typeahead').typeahead(null, {
-        name: 'client-input',
+        name: 'phone-input',
         display: 'phone',
         source: clientPhonesSource,
         templates: {
@@ -104,11 +104,11 @@ $(document).on('ready page:load', function() {
     });
 
     $('#client-name-input').bind('typeahead:selected', function(obj, datum, name) {
-        $('#client-phone-input input').val(datum.phone);
+        $('#client-phone-input .typeahead').typeahead('val', datum.phone);
     });
 
     $('#client-phone-input').bind('typeahead:selected', function(obj, datum, name) {
-        $('#client-name-input input').val(datum.name);
+        $('#client-name-input .typeahead').typeahead('val', datum.name);
     });
 
     /**

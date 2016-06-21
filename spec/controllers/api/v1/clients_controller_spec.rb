@@ -58,7 +58,8 @@ describe Api::V1::ClientsController, type: :controller do
       opts.merge!(limit: limit) if defined?(limit)
       opts.merge!(page: page) if defined?(page)
       opts.merge!(page_size: page_size) if defined?(page_size)
-      opts.merge!(query: query) if defined?(query)
+      opts.merge!(name: name) if defined?(name)
+      opts.merge!(phone: phone) if defined?(phone)
       opts.merge!(workshop_id: workshop.id)
       opts.merge!(format: :json)
       get :index, opts
@@ -74,7 +75,7 @@ describe Api::V1::ClientsController, type: :controller do
 
       before { sign_in user }
 
-      context 'no query is given' do
+      context 'no name pattern is given' do
         it_has_behavior 'processes api request with success'
 
         it 'returns clients' do
@@ -121,11 +122,32 @@ describe Api::V1::ClientsController, type: :controller do
         end
       end
 
-      context 'query is given' do
+      context 'name is given' do
         let!(:client_1) { create(:client, name: '7890 1234', workshop: workshop) }
         let!(:client_2) { create(:client, name: '1234 5678', workshop: workshop) }
 
-        let (:query) { '1234' }
+        let (:name) { '1234' }
+
+        it_has_behavior 'processes api request with success'
+
+        it 'returns matching names' do
+          send_request!
+
+          expect(assigns[:clients]).to include(client_1, client_2)
+        end
+
+        it 'does not return clients which do not match the query' do
+          send_request!
+
+          expect(assigns[:clients]).to_not include(*clients)
+        end
+      end
+
+      context 'phone is given' do
+        let!(:client_1) { create(:client, phone: '7890 1234', workshop: workshop) }
+        let!(:client_2) { create(:client, phone: '1234 5678', workshop: workshop) }
+
+        let (:phone) { '1234' }
 
         it_has_behavior 'processes api request with success'
 

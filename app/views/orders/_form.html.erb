@@ -45,14 +45,14 @@
               </div>
 
               <%= fields_for @client do |u| %>
-                  <div class="form-group">
+                  <div id="client-name-input" data-workshop-id="<%= @client.workshop.id -%>" class="form-group">
                     <%= u.label :name %><br>
-                    <%= u.text_field :name, placeholder: t('.client.name.placeholder'), class: 'form-control' %>
+                    <%= u.text_field :name, placeholder: t('.client.name.placeholder'), class: 'form-control typeahead' %>
                   </div>
 
-                  <div class="form-group">
+                  <div id="client-phone-input" data-workshop-id="<%= @client.workshop.id -%>" class="form-group">
                     <%= u.label :phone %><br>
-                    <%= u.text_field :phone, placeholder: t('.client.phone.placeholder'), type: 'tel', class: 'form-control' %>
+                    <%= u.text_field :phone, placeholder: t('.client.phone.placeholder'), type: 'tel', class: 'form-control typeahead' %>
                   </div>
               <% end %>
 

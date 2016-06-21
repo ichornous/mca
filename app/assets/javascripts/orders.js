@@ -61,6 +61,56 @@ $(document).on('ready page:load', function() {
         language: $('#mca-timeslot-range').data('locale')
     });
 
+    var workshop_id = $('#client-name-input').data('workshop-id');
+    var clientNamesSource = new Bloodhound({
+        datumTokenizer: function (datum) {
+            return Bloodhound.tokenizers.whitespace(datum.name);
+        },
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        prefetch: '../api/v1/workshops/' + workshop_id + '/clients',
+        remote: {
+            url: '../api/v1/workshops/' + workshop_id + '/clients?name=%QUERY',
+            wildcard: '%QUERY'
+        }
+    });
+    var clientPhonesSource = new Bloodhound({
+        datumTokenizer: function (datum) {
+            return Bloodhound.tokenizers.whitespace(datum.phone);
+        },
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        prefetch: '../api/v1/workshops/' + workshop_id + '/clients',
+        remote: {
+            url: '../api/v1/workshops/' + workshop_id + '/clients?phone=%QUERY',
+            wildcard: '%QUERY'
+        }
+    });
+
+    $('#client-name-input .typeahead').typeahead(null, {
+        name: 'client-input',
+        display: 'name',
+        source: clientNamesSource,
+        templates: {
+            suggestion: Handlebars.compile('<div><strong>{{name}}</strong> – {{phone}}</div>')
+        }
+    });
+
+    $('#client-phone-input .typeahead').typeahead(null, {
+        name: 'client-input',
+        display: 'phone',
+        source: clientPhonesSource,
+        templates: {
+            suggestion: Handlebars.compile('<div><strong>{{phone}}</strong> – {{name}}</div>')
+        }
+    });
+
+    $('#client-name-input').bind('typeahead:selected', function(obj, datum, name) {
+        $('#client-phone-input input').val(datum.phone);
+    });
+
+    $('#client-phone-input').bind('typeahead:selected', function(obj, datum, name) {
+        $('#client-name-input input').val(datum.name);
+    });
+
     /**
      * visits/new nested form management
      */

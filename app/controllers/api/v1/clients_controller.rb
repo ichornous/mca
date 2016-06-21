@@ -12,8 +12,10 @@ module Api
       # Searches for registered clients in the database based on a given `query`
       #
       # == Parameters:
-      # query::
-      #   Search pattern
+      # name::
+      #   Name search pattern
+      # phone::
+      #   Phone number search pattern
       # limit::
       #   Maximum number of search results. Default is unlimited
       # page::
@@ -24,10 +26,12 @@ module Api
         page = params[:page]
         page_size = params[:page_size]
         limit = params[:limit]
-        query = params[:query]
+        name = params[:name]
+        phone = params[:phone]
 
         @clients = @workshop.clients.all()
-        @clients = @clients.where('lower(name) LIKE ?', "%#{query.downcase}%") if query
+        @clients = @clients.where('lower(name) LIKE ?', "%#{name.downcase}%") if name
+        @clients = @clients.where('phone LIKE ?', "%#{phone}%") if phone
         @clients = @clients.limit(limit) if limit
         @clients = @clients.page(page || DEFAULT_PAGE).per(page_size || DEFAULT_PAGE_SIZE) if page or page_size
 

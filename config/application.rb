@@ -35,6 +35,7 @@ module Mca
     config.assets.precompile << %r(bootstrap-sass/assets/fonts/bootstrap/[\w-]+\.(?:eot|svg|ttf|woff2?)$)
 
     config.autoload_paths += Dir[ Rails.root.join('app', 'services', '**/') ]
+    config.autoload_paths += Dir[ Rails.root.join('app', 'forms', '**/') ]
     # Minimum Sass number precision required by bootstrap-sass
     ::Sass::Script::Value::Number.precision = [8, ::Sass::Script::Value::Number.precision].max
   end

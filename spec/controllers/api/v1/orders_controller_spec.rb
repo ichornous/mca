@@ -94,6 +94,8 @@ describe Api::V1::OrdersController, type: :controller do
       before { sign_in user }
 
       context 'no range is specified' do
+        let (:user) { create(:admin, workshop: workshop) }
+
         it_has_behavior 'processes api request with success'
 
         it 'returns past orders' do

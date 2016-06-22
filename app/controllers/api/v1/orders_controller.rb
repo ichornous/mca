@@ -19,22 +19,24 @@ module Api
       #  +start+:: Beginning of the date range
       #  +end+:: End of the date range
       #  +page+:: Optional when used with pagination
-      #  +limit+:: Maximum number of items per page
+      #  +page_max+:: Maximum number of items per page
       def index
         authorize Order
 
         start_date = params[:start]
         end_date = params[:end]
+        page = params[:page]
+        page_max = params[:page_max]
 
         if (start_date.nil? or end_date.nil?) and not (current_user.admin? or current_user.manager?)
           render nothing: true, status: :not_acceptable
+        else
+          @orders = Order.in_workshop(@workshop)
+          @orders = @orders.in_range(start_date.to_datetime, end_date.to_datetime) if start_date and end_date
+          @orders = @orders.page(page).per(limit) if page and page_max
+
+          respond_with(@orders)
         end
-
-        @orders = Order.in_workshop(@workshop)
-        @orders = @orders.in_range(start_date.to_datetime, end_date.to_datetime) if start_date and end_date
-        @orders = @orders.page(page).per(limit) if page and limit
-
-        respond_with(@orders)
       end
 
       # GET /api/v1/orders/1

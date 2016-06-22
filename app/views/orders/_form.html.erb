@@ -44,7 +44,9 @@
                 </div>
               </div>
 
-              <%= fields_for @client do |u| %>
+              <%= fields_for @client, include_id: false do |u| %>
+                  <%= u.hidden_field :id, class: 'form-control typeahead', data: {id: 'client-id'} %>
+
                   <div id="client-name-input" data-workshop-id="<%= @client.workshop.id -%>" class="form-group">
                     <%= u.label :name %><br>
                     <%= u.text_field :name, placeholder: t('.client.name.placeholder'), class: 'form-control typeahead' %>

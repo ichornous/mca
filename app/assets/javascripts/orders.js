@@ -105,10 +105,12 @@ $(document).on('ready page:load', function() {
 
     $('#client-name-input').bind('typeahead:selected', function(obj, datum, name) {
         $('#client-phone-input .typeahead').typeahead('val', datum.phone);
+        $('[data-id="client-id"]').val(datum.id);
     });
 
     $('#client-phone-input').bind('typeahead:selected', function(obj, datum, name) {
         $('#client-name-input .typeahead').typeahead('val', datum.name);
+        $('[data-id="client-id"]').val(datum.id);
     });
 
     /**

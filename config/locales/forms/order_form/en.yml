@@ -1,0 +1,15 @@
+en:
+  activemodel:
+    models:
+      order: "Order"
+
+    attributes:
+      order:
+        client_name: "Name"
+        client_phone: "Phone"
+        car_description: "Automobile"
+        car_license_id: "License id"
+        start_date: "From"
+        end_date: "To"
+        description: "Description"
+        color: "Color"

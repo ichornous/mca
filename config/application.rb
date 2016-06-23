@@ -32,6 +32,7 @@ module Mca
       config.assets.paths << bower_path
     end
 
+    config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}')]
     config.assets.precompile << %r(bootstrap-sass/assets/fonts/bootstrap/[\w-]+\.(?:eot|svg|ttf|woff2?)$)
 
     config.autoload_paths += Dir[ Rails.root.join('app', 'services', '**/') ]

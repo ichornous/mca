@@ -8,6 +8,7 @@ class OrderForm
     ActiveModel::Name.new(self, nil, 'Order')
   end
 
+
   def self.from_workshop(workshop, opts = {})
     order = workshop.orders.build
     order.start_date = opts[:date] if opts[:date]
@@ -91,7 +92,7 @@ class OrderForm
       model = factory.find(id)
     else
       model = factory.build
-      model.attributes = attributes
+      model.assign_attributes(attributes)
     end
 
     model

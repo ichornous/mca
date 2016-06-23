@@ -45,11 +45,14 @@ en:
         name: "Client name"
         phone: "Phone number"
 
-      booking:
-        client_name: "Client"
-        car_name: "Car"
+      order:
+        client_name: "Nmae"
+        client_phone: "Phone"
+        car_description: "Car"
+        car_license_id: "License id"
+        start_date: "From"
+        end_date: "To"
         description: "Details"
-        phone_number: "Phone"
         color: "Color"
 
       user:

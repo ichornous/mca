@@ -1,0 +1,15 @@
+ru:
+  activemodel:
+    models:
+      order: "Заказ"
+
+    attributes:
+      order:
+        client_name: "Имя"
+        client_phone: "Телефона"
+        car_description: "Автомобиль"
+        car_license_id: "Номер"
+        start_date: "От"
+        end_date: "До"
+        description: "Описание"
+        color: "Цвет"

@@ -45,8 +45,7 @@ class OrderForm
   #
   # @param [Hash] params Form parameters
   def submit(params)
-    params = params.delocalize(start_date: :time, end_date: :time, client_is_new: :boolean, car_is_new: :boolean)
-
+    params.delocalize(start_date: :time, end_date: :time)
     ActiveRecord::Base.transaction do
       @client_is_new = params[:client_is_new]
       @car_is_new = params[:car_is_new]
@@ -84,11 +83,11 @@ class OrderForm
   # Otherwise builds a new instance of the +model_kind+ with given +attributes+
   #
   # @param [Symbol] model_kind Symbolic model name (e.g. :client, :car)
-  # @param [Integer] id Id of a record or nil
+  # @param [String] id Id of a record or a blank string
   # @param [Hash] attributes Model attributes
   def find_or_create(model_kind, id, attributes)
     factory = workshop.send(model_kind.to_s.pluralize(2).to_sym)
-    if id
+    unless id.blank?
       model = factory.find(id)
     else
       model = factory.build

@@ -28,7 +28,7 @@ class OrdersController < ApplicationController
   def create
     @order_form = OrderForm.from_workshop(@workshop)
 
-    if @order_form.submit(unsafe_params)
+    if @order_form.submit(params[:order].permit!)
       redirect_to orders_url(day: fmt_day(@order_form.start_date)), notice: t('.success')
     else
       render :new
@@ -40,7 +40,7 @@ class OrdersController < ApplicationController
   def update
     @order_form = OrderForm.new(@order)
 
-    if @order_form.submit(unsafe_params)
+    if @order_form.submit(params[:order].permit!)
       redirect_to orders_url(day: fmt_day(@order_form.start_date)), notice: t('.success')
     else
       render :show
@@ -77,10 +77,5 @@ class OrdersController < ApplicationController
 
   def parse_day(str)
     DateTime.strptime(str, DEFAULT_DATE_FORMAT) rescue nil
-  end
-
-  def unsafe_params
-    @unsafe_params ||= ActiveSupport::HashWithIndifferentAccess.new(params)
-    @unsafe_params
   end
 end

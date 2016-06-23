@@ -12,8 +12,7 @@ class ApplicationController < ActionController::Base
   # end
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
-  rescue_from ActiveRecord::RecordNotFound, :with => :record_not_found
-
+  #rescue_from ActiveRecord::RecordNotFound, :with => :record_not_found
   private
   def set_locale!
     cu_locale = current_user.locale rescue nil
@@ -25,7 +24,7 @@ class ApplicationController < ActionController::Base
     redirect_to (request.referrer || root_path)
   end
 
-  def record_not_found
-    render nothing: true, status: :not_found
-  end
+  # def record_not_found
+  #   render nothing: true, status: :not_found
+  # end
 end

@@ -4,6 +4,7 @@ class OrdersController < ApplicationController
   before_action :set_workshop
   before_action :set_order, only: [:show, :update, :destroy]
   before_action :set_date, only: [:index, :new]
+
   def index
     authorize Order
 
@@ -13,42 +14,23 @@ class OrdersController < ApplicationController
   # GET /orders/1
   # GET /orders/1.json
   def show
-    @client = @order.client
-    @car = @order.car
+    @order_form = OrderForm.new(@order)
   end
 
   # GET /orders/new
   def new
-    @order = @workshop.orders.build
-    @order.start_date = @cursor_date_value
-    @order.end_date = @cursor_date_value
-
-    @client = @workshop.clients.build
-    @car = @workshop.cars.build
-
-    authorize @order
-    authorize @car
-    authorize @client
+    @order_form = OrderForm.from_workshop(@workshop, date: @cursor_date_value)
+    authorize @order_form
   end
 
   # POST /events
   # POST /events.json
   def create
-    order_builder = OrderBuilder.new(@workshop)
-    order_builder.order_attributes = unsafe_params[:order].except(:id)
-    order_builder.client_attributes = unsafe_params[:client]
-    order_builder.car_attributes = unsafe_params[:car]
+    @order_form = OrderForm.from_workshop(@workshop)
 
-    if order_builder.create
-      redirect_to orders_url(day: fmt_day(order_builder.order.start_date)), notice: t('.success')
+    if @order_form.submit(unsafe_params)
+      redirect_to orders_url(day: fmt_day(@order_form.start_date)), notice: t('.success')
     else
-      @order = order_builder.order
-      @client = order_builder.client
-      @car = order_builder.car
-
-      @client_errors = order_builder.client.errors
-      @car_errors = order_builder.car.errors
-      @order_errors = order_builder.order.errors
       render :new
     end
   end
@@ -56,21 +38,11 @@ class OrdersController < ApplicationController
   # PATCH/PUT /events/1
   # PATCH/PUT /events/1.json
   def update
-    order_builder = OrderBuilder.new(@workshop)
-    order_builder.order_attributes = unsafe_params[:order].merge(id: @order.id)
-    order_builder.client_attributes = unsafe_params[:client]
-    order_builder.car_attributes = unsafe_params[:car]
+    @order_form = OrderForm.new(@order)
 
-    if order_builder.create
-      redirect_to orders_url(day: fmt_day(order_builder.order.start_date)), notice: t('.success')
+    if @order_form.submit(unsafe_params)
+      redirect_to orders_url(day: fmt_day(@order_form.start_date)), notice: t('.success')
     else
-      @order = order_builder.order
-      @client = order_builder.client
-      @car = order_builder.car
-
-      @client_errors = order_builder.client.errors
-      @car_errors = order_builder.car.errors
-      @order_errors = order_builder.order.errors
       render :show
     end
   end

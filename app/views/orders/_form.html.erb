@@ -1,9 +1,9 @@
-<% if @order.errors.any? %>
+<% if @order_form.errors.any? %>
     <div class="panel panel-danger">
-      <div class="panel-heading"><%= pluralize(@order.errors.count, "error") %> prohibited this visit from being saved:</div>
+      <div class="panel-heading"><%= pluralize(@order_form.errors.count, "error") %> prohibited this visit from being saved:</div>
       <div class="panel-body">
         <ul>
-          <% @order.errors.full_messages.each do |message| %>
+          <% @order_form.errors.full_messages.each do |message| %>
               <li><%= message %></li>
           <% end %>
         </ul>
@@ -19,9 +19,7 @@
     <div class="panel-body">
       <div class="row">
         <div class="col-lg-6">
-          <%= form_for(@order) do |f| %>
-              <%= f.hidden_field :workshop_id %>
-
+          <%= form_for(@order_form) do |f| %>
               <div class="form-group">
                 <div class="form-inline">
                   <div class="input-daterange" id="mca-timeslot-range"
@@ -44,26 +42,31 @@
                 </div>
               </div>
 
-              <%= fields_for @client, include_id: false do |u| %>
-                  <%= u.hidden_field :id, class: 'form-control typeahead', data: {id: 'client-id'} %>
 
-                  <div id="client-name-input" data-workshop-id="<%= @client.workshop.id -%>" class="form-group">
-                    <%= u.label :name %><br>
-                    <%= u.text_field :name, placeholder: t('.client.name.placeholder'), class: 'form-control typeahead' %>
-                  </div>
+              <%= f.hidden_field :client_id, class: 'form-control typeahead', data: {id: 'client-id'} %>
 
-                  <div id="client-phone-input" data-workshop-id="<%= @client.workshop.id -%>" class="form-group">
-                    <%= u.label :phone %><br>
-                    <%= u.text_field :phone, placeholder: t('.client.phone.placeholder'), type: 'tel', class: 'form-control typeahead' %>
-                  </div>
-              <% end %>
+              <div id="client-name-input" data-workshop-id="<%= @order_form.workshop_id -%>" class="form-group">
+                <%= f.label :client_name %><br>
+                <%= f.text_field :client_name, placeholder: t('.client.name.placeholder'), class: 'form-control typeahead' %>
+              </div>
 
-              <%= fields_for @car do |u| %>
-                  <div class="form-group">
-                    <%= u.label :description %><br>
-                    <%= u.text_field :description, class: 'form-control' %>
-                  </div>
-              <% end %>
+              <div id="client-phone-input" data-workshop-id="<%= @order_form.workshop_id -%>" class="form-group">
+                <%= f.label :client_phone %><br>
+                <%= f.text_field :client_phone, placeholder: t('.client.phone.placeholder'), type: 'tel', class: 'form-control typeahead' %>
+              </div>
+
+
+              <%= f.hidden_field :car_id, class: 'form-control typeahead', data: {id: 'car-id'} %>
+
+              <div class="form-group">
+                <%= f.label :car_description %><br>
+                <%= f.text_field :car_description, class: 'form-control' %>
+              </div>
+
+              <div class="form-group">
+                <%= f.label :car_license_id %><br>
+                <%= f.text_field :car_license_id, class: 'form-control' %>
+              </div>
 
               <!--< %= f.fields_for :orders do |builder| %>-->
                   <!--< %= render 'order_fields', :f => builder %>-->

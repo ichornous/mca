@@ -8,36 +8,62 @@ class OrderForm
     ActiveModel::Name.new(self, nil, 'Order')
   end
 
-  def initialize(order)
-    @order = order
+  def self.from_workshop(workshop, opts = {})
+    order = workshop.orders.build
+    order.start_date = opts[:date] if opts[:date]
+    order.end_date = opts[:date] if opts[:date]
+    order.client = workshop.clients.build
+    order.car = workshop.cars.build
 
-    @client_id = order.client.id
-    @client_name = order.client.name
-    @client_phone = order.client.phone
-
-    @client_is_new = @client_id ? false : true
-
-    @car_id = order.car.id
-    @car_description = order.car.description
+    OrderForm.new(order)
   end
 
-  delegate :start_date, :end_date, :description, :color, to: :order
+  def initialize(order)
+    @order = order
+  end
 
-  attr_accessor :client_id
-  attr_accessor :client_name
-  attr_accessor :client_phone
-  attr_accessor :client_is_new
+  #
+  # Accessors
+  #
+  delegate :start_date, :end_date, :description, :color, :workshop_id, to: :order
+  delegate :id, :name, :phone, to: :client, prefix: true
+  delegate :id, :description, :license_id, to: :car, prefix: true
 
-  attr_accessor :car_id
-  attr_accessor :car_description
+  def order
+    @order
+  end
 
-  validates_presence_of :start_date, :end_date
+  def client
+    @order.client
+  end
+
+  def car
+    @order.car
+  end
 
   # Apply changes
   #
   # @param [Hash] params Form parameters
   def submit(params)
+    params = params.delocalize(start_date: :time, end_date: :time, client_is_new: :boolean, car_is_new: :boolean)
 
+    ActiveRecord::Base.transaction do
+      @client_is_new = params[:client_is_new]
+      @car_is_new = params[:car_is_new]
+
+      @order.attributes = params.slice(:start_date, :end_date, :description, :color)
+      @order.client = find_or_create(:client, params[:client_id], params.slice(:name, :phone))
+      @order.car = find_or_create(:car, params[:car_id], params.slice(:description, :license_id))
+
+      if @order.valid? and @order.client.valid? and @order.car.valid?
+        @order.client.save!
+        @order.car.save!
+        @order.save!
+        true
+      else
+        raise ActiveRecord::Rollback
+      end
+    end
   end
 
   #
@@ -54,6 +80,23 @@ class OrderForm
   end
 
   private
+  # Searches for the record in the database if +id+ is provided
+  # Otherwise builds a new instance of the +model_kind+ with given +attributes+
+  #
+  # @param [Symbol] model_kind Symbolic model name (e.g. :client, :car)
+  # @param [Integer] id Id of a record or nil
+  # @param [Hash] attributes Model attributes
+  def find_or_create(model_kind, id, attributes)
+    factory = workshop.send(model_kind.to_s.pluralize(2).to_sym)
+    if id
+      model = factory.find(id)
+    else
+      model = factory.build
+      model.attributes = attributes
+    end
+
+    model
+  end
 
   #
   # Validation

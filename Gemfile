@@ -34,8 +34,6 @@ gem 'jquery-ui-rails'
 gem 'turbolinks'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.0'
-# bundle exec rake doc:rails generates the API under doc/api.
-gem 'sdoc', '~> 0.4.0', group: :doc
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
@@ -74,6 +72,9 @@ end
 
 group :production do
   # Heroku setup
+  gem 'rails_stdout_logging'
+  gem 'rails_serve_static_assets'
+
   gem 'rails_12factor'
   gem 'thin'
   gem 'pg'
@@ -81,4 +82,9 @@ group :production do
   # Docker setup
   gem 'unicorn', platforms: :ruby
   gem 'foreman', platforms: :ruby
+end
+
+group :doc do
+  # bundle exec rake doc:rails generates the API under doc/api.
+  gem 'sdoc', '~> 0.4.0', group: :doc
 end

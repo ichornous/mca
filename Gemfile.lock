@@ -245,6 +245,8 @@ DEPENDENCIES
   pundit
   rails (= 4.2.1)
   rails_12factor
+  rails_serve_static_assets
+  rails_stdout_logging
   rspec-collection_matchers
   rspec-rails
   sass-rails (~> 5.0)

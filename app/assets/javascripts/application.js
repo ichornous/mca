@@ -13,7 +13,8 @@
 //= require jquery
 //= require jquery_ujs
 //= require jquery-ui/sortable
-//= require turbolinks
+// require turbolinks
+//= require angular/angular
 //= require_tree .
 
 //= require moment

@@ -25,8 +25,9 @@
     "datatables-responsive": "^2.0.2",
     "datatables-plugins": "^1.10.11",
     "jquery-simplecolorpicker": "^0.3.0",
-    "bootstrap-sass": "^3.3.6",
+    "bootstrap-sass": "bootstrap-sass-official#^3.3.6",
     "typeahead.js": "^0.11.1",
-    "handlebars": "^4.0.5"
+    "handlebars": "^4.0.5",
+    "angular": "^1.5.7"
   }
 }

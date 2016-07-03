@@ -43,6 +43,9 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw]
 # Pagination
 gem 'kaminari'
 
+# Angular to work with asset pipeline
+gem 'angular-rails-templates'
+
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console', '~> 2.0'

@@ -6,7 +6,7 @@ class Order < ActiveRecord::Base
   #
   belongs_to :workshop
 
-  has_one :booking, dependent: :destroy, inverse_of: :order, autosave: true
+  has_one :inquiry, dependent: :destroy, inverse_of: :order, autosave: true
   belongs_to :client, autosave: true
   belongs_to :car, autosave: true
 
@@ -16,7 +16,6 @@ class Order < ActiveRecord::Base
   #
   # Form handling
   #
-  accepts_nested_attributes_for :booking, update_only: true
   accepts_nested_attributes_for :car, update_only: true
   accepts_nested_attributes_for :client, update_only: true
   accepts_nested_attributes_for :order_services, :allow_destroy => true, :reject_if => lambda { |a| a[:service_id].blank? }

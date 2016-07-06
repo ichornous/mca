@@ -1,10 +1,8 @@
 Rails.application.routes.draw do
-  # scope '/(:locale)', locale: /en|ru/ do
-  #
-  # end
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
       resources :workshops do
+        resources :inquiries, except: [:edit, :new]
         resources :orders, except: [:edit, :new]
         resources :clients, except: [:edit, :new]
       end
@@ -17,7 +15,7 @@ Rails.application.routes.draw do
 
   devise_for :users, :path => 'u', :controllers => {:confirmations => 'confirmations'}
   devise_scope :user do
-    put "/u/confirmation" => 'confirmations#confirm'
+    put '/u/confirmation' => 'confirmations#confirm'
   end
   get '/:locale' => 'orders#index'
 

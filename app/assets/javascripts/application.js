@@ -18,6 +18,8 @@
 //= require angular-route/angular-route
 //= require angular-resource/angular-resource
 //= require angular-rails-templates
+
+//= require app_root.js
 //= require_tree .
 
 //= require moment

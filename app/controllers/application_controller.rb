@@ -6,6 +6,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_filter :authenticate_user!
   before_filter :set_locale!
+  before_filter :set_user_info
 
   # def default_url_options(options = {})
   #   { locale: I18n.locale }.merge options
@@ -22,6 +23,13 @@ class ApplicationController < ActionController::Base
   def user_not_authorized
     flash[:alert] = 'Access denied.'
     redirect_to (request.referrer || root_path)
+  end
+
+  def set_user_info
+    @user_info = {
+        id: current_user.try(:id),
+        workshop_id: current_user.try(:workshop_id)
+    }
   end
 
   # def record_not_found

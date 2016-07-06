@@ -1,6 +1,7 @@
 receta = angular.module('receta',[
     'templates',
     'ngRoute',
+    'ngResource',
     'controllers'
 ]);
 
@@ -15,15 +16,26 @@ receta.config([ '$routeProvider',
 ]);
 
 controllers = angular.module('controllers',[]);
-controllers.controller("RecipesController", [ '$scope', '$routeParams', '$location',
-    function ($scope, $routeParams, $location) {
+controllers.controller("RecipesController", [ '$scope', '$routeParams', '$location', '$resource',
+    function ($scope, $routeParams, $location, $resource) {
         $scope.search = function (keywords) {
             $location.path("/").search('keywords', keywords)
         };
 
+        var Client = $resource('/api/v1/workshops/:workshopId/clients/:clientId.:format', {
+            clientId: '@id',
+            workshopId: $scope.userInfo.workshop_id,
+            format: 'json'
+        });
+
         if ($routeParams.keywords) {
             var keywords = $routeParams.keywords.toLowerCase();
-            $scope.recipes = recipes.filter(function(recipe){ return recipe.name.toLowerCase().indexOf(keywords) != -1 })
+            Client.query({
+                    name: $routeParams.keywords
+                },
+                function (results) {
+                    $scope.recipes = results;
+                });
         } else {
             $scope.recipes = []
         }
